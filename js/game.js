@@ -1,6 +1,6 @@
 let canvas;
 let ctx;
-let character = new Image();
+let character = new MoveableObject();
 
 function init(){
     canvas = document.getElementById('canvas');
@@ -8,4 +8,6 @@ function init(){
     character.src = '../assets/img/2_character_pepe/2_walk/W-21.png';
 
     ctx.drawImage(character, 20, 20, 50, 150);
+
+    console.log('My character is:', character)
 }
