@@ -13,7 +13,9 @@ class World {
     
     draw(){
         this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
-        this.ctx.drawImage(getEnemies());
+             requestAnimationFrame( () => this.draw());
+
+        // this.ctx.drawImage(getEnemies());
     }
 
     // getEnemies(){
