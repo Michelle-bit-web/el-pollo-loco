@@ -8,7 +8,6 @@ class Character extends MovableObject {
         '../assets/img/2_character_pepe/2_walk/W-25.png',
         '../assets/img/2_character_pepe/2_walk/W-26.png',
        ];
-    currentImage = 0;
 
     constructor(){
        super().y = 440 - this.height;
@@ -23,7 +22,7 @@ class Character extends MovableObject {
         let path = this.IMAGES_WALKING[i];
         this.img = this.imageCache[path];
         this.currentImage ++;
-        }, 1000);
+        }, 1000/ 6);
     }
 
     jump(){
