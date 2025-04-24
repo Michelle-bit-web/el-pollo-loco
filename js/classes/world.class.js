@@ -8,12 +8,7 @@ class World {
     clouds = [
         new Cloud()
     ];
-    backgroundobjects = [
-        new BackgroundObject('../assets/img/5_background/layers/air.png', 0),
-        new BackgroundObject('../assets/img/5_background/layers/3_third_layer/1.png', 0),
-        new BackgroundObject('../assets/img/5_background/layers/2_second_layer/1.png', 0),
-        new BackgroundObject('../assets/img/5_background/layers/1_first_layer/1.png', 0),
-    ];
+    backgroundobjects = [];
     canvas;
     ctx;
     keyboard;
@@ -23,10 +18,24 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.draw();
+        this.collectBgImages();
         this.setWorld();
+        this.draw();
     }
     
+    collectBgImages(){
+        for (let i = 0; i <= 4; i++) {
+            let position = 719 * i;
+            let number = i % 2 === 1 ? 1 : 2;
+            this.backgroundobjects.push(
+                new BackgroundObject('../assets/img/5_background/layers/air.png', position),
+                new BackgroundObject(`../assets/img/5_background/layers/3_third_layer/${number}.png`, position),
+                new BackgroundObject(`../assets/img/5_background/layers/2_second_layer/${number}.png`, position),
+                new BackgroundObject(`../assets/img/5_background/layers/1_first_layer/${number}.png`, position),
+            )
+        }
+    }
+
     setWorld(){
         this.character.world = this;
     }
