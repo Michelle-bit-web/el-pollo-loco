@@ -3,7 +3,7 @@ class MovableObject {
     y = 350;
     img;
     height = 200;
-    width = 80;
+    width = 170;
 
     loadImage(path){
         this.img = new Image(); //alternative zu: doc.ElById('image') <img id="image">
