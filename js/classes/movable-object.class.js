@@ -7,6 +7,7 @@ class MovableObject {
     speed = 0.4;
     currentImage = 0;
     imageCache = {};
+    otherDirection = false;
 
     loadImage(path){
         this.img = new Image(); //alternative zu: doc.ElById('image') <img id="image">
