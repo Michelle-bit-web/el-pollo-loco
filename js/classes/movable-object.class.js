@@ -8,6 +8,12 @@ class MovableObject {
   currentImage = 0;
   imageCache = {};
   otherDirection = false;
+  offset = {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
+  }
 
   loadImage(path) {
     this.img = new Image(); //alternative zu: doc.ElById('image') <img id="image">
@@ -36,6 +42,22 @@ class MovableObject {
     }
   }
 
+  drawOffsetFrame(ctx) {
+    if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
+      ctx.beginPath();
+      ctx.lineWidth = "3";
+      ctx.strokeStyle = "red";
+  
+      const offsetX = this.x + this.offset.left;
+      const offsetY = this.y + this.offset.top;
+      const offsetWidth = this.width - this.offset.left - this.offset.right;
+      const offsetHeight = this.height - this.offset.top - this.offset.bottom;
+  
+      ctx.rect(offsetX, offsetY, offsetWidth, offsetHeight);
+      ctx.stroke();
+    }
+  }
+
   moveRight() {
     this.x += this.speed;
   }
@@ -55,16 +77,17 @@ class MovableObject {
     this.speedY = 30;
   }
   
-  isColliding(mo){
-    return this.x + this.width > mo.x &&
-    this.y + this.height > mo.y
-    && this.x < mo.x 
-    && this.y < mo.y + mo.height;
-  }
-
   // isColliding(mo){
-  //      return (this.x + this.width) >= mo.x && this.x <= (mo.x + mo.width) && 
-  //         (this.y + this.offsetY + this.height) >= mo.y &&
-  //         (this.y + this.offsetY) <= (mo.y + mo.height) 
-  //   }
+  //   return this.x + this.width > mo.x &&
+  //   this.y + this.height > mo.y
+  //   && this.x < mo.x 
+  //   && this.y < mo.y + mo.height;
+  // }
+
+  isColliding(mo){
+       return (this.x + this.width - this.offset.right) >= (mo.x  + mo.offset.left) && 
+       (this.x + this.offset.left) <= (mo.x + mo.width - mo.offset.right) && 
+       (this.y + this.height + this.offset.top ) >= (mo.y + mo.y + mo.offset.top) &&
+       (this.y + this.offset.top) <= (mo.y + mo.height - mo.offset.bottom) 
+    }
 }

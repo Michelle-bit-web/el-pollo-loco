@@ -1,7 +1,7 @@
 class Character extends MovableObject {
   height = 280;
   speed = 15;
-  y = 200 - this.height;
+  y = -80;
   speedY = 0;
   acceleration = 3;
   IMAGES_WALKING = [
@@ -24,6 +24,12 @@ class Character extends MovableObject {
     "../assets/img/2_character_pepe/3_jump/J-39.png",
   ];
   world;
+  offset = {
+    top: 140,
+    left: 60,
+    right: 50,
+    bottom: 20
+  }
 
   constructor() {
     super().loadImage("../assets/img/2_character_pepe/2_walk/W-21.png");
