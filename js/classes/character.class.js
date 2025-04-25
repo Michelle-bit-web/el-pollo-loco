@@ -43,6 +43,12 @@ class Character extends MovableObject {
             this.x -= this.speed;
             this.otherDirection = true;
         }
+        if (this.world.keyboard.UP) {
+          if(!this.isAboveGround()){
+            this.speedY = 30;
+          }
+        
+      }
         this.world.camera_x = -this.x + 100;
     }, 1000 / 30);
     
@@ -59,7 +65,7 @@ class Character extends MovableObject {
 
   applyGravity() {
     setInterval(() => {
-      if (this.isAboveGround()) {
+      if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
       }
