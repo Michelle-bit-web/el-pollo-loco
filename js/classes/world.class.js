@@ -12,10 +12,21 @@ class World {
         this.keyboard = keyboard;
         this.setWorld();
         this.draw();
+        this.checkCollisions();
     }
     
     setWorld(){
         this.character.world = this;
+    }
+
+    checkCollisions(){
+        setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                if(this.character.isColliding(enemy)){
+                    console.log('Treffer');
+                }
+            })
+        }, 100)
     }
 
     draw(){
@@ -55,4 +66,17 @@ class World {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
+
+    
+
+
+// if(character.x + character.width > chicken.x 
+//   && character.y + character.height > chicken.y 
+//   && character.x < chicken.x
+//   && charater.y y chicken.y + chicken.height){
+//     this.isColliding();
+//   }
+
+ 
+
 }
