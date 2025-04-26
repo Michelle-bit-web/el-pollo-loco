@@ -1,0 +1,3 @@
+class Statusbar extends DrawableObject{
+    
+}

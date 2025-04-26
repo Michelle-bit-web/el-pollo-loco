@@ -1,12 +1,5 @@
-class MovableObject {
-  x = 10;
-  y = 350;
-  img;
-  height = 200;
-  width = 170;
+class MovableObject extends DrawableObject{
   speed = 0.4;
-  currentImage = 0;
-  imageCache = {};
   otherDirection = false;
   offset = {
     top: 0,
@@ -16,24 +9,7 @@ class MovableObject {
   }
   energy = 100;
   lastHit = 0;
-
-  loadImage(path) {
-    this.img = new Image(); //alternative zu: doc.ElById('image') <img id="image">
-    this.img.src = path;
-  }
-
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
-  }
-
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }
-
+  
   drawFrame(ctx) {
     if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
       ctx.beginPath();
