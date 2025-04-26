@@ -94,4 +94,16 @@ class MovableObject {
   //      (this.y + this.height - this.offset.bottom ) >= (mo.y + mo.offset.top) &&
   //      (this.y + this.offset.top) <= (mo.y + mo.height - mo.offset.bottom) 
   //   }
+
+  hit(){
+    if(this.energy == 0){
+     this.isDead();
+    }else{
+      this.energy -= 5;
+    }
+  }
+
+  isDead(){
+    return this.energy == 0;
+  }
 }
