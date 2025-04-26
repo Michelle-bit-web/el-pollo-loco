@@ -23,7 +23,8 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if(this.character.isColliding(enemy)){
-                    console.log('Treffer');
+                    this.character.energy -= 5;
+                    console.log(`characters energy is ${this.character.energy}`);
                 }
             })
         }, 100)

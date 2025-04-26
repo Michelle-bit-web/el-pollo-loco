@@ -14,6 +14,7 @@ class MovableObject {
     right: 0,
     bottom: 0
   }
+  energy = 100;
 
   loadImage(path) {
     this.img = new Image(); //alternative zu: doc.ElById('image') <img id="image">
@@ -41,7 +42,8 @@ class MovableObject {
       ctx.stroke();
     }
   }
-
+//Das könnte als höherer Schwierigkeitsgrad beim Münzen sammeln sein
+//Diese Funktion eher fürs Münzen sammeln? Für enemy eher ein "oder"
   drawOffsetFrame(ctx) {
     if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
       ctx.beginPath();
@@ -77,17 +79,19 @@ class MovableObject {
     this.speedY = 30;
   }
   
-  // isColliding(mo){
-  //   return this.x + this.width > mo.x &&
-  //   this.y + this.height > mo.y
-  //   && this.x < mo.x 
-  //   && this.y < mo.y + mo.height;
-  // }
-
+  //hier werden auch die Hühner berücksichtigt
   isColliding(mo){
-       return (this.x + this.width - this.offset.right) >= (mo.x  + mo.offset.left) && 
-       (this.x + this.offset.left) <= (mo.x + mo.width - mo.offset.right) && 
-       (this.y + this.height + this.offset.top ) >= (mo.y + mo.y + mo.offset.top) &&
-       (this.y + this.offset.top) <= (mo.y + mo.height - mo.offset.bottom) 
-    }
+    return this.x + this.width > mo.x &&
+    this.y + this.height > mo.y
+    && this.x < mo.x 
+    && this.y < mo.y + mo.height;
+  }
+
+//Hier reagiert es nicht auf den Endboss
+  // isColliding(mo){
+  //      return (this.x + this.width - this.offset.right) >= (mo.x  + mo.offset.left) && 
+  //      (this.x + this.offset.left) <= (mo.x + mo.width - mo.offset.right) && 
+  //      (this.y + this.height - this.offset.bottom ) >= (mo.y + mo.offset.top) &&
+  //      (this.y + this.offset.top) <= (mo.y + mo.height - mo.offset.bottom) 
+  //   }
 }
