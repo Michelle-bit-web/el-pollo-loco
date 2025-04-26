@@ -15,6 +15,7 @@ class MovableObject {
     bottom: 0
   }
   energy = 100;
+  lastHit = 0;
 
   loadImage(path) {
     this.img = new Image(); //alternative zu: doc.ElById('image') <img id="image">
@@ -100,7 +101,14 @@ class MovableObject {
      this.isDead();
     }else{
       this.energy -= 5;
+      this.lastHit = new Date().getTime();
     }
+  }
+
+  isHurt(){
+    let timepassed = new Date().getTime() - this.lastHit; //miliseconds
+    timepassed = timepassed / 1000 //time in seconds
+    return timepassed < 1;
   }
 
   isDead(){
