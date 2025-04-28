@@ -2,8 +2,7 @@ class Character extends MovableObject {
   height = 280;
   speed = 15;
   y = -80;
-  speedY = 0;
-  acceleration = 3;
+  
   IMAGES_WALKING = [
     "../assets/img/2_character_pepe/2_walk/W-21.png",
     "../assets/img/2_character_pepe/2_walk/W-22.png",
@@ -87,18 +86,5 @@ class Character extends MovableObject {
         }
     }, 50);
  }
-
-  applyGravity() {
-    setInterval(() => {
-      if (this.isAboveGround() || this.speedY > 0) {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration;
-      }
-    }, 1000 / 25);
-  }
-
-  isAboveGround() {
-    return this.y < 150;
-  }
 
 }

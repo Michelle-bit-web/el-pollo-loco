@@ -1,6 +1,8 @@
 class MovableObject extends DrawableObject{
   speed = 0.4;
   otherDirection = false;
+  speedY = 0;
+  acceleration = 3;
   energy = 100;
   lastHit = 0;
 
@@ -24,11 +26,40 @@ class MovableObject extends DrawableObject{
   }
   
   //hier werden auch die Hühner berücksichtigt
-  isColliding(mo){
-    return this.x + this.width > mo.x &&
-    this.y + this.height > mo.y
-    && this.x < mo.x 
-    && this.y < mo.y + mo.height;
+  // isColliding(mo){
+  //   return this.x + this.width > mo.x &&
+  //   this.y + this.height > mo.y
+  //   && this.x < mo.x 
+  //   && this.y < mo.y + mo.height;
+  // }
+  isColliding(mo) {
+    const offsetX = this.x + this.offset.left;
+    const offsetY = this.y + this.offset.top;
+    const offsetWidth = this.width - this.offset.left - this.offset.right;
+    const offsetHeight = this.height - this.offset.top - this.offset.bottom;
+  
+    const moOffsetX = mo.x + mo.offset.left;
+    const moOffsetY = mo.y + mo.offset.top;
+    const moOffsetWidth = mo.width - mo.offset.left - mo.offset.right;
+    const moOffsetHeight = mo.height - mo.offset.top - mo.offset.bottom;
+  
+    return offsetX + offsetWidth > moOffsetX &&
+           offsetY + offsetHeight > moOffsetY &&
+           offsetX < moOffsetX + moOffsetWidth &&
+           offsetY < moOffsetY + moOffsetHeight;
+  }
+  
+  applyGravity() {
+    setInterval(() => {
+      if (this.isAboveGround() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+      }
+    }, 1000 / 25);
+  }
+
+  isAboveGround() {
+    return this.y < 150;
   }
 
 //Hier reagiert es nicht auf den Endboss
@@ -38,7 +69,7 @@ class MovableObject extends DrawableObject{
   //      (this.y + this.height - this.offset.bottom ) >= (mo.y + mo.offset.top) &&
   //      (this.y + this.offset.top) <= (mo.y + mo.height - mo.offset.bottom) 
   //   }
-
+  
   hit(){
     if(this.energy == 0){
      this.isDead();
