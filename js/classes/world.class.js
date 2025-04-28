@@ -5,7 +5,9 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
-    statusbar = new Statusbar();
+    energyStatusbar = new Statusbar('energy', 10, 5);
+    coinStatusbar = new Statusbar('coin', 10, 45);
+    bottleStatusbar = new Statusbar('bottle', 10, 85);
     throwableObjects = [];
 
     constructor(canvas, keyboard){
@@ -32,7 +34,7 @@ class World {
             this.level.enemies.forEach(enemy => {
                 if(this.character.isColliding(enemy)){
                     this.character.hit();
-                    this.statusbar.setPercentage(this.character.energy);
+                    this.energyStatusbar.setPercentage(this.character.energy);
                 }
             });
     }
@@ -51,7 +53,9 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
         // ---- Space for fixed objects ----
-        this.addToMap(this.statusbar); //To move statusbar relative to camera
+        this.addToMap(this.energyStatusbar); //To move statusbar relative to camera
+        this.addToMap(this.coinStatusbar);
+        this.addToMap(this.bottleStatusbar);
         this.ctx.translate(this.camera_x, 0);
         
         this.addToMap(this.character);
