@@ -6,13 +6,25 @@ class CollectableObject extends MovableObject{
         "../assets/img/8_coin/coin_2.png",
     ];
     IMAGE_BOTTLE = "../assets/img/7_statusbars/3_icons/icon_salsa_bottle.png";
+    IMAGE_BOTTLE_GROUND = [
+        "../assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
+        "../assets/img/6_salsa_bottle/2_salsa_bottle_on_ground.png",
+    ];
 
     constructor(imageType, x, y){
         super();
         this.y = y;
-        this.x = x;
         this.imageType = imageType;
+        this.x = this.setXValue(x);
         this.getImageType();
+    }
+
+    setXValue(x){
+        if (this.imageType === 'bottleGround') {
+            return x + Math.random()*300;
+        } else {
+          return x;
+        }
     }
 
     getImageType(){
@@ -24,6 +36,9 @@ class CollectableObject extends MovableObject{
         } else if(this.imageType == "bottle"){
             this.setSize(70, 70);
             this.loadImage(this.IMAGE_BOTTLE);
+        }else if(this.imageType == "bottleGround"){
+            this.setSize(70, 70);
+            this.loadImage(this.IMAGE_BOTTLE_GROUND[0]);
         }
     }
 
@@ -34,6 +49,6 @@ class CollectableObject extends MovableObject{
     animate(){
         setInterval(() => {
             this.playAnimation(this.IMAGES_COIN)
-        }, 500)
+        }, 400)
     }
 }

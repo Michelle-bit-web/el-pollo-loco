@@ -4,6 +4,8 @@ class MovableObject extends DrawableObject{
   speedY = 0;
   acceleration = 3;
   energy = 100;
+  coins = 0;
+  bottles = 0;
   lastHit = 0;
 
   moveRight() {
@@ -75,13 +77,13 @@ class MovableObject extends DrawableObject{
   //      (this.y + this.offset.top) <= (mo.y + mo.height - mo.offset.bottom) 
   //   }
   
-  hit(){
-    if(this.energy == 0){
-     this.isDead();
-    }else{
-      this.energy -= 5;
-      this.lastHit = new Date().getTime();
-    }
+  changeEnergy(){
+      if(this.energy == 0){
+        this.isDead();
+       }else{
+         this.energy -= 5;
+         this.lastHit = new Date().getTime();
+       }
   }
 
   isHurt(){

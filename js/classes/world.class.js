@@ -1,6 +1,6 @@
 class World {
-    character = new Character();
     level = level1;
+    character = new Character();
     canvas;
     ctx;
     keyboard;
@@ -9,13 +9,7 @@ class World {
     coinStatusbar = new Statusbar('coin', 10, 45);
     bottleStatusbar = new Statusbar('bottle', 10, 85);
     throwableObjects = [];
-    collectableObjects = [
-        new CollectableObject('coin', 120, 150),
-        new CollectableObject('coin', 180, 100),
-        new CollectableObject('coin', 240, 100),
-        new CollectableObject('coin', 300, 150),
-        new CollectableObject('bottle', 240, 180),
-    ];
+    collectableObjects = [];
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -34,23 +28,87 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkIsThrowing();
+            this.checkCharacterDistance();
         }, 100);
     }
 
     checkCollisions(){
-            this.level.enemies.forEach(enemy => {
-                if(this.character.isColliding(enemy)){
-                    this.character.hit();
-                    this.energyStatusbar.setPercentage(this.character.energy);
+        this.checkCollisionsEnemies();
+        this.checkCollisionsCollectables();
+            
+    }
+
+    checkCollisionsEnemies(){
+        this.level.enemies.forEach(enemy => {
+            if(this.character.isColliding(enemy)){
+                this.character.hit(enemy);
+                this.changeStatusbar(this.energyStatusbar, -20)
+                // this.energyStatusbar.setPercentage(this.character.energy);
+            }
+        });
+    }
+
+    checkCollisionsCollectables() {
+        this.collectableObjects.forEach((item, index) => {
+            if (this.character.isColliding(item)) {
+                if (item.imageType === 'coin') {
+                    this.changeStatusbar(this.coinStatusbar, 1);
+                } else if (item.imageType === 'bottle' || item.imageType === 'bottleGround') {
+                    this.changeStatusbar(this.bottleStatusbar, 1);
                 }
-            });
+    
+                // Collectable entfernen
+                this.collectableObjects.splice(index, 1);
+            }
+        });
+    }
+
+    changeStatusbar(statusbar, direction) {
+        if (statusbar.type === 'energy') {
+            statusbar.setPercentage(Math.max(0, statusbar.percentage + direction)); // z. B. -20 bei Schaden
+        } else {
+            let current = statusbar.type === 'coin' ? this.character.coins : this.character.bottles;
+            current = Math.max(0, Math.min(current + direction, 5)); // Begrenzung auf 0–5
+            //Testen ob das Sammeln von Coins registriert wurde - funktioniert!
+            console.log(`[DEBUG] ${statusbar.type} vorher:`, statusbar.type === 'coin' ? this.character.coins : this.character.bottles);
+            console.log(`[DEBUG] Änderung: ${direction}, neuer Wert: ${current}`);
+
+            if (statusbar.type === 'coin') {
+                this.character.coins = current;
+            } else {
+                this.character.bottles = current;
+            }
+            statusbar.setPercentage(current);
+        }
     }
 
     checkIsThrowing(){
-        if(this.keyboard.THROW){
+        if (this.keyboard.THROW && this.character.bottles > 0) {
             let bottle = new ThrowableObject(this.character.x, this.character.y);
             this.throwableObjects.push(bottle);
+            this.changeStatusbar(this.bottleStatusbar, -1);
         }
+    }
+
+    checkCharacterDistance(){
+        const treshold = [0, 200, 800, 1200];
+        treshold.forEach((treshold, index) =>{ //if-Abfrage: wenn noch nicht genereriert wurde
+            if(this.character.x > treshold && !this[`collectableObjectsGenerated${index}`]){
+                this.generateNewCollectable();
+            };
+            this[`collectableObjectsGenerated${index}`] = true; 
+        });
+    }
+
+    generateNewCollectable(){
+        this.collectableObjects.push(
+            new CollectableObject('coin', this.character.x + 120, this.character.y + 150),
+            new CollectableObject('coin', this.character.x + 180, this.character.y + 100),
+            new CollectableObject('coin', this.character.x + 240, this.character.y + 100),
+            new CollectableObject('coin', this.character.x + 300, this.character.y + 150),
+            new CollectableObject('bottle', this.character.x + 240, this.character.y + 200),
+            new CollectableObject('bottleGround', this.character.x + 240 , this.character.y +  450),
+        );
     }
 
     draw(){

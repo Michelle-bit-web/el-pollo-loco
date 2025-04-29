@@ -2,7 +2,11 @@ class Character extends MovableObject {
   height = 280;
   speed = 15;
   y = -80;
-  
+  state = 'alive'; // 'alive', 'dying', 'ripFall', 'done'
+  ripY = 0;
+  sombreroY = 0;
+  dyingAnimationPlayed = false;
+
   IMAGES_WALKING = [
     "../assets/img/2_character_pepe/2_walk/W-21.png",
     "../assets/img/2_character_pepe/2_walk/W-22.png",
@@ -36,13 +40,18 @@ class Character extends MovableObject {
     "../assets/img/2_character_pepe/5_dead/D-56.png",
     "../assets/img/2_character_pepe/5_dead/D-57.png",
   ];
+  IMAGES_RIP = [
+    "../assets/img/2_character_pepe/5_dead/rip.png",
+    "../assets/img/2_character_pepe/5_dead/sombrero .png",
+  ];
+
   world;
   offset = {
     top: 140,
     left: 60,
     right: 50,
-    bottom: 20
-  }
+    bottom: 20,
+  };
 
   constructor() {
     super().loadImage("../assets/img/2_character_pepe/2_walk/W-21.png");
@@ -50,43 +59,63 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DYING);
+    this.loadImages(this.IMAGES_RIP);
     this.animate();
     this.applyGravity();
   }
 
   animate() {
     setInterval(() => {
-        if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
-            this.moveRight();
-            this.otherDirection = false;
-            // this.walking_soung.play();
-        }
-        if (this.world.keyboard.LEFT && this.x > 0) {
-            this.moveLeft();
-            this.otherDirection = true;
-             // this.walking_soung.play();
-        }
-        if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-          this.jump();
-        }
-        this.world.camera_x = -this.x + 100;
+      if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
+        this.moveRight();
+        this.otherDirection = false;
+        // this.walking_soung.play();
+      }
+      if (this.world.keyboard.LEFT && this.x > 0) {
+        this.moveLeft();
+        this.otherDirection = true;
+        // this.walking_soung.play();
+      }
+      if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+        this.jump();
+      }
+      this.world.camera_x = -this.x + 100;
     }, 1000 / 30);
-    
-    setInterval(() => {
-     if (this.isHurt()) {
+
+   let interval = setInterval(() => {
+      if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
-      }else if (this.isAboveGround()) {
+      } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
+
       } else {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
           this.playAnimation(this.IMAGES_WALKING);
-         }
         }
+        console.log(interval); //als Variable gespeichert sieht man dass es die id 14 hat
+       
+      }
     }, 50);
     if (this.isDead()) {
       this.playAnimation(this.IMAGES_DYING);
-      this.loadImage("../assets/img/2_character_pepe/5_dead/D-57.png");
+      // this.loadImage("../assets/img/2_character_pepe/5_dead/rip.png");
+      this.playAnimation(this.IMAGES_RIP);
+      
     }
- }
+    
+  }
 
+  hit(hittenObject) {
+    if (hittenObject instanceof Chicken || hittenObject instanceof Endboss) {
+        this.changeEnergy();
+    } else if (hittenObject instanceof CollectableObject) {
+        if (hittenObject.imageType === "coin") {
+            this.coins++;
+            this.world.coinStatusbar.setPercentage(this.coins);
+        } else if (hittenObject.imageType === "bottle" || hittenObject.imageType === "bottleGround") {
+            this.bottles++;
+            this.world.bottleStatusbar.setPercentage(this.bottles);
+        }
+    }
+}
 }
