@@ -14,7 +14,11 @@ class ThrowableObject extends MovableObject{
         this.speedY = 30;
         this.applyGravity();
         setInterval(() => {
-            this.x += 10;
+            if(this.otherDirection = true){//klappt noch nicht, dass die flaschen in die andere Richtung fliegen
+               this.x += 10;
+            } else if(this.otherDirection = false){
+                this.x -= 10;
+            }
         }, 25)
     }
 }

@@ -73,9 +73,7 @@ class Character extends MovableObject {
     }, 1000 / 30);
     
     setInterval(() => {
-      if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DYING);
-      }else if (this.isHurt()) {
+     if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
       }else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
@@ -85,6 +83,10 @@ class Character extends MovableObject {
          }
         }
     }, 50);
+    if (this.isDead()) {
+      this.playAnimation(this.IMAGES_DYING);
+      this.loadImage("../assets/img/2_character_pepe/5_dead/D-57.png");
+    }
  }
 
 }

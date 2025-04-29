@@ -9,6 +9,13 @@ class World {
     coinStatusbar = new Statusbar('coin', 10, 45);
     bottleStatusbar = new Statusbar('bottle', 10, 85);
     throwableObjects = [];
+    collectableObjects = [
+        new CollectableObject('coin', 120, 150),
+        new CollectableObject('coin', 180, 100),
+        new CollectableObject('coin', 240, 100),
+        new CollectableObject('coin', 300, 150),
+        new CollectableObject('bottle', 240, 180),
+    ];
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -61,7 +68,8 @@ class World {
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.throwableObjects)
+        this.addObjectsToMap(this.throwableObjects);
+        this.addObjectsToMap(this.collectableObjects)
 
         this.ctx.translate(-this.camera_x, 0);
 
@@ -76,7 +84,7 @@ class World {
            this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
         mo.drawOffsetFrame(this.ctx);
         if(mo.otherDirection){
            this.flipImageBack(mo);
