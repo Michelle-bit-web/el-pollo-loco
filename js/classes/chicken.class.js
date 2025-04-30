@@ -7,7 +7,7 @@ class Chicken extends MovableObject {
         '../assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
     ];
     IMAGE_DEAD =
-        '../aassets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
+        '../assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png'
    
     offset = {
         top: 10,
