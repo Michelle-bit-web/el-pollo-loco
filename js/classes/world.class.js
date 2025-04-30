@@ -5,6 +5,7 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    isFading = false
     energyStatusbar = new Statusbar('energy', 10, 5);
     coinStatusbar = new Statusbar('coin', 10, 45);
     bottleStatusbar = new Statusbar('bottle', 10, 85);
@@ -123,10 +124,57 @@ class World {
                 // this.generateNewCollectable();
                 this[`collectableObjectsGenerated${index}`] = true; 
             };
+            if(this.character.x >= this.level.levelEndX){
+                // this.generateNewCollectable();
+                    console.log('Level beendet, Übergang zu neuem Level...');
+                    this.fadeToBlack(() => {
+                        this.changeLevel(level2); // Lade das neue Level
+                    });
+                };
             
         });
     }
 
+    fadeToBlack(callback) {
+        this.isFading = true; // Setze den Fade-Zustand auf true
+        let alpha = 0; // Transparenz-Wert (0 = vollständig transparent, 1 = vollständig schwarz)
+        const fadeInterval = setInterval(() => {
+            this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`; // Schwarzer Overlay
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            alpha += 0.02; // Transparenz erhöhen
+            if (alpha >= 1) { // Wenn das Canvas vollständig schwarz ist
+                clearInterval(fadeInterval);
+                callback(); // Rufe die angegebene Funktion auf (z. B. Levelwechsel)
+                this.isFading = false; // Setze den Fade-Zustand zurück
+            }
+        }, 50);
+       // Aktualisierung alle 50ms (20 FPS)
+    }
+
+    changeLevel(newLevel){
+        this.level = newLevel; // Hier wird das Level gewechselt
+        this.character.x = 0;
+        this.camera_x = 0;
+        console.log('Level gewechselt', this.level);
+        this.fadeIn();
+
+    }
+
+    fadeIn() {
+        this.isFading = true;
+        let alpha = 1; // Startwert für Transparenz (1 = schwarz)
+        this.fadeAlpha = alpha; // Setze den aktuellen Alpha-Wert für das Zeichnen
+    
+        const fadeInterval = setInterval(() => {
+            this.fadeAlpha = alpha; // Aktualisiere den Alpha-Wert
+            alpha -= 0.02; // Transparenz verringern
+            if (alpha <= 0) { // Wenn das Canvas vollständig sichtbar ist
+                clearInterval(fadeInterval);
+                this.isFading = false; // Setze den Fade-Zustand zurück
+                this.fadeAlpha = undefined; // Entferne den Overlay-Wert
+            }
+        }, 50);
+    }
     // generateNewCollectable(){
     //     this.collectableObjects.push(
     //         // new CollectableObject('coin', this.character.x + 120, this.character.y + 150),
@@ -140,6 +188,9 @@ class World {
     // }
 
     draw(){
+        if(this.isFading){
+            return
+        }
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);

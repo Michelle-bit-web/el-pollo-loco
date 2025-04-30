@@ -32,6 +32,7 @@ class Level{
                 new BackgroundObject(`${pathTemplate}/1_first_layer/${number}.png`, position),
             )
         };  collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-end-arrow.png`, position - 200, 295, 120, 120));
+        console.log(position)
         // console.log(collectedImages[0].img) //Die MEthode gibt den Pfad aus
         return collectedImages;
     }
