@@ -18,6 +18,23 @@ class World {
         this.setWorld();
         this.draw();
         this.run();
+        this.setCollectableObjects();
+    }
+
+    setCollectableObjects(){
+       let distanceX = 0;
+        for (let i = 0; i < 3; i++) {
+        distanceX += 800 * i;  
+        
+        this.collectableObjects.push(
+            new CollectableObject('coin', distanceX + 140, 150),
+            new CollectableObject('coin', distanceX + 200, 100),
+            new CollectableObject('coin', distanceX + 260, 100),
+            new CollectableObject('coin', distanceX + 320, 150),
+            new CollectableObject('bottle', distanceX + 260, 200),
+            new CollectableObject('bottleGround', distanceX + 240 , 450),
+           )
+        };
     }
     
     setWorld(){
@@ -31,6 +48,15 @@ class World {
             this.checkCharacterDistance();
         }, 100);
     }
+
+    // changeLevel(newLevel) {
+    //     this.level = newLevel; // Hier wird das Level gewechselt
+    //     this.setCollectableObjects(); // Collectables neu setzen, falls nötig
+    //     this.character = new Character(); // Falls du den Charakter für das neue Level zurücksetzen möchtest
+    // }
+
+    // Weitere Methoden (checkCollisions, checkIsThrowing, etc.) bleiben gleich...
+
 
     checkCollisions(){
         this.checkCollisionsEnemies();
@@ -91,23 +117,25 @@ class World {
     }
 
     checkCharacterDistance(){
-        const treshold = [0, 200, 800, 1200];
+        const treshold = [0, 800, 1600, 2500];
         treshold.forEach((treshold, index) =>{ //if-Abfrage: wenn noch nicht genereriert wurde
             if(this.character.x > treshold && !this[`collectableObjectsGenerated${index}`]){
                 this.generateNewCollectable();
+                this[`collectableObjectsGenerated${index}`] = true; 
             };
-            this[`collectableObjectsGenerated${index}`] = true; 
+            
         });
     }
 
     generateNewCollectable(){
         this.collectableObjects.push(
-            new CollectableObject('coin', this.character.x + 120, this.character.y + 150),
-            new CollectableObject('coin', this.character.x + 180, this.character.y + 100),
-            new CollectableObject('coin', this.character.x + 240, this.character.y + 100),
-            new CollectableObject('coin', this.character.x + 300, this.character.y + 150),
-            new CollectableObject('bottle', this.character.x + 240, this.character.y + 200),
+            // new CollectableObject('coin', this.character.x + 120, this.character.y + 150),
+            // new CollectableObject('coin', this.character.x + 180, this.character.y + 100),
+            // new CollectableObject('coin', this.character.x + 240, this.character.y + 100),
+            // new CollectableObject('coin', this.character.x + 300, this.character.y + 150),
+            // new CollectableObject('bottle', this.character.x + 240, this.character.y + 200),
             new CollectableObject('bottleGround', this.character.x + 240 , this.character.y +  450),
+
         );
     }
 

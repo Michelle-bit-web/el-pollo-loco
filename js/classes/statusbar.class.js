@@ -57,6 +57,12 @@ class Statusbar extends DrawableObject{
         this.loadImages(this.images);
     }
 
+    draw(ctx){
+        let path = this.images[this.resolveImageIndex()]; //Da wird immer das aktuelle Bild geladen
+        this.img = this.imageCache[path];
+       super.draw(ctx);
+    }
+
     setPercentage(percentage){
        
         if (this.type === 'bottle') {
@@ -68,13 +74,8 @@ class Statusbar extends DrawableObject{
         }
         let path = this.images[this.resolveImageIndex()];
         this.img = this.imageCache[path];
-
-        
     }
 
-    
-    
-    
     resolveImageIndex() {
         let value = this.type === 'energy' ? this.percentage : (this.type === 'coin' ? this.coins : this.bottles);
         if (value >= 100 || value === 5) return 5;
