@@ -9,7 +9,7 @@ class World {
     coinStatusbar = new Statusbar('coin', 10, 45);
     bottleStatusbar = new Statusbar('bottle', 10, 85);
     throwableObjects = [];
-    collectableObjects = [];
+    // collectableObjects = [];
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -18,24 +18,24 @@ class World {
         this.setWorld();
         this.draw();
         this.run();
-        this.setCollectableObjects();
+        // this.setCollectableObjects();
     }
 
-    setCollectableObjects(){
-       let distanceX = 0;
-        for (let i = 0; i < 3; i++) {
-        distanceX += 800 * i;  
+    // setCollectableObjects(){
+    //    let distanceX = 0;
+    //     for (let i = 0; i < 3; i++) {
+    //     distanceX += 800 * i;  
         
-        this.collectableObjects.push(
-            new CollectableObject('coin', distanceX + 140, 150),
-            new CollectableObject('coin', distanceX + 200, 100),
-            new CollectableObject('coin', distanceX + 260, 100),
-            new CollectableObject('coin', distanceX + 320, 150),
-            new CollectableObject('bottle', distanceX + 260, 200),
-            new CollectableObject('bottleGround', distanceX + 240 , 450),
-           )
-        };
-    }
+    //     this.collectableObjects.push(
+    //         new CollectableObject('coin', distanceX + 140, 150),
+    //         new CollectableObject('coin', distanceX + 200, 100),
+    //         new CollectableObject('coin', distanceX + 260, 100),
+    //         new CollectableObject('coin', distanceX + 320, 150),
+    //         new CollectableObject('bottle', distanceX + 260, 200),
+    //         new CollectableObject('bottleGround', distanceX + 240 , 450),
+    //        )
+    //     };
+    // }
     
     setWorld(){
         this.character.world = this;
@@ -61,7 +61,7 @@ class World {
     checkCollisions(){
         this.checkCollisionsEnemies();
         this.checkCollisionsCollectables();
-            
+       
     }
 
     checkCollisionsEnemies(){
@@ -75,7 +75,7 @@ class World {
     }
 
     checkCollisionsCollectables() {
-        this.collectableObjects.forEach((item, index) => {
+        this.level.collectableObjects.forEach((item, index) => {
             if (this.character.isColliding(item)) {
                 if (item.imageType === 'coin') {
                     this.changeStatusbar(this.coinStatusbar, 1);
@@ -84,7 +84,7 @@ class World {
                 }
     
                 // Collectable entfernen
-                this.collectableObjects.splice(index, 1);
+                this.level.collectableObjects.splice(index, 1);
             }
         });
     }
@@ -120,29 +120,30 @@ class World {
         const treshold = [0, 800, 1600, 2500];
         treshold.forEach((treshold, index) =>{ //if-Abfrage: wenn noch nicht genereriert wurde
             if(this.character.x > treshold && !this[`collectableObjectsGenerated${index}`]){
-                this.generateNewCollectable();
+                // this.generateNewCollectable();
                 this[`collectableObjectsGenerated${index}`] = true; 
             };
             
         });
     }
 
-    generateNewCollectable(){
-        this.collectableObjects.push(
-            // new CollectableObject('coin', this.character.x + 120, this.character.y + 150),
-            // new CollectableObject('coin', this.character.x + 180, this.character.y + 100),
-            // new CollectableObject('coin', this.character.x + 240, this.character.y + 100),
-            // new CollectableObject('coin', this.character.x + 300, this.character.y + 150),
-            // new CollectableObject('bottle', this.character.x + 240, this.character.y + 200),
-            new CollectableObject('bottleGround', this.character.x + 240 , this.character.y +  450),
+    // generateNewCollectable(){
+    //     this.collectableObjects.push(
+    //         // new CollectableObject('coin', this.character.x + 120, this.character.y + 150),
+    //         // new CollectableObject('coin', this.character.x + 180, this.character.y + 100),
+    //         // new CollectableObject('coin', this.character.x + 240, this.character.y + 100),
+    //         // new CollectableObject('coin', this.character.x + 300, this.character.y + 150),
+    //         // new CollectableObject('bottle', this.character.x + 240, this.character.y + 200),
+    //         new CollectableObject('bottleGround', this.character.x + 240 , this.character.y +  450),
 
-        );
-    }
+    //     );
+    // }
 
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.clouds);
 
         this.ctx.translate(-this.camera_x, 0);
         // ---- Space for fixed objects ----
@@ -152,18 +153,29 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         
         this.addToMap(this.character);
-        this.addObjectsToMap(this.level.clouds);
+        
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
-        this.addObjectsToMap(this.collectableObjects)
+        this.addObjectsToMap(this.level.collectableObjects);
 
         this.ctx.translate(-this.camera_x, 0);
 
         requestAnimationFrame( () => this.draw());
     }
+
     addObjectsToMap(objects){
         objects.forEach(obj => this.addToMap(obj))
     }
+
+    // addObjectsToMap(objects) {
+    //     objects.forEach(obj => {
+    //         if (obj.img) { // Überprüfe, ob das Objekt ein Bild hat
+    //             obj.img.onload = () => console.log(`[OK] Bild geladen: ${obj.img.src}`);
+    //             obj.img.onerror = () => console.error(`[FEHLER] Bild NICHT gefunden: ${obj.img.src}`);
+    //         }
+    //         this.addToMap(obj); // Füge das Objekt zur Karte hinzu
+    //     });
+    // }
 
     addToMap(mo) {
         if(mo.otherDirection){

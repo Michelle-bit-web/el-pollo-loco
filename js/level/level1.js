@@ -5,6 +5,7 @@ const level1 = new Level({
     enemyResistance: 1,
     enemies: generateObject(Chicken, 10, 2500, 20, 350, 0.5, 0.1),
     clouds: generateObject(Cloud, 10, 2900, 100, 0, 0.5, 0.1),
+    collectableObjects: setCollectableObjects(),
     backgroundObjectsTemplate: 'assets/img/5_background/layers',
 }
 ); 
@@ -19,6 +20,24 @@ function generateObject(objectType, numberOfObject, maxX, maxY, minY, maxSpeed, 
     }
     return objArr;
 }
+
+function setCollectableObjects(){
+    let collectableObjects = [];
+    let distanceX = 0;
+     for (let i = 0; i < 3; i++) {
+     distanceX += 800 * i;  
+     
+    collectableObjects.push(
+         new CollectableObject('coin', distanceX + 140, 150),
+         new CollectableObject('coin', distanceX + 200, 100),
+         new CollectableObject('coin', distanceX + 260, 100),
+         new CollectableObject('coin', distanceX + 320, 150),
+         new CollectableObject('bottle', distanceX + 260, 200),
+         new CollectableObject('bottleGround', distanceX + 240 , 450),
+        )
+     };
+     return collectableObjects;
+ }
 // console.log(level1) //Die Bilder werden richtig erzeugt
 
 

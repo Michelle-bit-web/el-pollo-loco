@@ -1,6 +1,7 @@
 class Level{
     enemies;
     clouds;
+    collectableObjects;
     backgroundObjects;
     levelEndX = 2800;
     difficulty = 'easy';
@@ -13,6 +14,7 @@ class Level{
         this.maxCoins = levelSettings.maxCoins;
         this.maxBottles = levelSettings.maxBottles;
         this.enemyResistance = levelSettings.enemyResistance;
+        this.collectableObjects = levelSettings.collectableObjects;
         this.backgroundObjects = this.collectBgImages(levelSettings.backgroundObjectsTemplate);
     }
 
