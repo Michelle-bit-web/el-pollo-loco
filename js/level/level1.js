@@ -3,25 +3,21 @@ const level1 = new Level({
     maxCoins: 10,
     maxBottles: 4,
     enemyResistance: 1,
-    enemies: [
-        new Chicken(), 
-        new Chicken(), 
-        new Chicken()
-    ],
-    clouds: generateClouds(10),
+    enemies: generateObject(Chicken, 10, 2500, 20, 350, 0.5, 0.1),
+    clouds: generateObject(Cloud, 10, 2900, 100, 0, 0.5, 0.1),
     backgroundObjectsTemplate: 'assets/img/5_background/layers',
 }
 ); 
 
-function generateClouds(numberOfClouds) {
-    let clouds = [];
-    for (let i = 0; i < numberOfClouds; i++) {
-        let x = Math.random() * 2900;
-        let y = Math.random() * 100;
-        let speed = Math.random() * 0.5 + 0.1 ; // Random speed between 0.1 and 0.6
-        clouds.push(new Cloud(x, y, speed));
+function generateObject(objectType, numberOfObject, maxX, maxY, minY, maxSpeed, minSpeed) {
+    let objArr = [];
+    for (let i = 0; i < numberOfObject; i++) {
+        let x = Math.random() * maxX;
+        let y = Math.random() * maxY + minY;
+        let speed = Math.random() * maxSpeed + minSpeed ; 
+        objArr.push(new objectType(x, y, speed));
     }
-    return clouds;
+    return objArr;
 }
 // console.log(level1) //Die Bilder werden richtig erzeugt
 
