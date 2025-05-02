@@ -5,7 +5,9 @@ class CollectableObject extends MovableObject{
         "../assets/img/8_coin/coin_1.png",
         "../assets/img/8_coin/coin_2.png",
     ];
+
     IMAGE_BOTTLE = "../assets/img/7_statusbars/3_icons/icon_salsa_bottle.png";
+    
     IMAGE_BOTTLE_GROUND = [
         "../assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
         "../assets/img/6_salsa_bottle/2_salsa_bottle_on_ground.png",

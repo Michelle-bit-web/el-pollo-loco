@@ -76,6 +76,7 @@ class Statusbar extends DrawableObject{
         this.img = this.imageCache[path];
     }
 
+    //Hier nochmal die Max-Werte überlegen, damit man z.B. mehr Coins sammeln kann
     resolveImageIndex() {
         let value = this.type === 'energy' ? this.percentage : (this.type === 'coin' ? this.coins : this.bottles);
         if (value >= 100 || value === 5) return 5;

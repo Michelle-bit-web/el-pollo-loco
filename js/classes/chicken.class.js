@@ -8,6 +8,7 @@ class Chicken extends MovableObject {
         '../assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
         '../assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
     ];
+
     IMAGE_DEAD =
         '../assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png'
    
@@ -23,9 +24,7 @@ class Chicken extends MovableObject {
         this.x = x;
         this.y = y;
         this.speed = speed;
-        // this.x = 200 + Math.random()*500;
         this.loadImages(this.IMAGES_WALKING);
-        // this.speed = 0.15 + Math.random() * 0.3;
         this.animate();
     }
 
@@ -38,17 +37,11 @@ class Chicken extends MovableObject {
         }, 1000/ 6);
     }
 
-    // markAsDead() {
-    //     this.isDead = true;
-    //     this.stopAnimation('ChickenMovesLeft'); // Stoppe die Animation
-    //     this.stopAnimation('ChickenPlayAnimation'); // Stoppe die Animation
-    //     this.loadImage(this.IMAGE_DEAD); // Lade das "tote" Bild
-    //   }
-
     markAsDead() {
         this.isDead = true;
+        this.stopAnimation('ChickenMovesLeft'); // Stoppe die Animation
+        this.stopAnimation('ChickenPlayAnimation'); // Stoppe die Animation
         this.loadImage(this.IMAGE_DEAD); // Lade das "tote" Bild
       }
-   
-    //     
+  
  }

@@ -2,6 +2,7 @@ class World {
     level = level1;
     character = new Character();
     canvas;
+    canvasState = "game"; // "startscreen" oder "game"
     ctx;
     keyboard;
     camera_x = 0;
@@ -10,7 +11,6 @@ class World {
     coinStatusbar = new Statusbar('coin', 10, 45);
     bottleStatusbar = new Statusbar('bottle', 10, 85);
     throwableObjects = [];
-    // collectableObjects = [];
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -19,24 +19,7 @@ class World {
         this.setWorld();
         this.draw();
         this.run();
-        // this.setCollectableObjects();
     }
-
-    // setCollectableObjects(){
-    //    let distanceX = 0;
-    //     for (let i = 0; i < 3; i++) {
-    //     distanceX += 800 * i;  
-        
-    //     this.collectableObjects.push(
-    //         new CollectableObject('coin', distanceX + 140, 150),
-    //         new CollectableObject('coin', distanceX + 200, 100),
-    //         new CollectableObject('coin', distanceX + 260, 100),
-    //         new CollectableObject('coin', distanceX + 320, 150),
-    //         new CollectableObject('bottle', distanceX + 260, 200),
-    //         new CollectableObject('bottleGround', distanceX + 240 , 450),
-    //        )
-    //     };
-    // }
     
     setWorld(){
         this.character.world = this;
@@ -50,15 +33,6 @@ class World {
         }, 100);
     }
 
-    // changeLevel(newLevel) {
-    //     this.level = newLevel; // Hier wird das Level gewechselt
-    //     this.setCollectableObjects(); // Collectables neu setzen, falls nötig
-    //     this.character = new Character(); // Falls du den Charakter für das neue Level zurücksetzen möchtest
-    // }
-
-    // Weitere Methoden (checkCollisions, checkIsThrowing, etc.) bleiben gleich...
-
-
     checkCollisions(){
         this.checkCollisionsEnemies();
         this.checkCollisionsCollectables();
@@ -67,15 +41,14 @@ class World {
     }
 
     checkCollisionsEnemies(){
-        this.level.enemies.forEach(enemy => {
+        this.level.enemies.forEach((enemy, enemyIndex) => {
             if(this.character.isHurt() || this.character.isAboveGround() && this.character.isColliding(enemy)){
                 console.log('Enemy hit on jumping!');
-                enemy.markAsDead();
+                this.level.enemies[enemyIndex].markAsDead();
             }
             if(this.character.isColliding(enemy) && !enemy.isDead){
                 this.character.hit(enemy);
                 this.changeStatusbar(this.energyStatusbar, -20)
-                // this.energyStatusbar.setPercentage(this.character.energy);
             }
         });
     }
@@ -196,22 +169,17 @@ class World {
             }
         }, 50);
     }
-    // generateNewCollectable(){
-    //     this.collectableObjects.push(
-    //         // new CollectableObject('coin', this.character.x + 120, this.character.y + 150),
-    //         // new CollectableObject('coin', this.character.x + 180, this.character.y + 100),
-    //         // new CollectableObject('coin', this.character.x + 240, this.character.y + 100),
-    //         // new CollectableObject('coin', this.character.x + 300, this.character.y + 150),
-    //         // new CollectableObject('bottle', this.character.x + 240, this.character.y + 200),
-    //         new CollectableObject('bottleGround', this.character.x + 240 , this.character.y +  450),
-
-    //     );
-    // }
 
     draw(){
         if(this.isFading){
             return
+        } else if(this.canvasState === 'startscreen'){
+            //Brauche Bild für den Startscreen
+            //Brauche Button als Eventlistener, der den canvasState zu game ändert
+            //Vielleicht nochmal Methodenaufruf für draw dann?
         }
+        
+        else if(this.canvasState === 'game'){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
@@ -233,21 +201,12 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
 
         requestAnimationFrame( () => this.draw());
+        };
     }
 
     addObjectsToMap(objects){
         objects.forEach(obj => this.addToMap(obj))
     }
-
-    // addObjectsToMap(objects) {
-    //     objects.forEach(obj => {
-    //         if (obj.img) { // Überprüfe, ob das Objekt ein Bild hat
-    //             obj.img.onload = () => console.log(`[OK] Bild geladen: ${obj.img.src}`);
-    //             obj.img.onerror = () => console.error(`[FEHLER] Bild NICHT gefunden: ${obj.img.src}`);
-    //         }
-    //         this.addToMap(obj); // Füge das Objekt zur Karte hinzu
-    //     });
-    // }
 
     addToMap(mo) {
         if(mo.otherDirection){
@@ -272,17 +231,5 @@ class World {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
-
-    
-
-
-// if(character.x + character.width > chicken.x 
-//   && character.y + character.height > chicken.y 
-//   && character.x < chicken.x
-//   && charater.y y chicken.y + chicken.height){
-//     this.isColliding();
-//   }
-
- 
 
 }

@@ -2,18 +2,21 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+function init() {
+ // Zeige das Canvas
+//  const canvasElement = document.getElementById('canvas');
+//  canvasElement.style.display = 'block';
+
+}
 
 function startGame() {
     const startButton = document.getElementById('startButton');
     startButton.style.display = 'none';
-    // Zeige das Canvas
-    const canvasElement = document.getElementById('canvas');
-    canvasElement.style.display = 'block';
-
-    init();
+   
+    loadGame();
 }
 
-function init() {
+function loadGame() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 }
