@@ -114,8 +114,19 @@ class Character extends MovableObject {
     this.animationIntervals['dying'] = setInterval(() => {
       if(this.isDead()){
         this.stopAllAnimations("../assets/img/2_character_pepe/5_dead/rip.png");
-      }
-   });
+        this.height = 120; // Höhe des RIP-Bildes
+        this.width = 70;
+        this.y = 0; // Setze die Y-Position auf 0, damit es am oberen Bildschirmrand erscheint
+        const fallInterval = setInterval(() => {
+          if (this.y + this.height < 420) { // Fällt bis zum Boden
+            this.y += 5; // Bewege das Dead-Image nach unten
+          } else {
+            clearInterval(fallInterval); // Stoppe die Bewegung, wenn Boden erreicht
+          }
+        }, 1000 / 60);
+      }}, 1000 / 30);
+      
+   };
   
   //     if (this.isDead() && !this.isPlayingDyingAnimation) {
   //         this.playDyingAnimation();
@@ -123,7 +134,7 @@ class Character extends MovableObject {
   //         this.animateRIP();
   //     }
   // }, 100);
-  }
+  
 
 //   playDyingAnimation() {
 //     this.isPlayingDyingAnimation = true; // Animation starten
