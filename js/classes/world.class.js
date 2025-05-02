@@ -42,7 +42,7 @@ class World {
 
     checkCollisionsEnemies(){
         this.level.enemies.forEach((enemy, enemyIndex) => {
-            if(this.character.isHurt() || this.character.isAboveGround() && this.character.isColliding(enemy)){
+            if(this.character.isAboveGround() && this.character.isColliding(enemy)){
                 console.log('Enemy hit on jumping!');
                 this.level.enemies[enemyIndex].markAsDead();
             }
@@ -56,8 +56,8 @@ class World {
     checkCollisionsThrowableObjects(){
        this.level.enemies.forEach((enemy, enemyIndex) => {
             this.throwableObjects.forEach((bottle, bottleIndex) => {
-                if (bottle.isColliding(enemy)) {
-                    enemy.markAsDead();
+                if (bottle.isColliding(enemy, enemyIndex)) {
+                    this.level.enemies[enemyIndex].markAsDead();
                     this.throwableObjects.splice(bottleIndex, 1); // Entferne die Flasche
                 }
                 setTimeout(() => {
