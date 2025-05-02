@@ -62,17 +62,38 @@ class World {
     checkCollisions(){
         this.checkCollisionsEnemies();
         this.checkCollisionsCollectables();
+        this.checkCollisionsThrowableObjects();
        
     }
 
     checkCollisionsEnemies(){
         this.level.enemies.forEach(enemy => {
-            if(this.character.isColliding(enemy)){
+            if(this.character.isHurt() || this.character.isAboveGround() && this.character.isColliding(enemy)){
+                console.log('Enemy hit on jumping!');
+                enemy.markAsDead();
+            }
+            if(this.character.isColliding(enemy) && !enemy.isDead){
                 this.character.hit(enemy);
                 this.changeStatusbar(this.energyStatusbar, -20)
                 // this.energyStatusbar.setPercentage(this.character.energy);
             }
         });
+    }
+
+    checkCollisionsThrowableObjects(){
+       this.level.enemies.forEach((enemy, enemyIndex) => {
+            this.throwableObjects.forEach((bottle, bottleIndex) => {
+                if (bottle.isColliding(enemy)) {
+                    enemy.markAsDead();
+                    this.throwableObjects.splice(bottleIndex, 1); // Entferne die Flasche
+                }
+                setTimeout(() => {
+                    if (enemy.isDead) {
+                        this.level.enemies.splice(enemyIndex, 1); // Entferne den Gegner
+                    }
+                }, 1000); // Warte 1 Sekunde, bevor der Gegner entfernt wird
+            });
+        });  
     }
 
     checkCollisionsCollectables() {

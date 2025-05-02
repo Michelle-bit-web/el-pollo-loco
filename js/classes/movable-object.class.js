@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject{
   coins = 0;
   bottles = 0;
   lastHit = 0;
+  animationIntervals = {};
 
   moveRight() {
     this.x += this.speed;
@@ -22,6 +23,26 @@ class MovableObject extends DrawableObject{
     this.img = this.imageCache[path];
     this.currentImage++;
   }
+
+  sstopAnimation(intervalType, path) {
+    if (this.animationIntervals[intervalType]) {
+        clearInterval(this.animationIntervals[intervalType]); // Stoppe das spezifische Intervall
+        delete this.animationIntervals[intervalType]; // Entferne den Eintrag
+    }
+    if (path) {
+        this.loadImage(path); // Setze ein statisches Bild (optional)
+    }
+}
+
+stopAllAnimations(path) {
+    // Stoppe alle gespeicherten Animationen
+    for (let key in this.animationIntervals) {
+        clearInterval(this.animationIntervals[key]);
+        delete this.animationIntervals[key];
+    }if (path) {
+      this.loadImage(path); // Setze ein statisches Bild (optional)
+  }
+}
 
   jump() {
     this.speedY = 30;

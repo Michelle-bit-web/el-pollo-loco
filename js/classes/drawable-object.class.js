@@ -47,7 +47,7 @@ class DrawableObject {
 //Das könnte als höherer Schwierigkeitsgrad beim Münzen sammeln sein
 //Diese Funktion eher fürs Münzen sammeln? Für enemy eher ein "oder"
   drawOffsetFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
+    if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss) {
       ctx.beginPath();
       ctx.lineWidth = "3";
       ctx.strokeStyle = "red";
