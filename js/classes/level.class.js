@@ -1,5 +1,6 @@
 class Level{
     enemies;
+    endboss;
     clouds;
     collectableObjects;
     backgroundObjects;
@@ -9,6 +10,7 @@ class Level{
     constructor(levelSettings){
         
         this.enemies = levelSettings.enemies;
+        this.endboss = levelSettings.endboss;
         this.clouds = levelSettings.clouds;
         this.difficulty = levelSettings.difficulty;
         this.maxCoins = levelSettings.maxCoins;

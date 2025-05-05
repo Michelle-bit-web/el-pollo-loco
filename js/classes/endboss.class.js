@@ -3,6 +3,8 @@ class Endboss extends MovableObject{
     width = 250;
     y = 60;
     isDead = false;
+    endbossAppeared = false;
+    isBeingHit = false;
 
     IMAGES_WALKING =[
         '../assets/img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -53,7 +55,7 @@ class Endboss extends MovableObject{
 
     constructor(){
         super().loadImage('../assets/img/4_enemie_boss_chicken/1_walk/G1.png');
-        this.x = 700;
+        this.x = 2000;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
@@ -64,12 +66,70 @@ class Endboss extends MovableObject{
     }
     
     animate(){
+        setInterval(() => this.randomMove(), 1000 / 60);
+
         setInterval(() => {
-            this.moveLeft();
-         }, 1000 / 60);
-         setInterval(() =>{
-             this.playAnimation(this.IMAGES_WALKING);
-         }, 1000/ 6);
+            if (!this.isDead && !this.isBeingHit) {
+                this.playAnimation(this.IMAGES_WALKING);
+            }
+        }, 1000 / 6);
+    }
+
+    randomMove() {
+        if (this.isDead || this.isBeingHit) return;
+    
+       let direction = -1
+       this.x += this.speed * direction;
+    
+        // Begrenzung des Bewegungsbereichs
+        const minX = 2300;
+        const maxX = 2800;
+    
+        if (this.x < minX) direction = 1;
+        if (this.x > maxX) direction = -1;
+    }
+
+    hit(){
+        if(this.isDead || this.isBeingHit) return;
+        this.isBeingHit = true;
+
+        this.playSequenceAnimation([
+            this.IMAGES_HURT,
+            this.IMAGES_ALERT,
+            this.IMAGES_ATTACK,
+            this.IMAGES_WALKING,
+        ],() => {
+            this.isBeingHit = false;
+        });
+    }
+    playSequentialAnimations(animationGroups, onComplete) {
+        let current = 0;
+    
+        const playNext = () => {
+            if (current >= animationGroups.length) {
+                onComplete?.();
+                return;
+            }
+    
+            this.playAnimationOnce(animationGroups[current], () => {
+                current++;
+                playNext();
+            });
+        };
+    
+        playNext();
+    }
+    
+    playAnimationOnce(images, callback) {
+        let index = 0;
+        const interval = setInterval(() => {
+            this.img = this.imageCache[images[index]];
+            index++;
+            if (index >= images.length) {
+                clearInterval(interval);
+                callback?.();
+            }
+        }, 1000 / 10);
     }
 
     markAsDead() {

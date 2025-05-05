@@ -51,14 +51,21 @@ class World {
                 this.changeStatusbar(this.energyStatusbar, -20)
             }
         });
+        
+        this.throwableObjects.forEach((bottle, bottleIndex) => {
+            if (!bottle.isSplashing && bottle.isColliding(this.level.endboss)) {
+                this.level.endboss.hit(); // oder andere Reaktion
+                bottle.splash();
+            }
+        });
     }
 
     checkCollisionsThrowableObjects(){
        this.level.enemies.forEach((enemy, enemyIndex) => {
             this.throwableObjects.forEach((bottle, bottleIndex) => {
-                if (bottle.isColliding(enemy, enemyIndex)) {
+                if (bottle.isColliding(enemy, enemyIndex) & !bottle.isSplashing) {
                     this.level.enemies[enemyIndex].markAsDead();
-                    this.throwableObjects.splice(bottleIndex, 1); // Entferne die Flasche
+                    bottle.splash();
                 }
                 setTimeout(() => {
                     if (enemy.isDead) {
@@ -67,6 +74,7 @@ class World {
                 }, 1000); // Warte 1 Sekunde, bevor der Gegner entfernt wird
             });
         });  
+        this.throwableObjects = this.throwableObjects.filter(obj => !obj.remove);
     }
 
     checkCollisionsCollectables() {
@@ -120,12 +128,15 @@ class World {
             };
             if(this.character.x >= this.level.levelEndX){
                 // this.generateNewCollectable();
-                    console.log('Level beendet, Übergang zu neuem Level...');
-                    this.fadeToBlack(() => {
-                        this.changeLevel(level2); // Lade das neue Level
-                    });
-                };
-            
+                console.log('Level beendet, Übergang zu neuem Level...');
+                this.fadeToBlack(() => {
+                    this.changeLevel(level2); // Lade das neue Level
+                });
+            };
+            if (this.character.x > 2400 && !this.endbossAppeared) {
+                this.level.endboss.x = this.character.x + 300;
+                this.endbossAppeared = true;
+            }
         });
     }
 
@@ -194,6 +205,7 @@ class World {
         
         this.addToMap(this.character);
         
+        this.addToMap(this.level.endboss);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.collectableObjects);

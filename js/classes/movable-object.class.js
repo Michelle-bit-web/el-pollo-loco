@@ -66,10 +66,11 @@ stopAllAnimations(path) {
   }
   
   applyGravity() {
-    setInterval(() => {
+   this.gravityInterval = setInterval(() => {
+      if(this.isSplashing) return;
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
-        this.speedY -= this.acceleration;
+        this.speedY -= this.acceleration; 
       }
     }, 1000 / 25);
   }
