@@ -69,6 +69,10 @@ class Statusbar extends DrawableObject{
             this.bottles = percentage;
         } else if (this.type === 'coin') {
             this.coins = percentage;
+            // if(this.coins == 5){
+            //     this.coins = 0;
+            //     this.world.energyBar.percentage += 20;
+            // }
         }else{
             this.percentage = percentage;
         }

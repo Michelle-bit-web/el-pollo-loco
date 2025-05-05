@@ -65,11 +65,18 @@ class Endboss extends MovableObject{
         this.animate();
     }
     
-    animate(){
+    animate() {
         setInterval(() => this.randomMove(), 1000 / 60);
-
+    
         setInterval(() => {
-            if (!this.isDead && !this.isBeingHit) {
+            if (this.isDead) {
+                // Spiele die Tod-Animation, falls der Endboss tot ist
+                this.playAnimation(this.IMAGES_DEAD);
+            } else if (this.isBeingHit) {
+                // Während der Endboss getroffen wird, keine andere Animation abspielen
+                return;
+            } else {
+                // Normale Geh-Animation, wenn der Endboss weder tot noch getroffen ist
                 this.playAnimation(this.IMAGES_WALKING);
             }
         }, 1000 / 6);
@@ -89,35 +96,13 @@ class Endboss extends MovableObject{
         if (this.x > maxX) direction = -1;
     }
 
-    hit(){
-        if(this.isDead || this.isBeingHit) return;
-        this.isBeingHit = true;
-
-        this.playSequenceAnimation([
-            this.IMAGES_HURT,
-            this.IMAGES_ALERT,
-            this.IMAGES_ATTACK,
-            this.IMAGES_WALKING,
-        ],() => {
-            this.isBeingHit = false;
+    hit() {
+        if (this.isDead) return;
+    
+        this.isBeingHit = true; // Setze den Zustand auf "wird getroffen"
+        this.playAnimationOnce(this.IMAGES_HURT, () => {
+            this.isBeingHit = false; // Nach der HURT-Animation zurück zum normalen Zustand
         });
-    }
-    playSequentialAnimations(animationGroups, onComplete) {
-        let current = 0;
-    
-        const playNext = () => {
-            if (current >= animationGroups.length) {
-                onComplete?.();
-                return;
-            }
-    
-            this.playAnimationOnce(animationGroups[current], () => {
-                current++;
-                playNext();
-            });
-        };
-    
-        playNext();
     }
     
     playAnimationOnce(images, callback) {

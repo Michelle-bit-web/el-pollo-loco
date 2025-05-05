@@ -11,6 +11,7 @@ class World {
     coinStatusbar = new Statusbar('coin', 10, 45);
     bottleStatusbar = new Statusbar('bottle', 10, 85);
     throwableObjects = [];
+    
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -19,8 +20,14 @@ class World {
         this.setWorld();
         this.draw();
         this.run();
+        // this.loadGameOverImage(); //Dazu gehören noch js26 & js211
     }
     
+    // loadGameOverImage() {
+    //     this.gameOverImage = new Image();
+    //     this.gameOverImage.src = './assets/img/You won, you lost/Game over A.png';
+    // }
+
     setWorld(){
         this.character.world = this;
     }
@@ -48,7 +55,7 @@ class World {
             }
             if(this.character.isColliding(enemy) && !enemy.isDead){
                 this.character.hit(enemy);
-                this.changeStatusbar(this.energyStatusbar, -20)
+                this.changeStatusbar(this.energyStatusbar, -2)
             }
         });
         
@@ -71,7 +78,7 @@ class World {
                     if (enemy.isDead) {
                         this.level.enemies.splice(enemyIndex, 1); // Entferne den Gegner
                     }
-                }, 1000); // Warte 1 Sekunde, bevor der Gegner entfernt wird
+                }, 100); // Warte 1 Sekunde, bevor der Gegner entfernt wird
             });
         });  
         this.throwableObjects = this.throwableObjects.filter(obj => !obj.remove);
@@ -133,8 +140,8 @@ class World {
                     this.changeLevel(level2); // Lade das neue Level
                 });
             };
-            if (this.character.x > 2400 && !this.endbossAppeared) {
-                this.level.endboss.x = this.character.x + 300;
+            if (this.character.x > 1800 && !this.endbossAppeared) {
+                this.level.endboss.x = this.character.x + 800;
                 this.endbossAppeared = true;
             }
         });
@@ -191,6 +198,12 @@ class World {
         }
         
         else if(this.canvasState === 'game'){
+            // if (this.character.isDead()) {
+            //     this.addToMap(this.gameOverImage);
+            //     // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            //     // this.ctx.drawImage(this.gameOverImage, this.canvas.width / 2 - 200, this.canvas.height / 2 - 100, 400, 200);
+            //     return; // kein weiteres Zeichnen nötig
+            // }
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);

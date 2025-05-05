@@ -34,7 +34,7 @@ class ThrowableObject extends MovableObject{
         this.speedY = 30;
         this.applyGravity();
         let rotationIndex = 0;
-        setInterval(() => {
+        this.throwInterval = setInterval(() => {
             if(this.otherDirection){
                this.x -= 10;
             } else {
@@ -55,6 +55,7 @@ class ThrowableObject extends MovableObject{
 
     splash(){
         clearInterval(this.rotationInterval);
+        clearInterval(this.throwInterval);
         this.playAnimation(this.IMAGES_SPLASH);
         this.isSplashing = true;
 
