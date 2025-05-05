@@ -112,6 +112,7 @@ class Character extends MovableObject {
     this.animationIntervals["dying"] = setInterval(() => {
       if (this.isDead()) {
         this.stopAllAnimations("../assets/img/2_character_pepe/5_dead/rip.png");
+        // document.querySelector("#canvas").style.backgroundImage = "url(../assets/img/Game over A.png)";
         this.height = 120; // Höhe des RIP-Bildes
         this.width = 70;
         this.y = 0; // Setze die Y-Position auf 0, damit es am oberen Bildschirmrand erscheint

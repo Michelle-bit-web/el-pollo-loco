@@ -39,7 +39,7 @@ class Level{
                 collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-end-arrow.png`, position - 200, 295, 120, 120));
             }
         };  
-        collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-end-zone.png`, position - 200, 220, 120, 200));
+        collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-end-zone.png`, position, 220, 120, 200));
         
         console.log(position)
         // console.log(collectedImages[0].img) //Die MEthode gibt den Pfad aus

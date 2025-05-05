@@ -46,6 +46,12 @@ class Endboss extends MovableObject{
         '../assets/img/4_enemie_boss_chicken/5_dead/G26.png',
     ];
 
+    IMAGES_SEQUENCE = [
+        this.IMAGES_WALKING,
+        this.IMAGES_ALERT,
+        this.IMAGES_ATTACK,
+    ];
+
     offset = {
         top: 80,
         left: 40,
@@ -55,7 +61,7 @@ class Endboss extends MovableObject{
 
     constructor(){
         super().loadImage('../assets/img/4_enemie_boss_chicken/1_walk/G1.png');
-        this.x = 2000;
+        this.x = 2600;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
@@ -69,6 +75,7 @@ class Endboss extends MovableObject{
         setInterval(() => this.randomMove(), 1000 / 60);
     
         setInterval(() => {
+            if (!this.endbossAppeared) return; // Animation nur starten, wenn der Endboss erschienen ist
             if (this.isDead) {
                 // Spiele die Tod-Animation, falls der Endboss tot ist
                 this.playAnimation(this.IMAGES_DEAD);
@@ -77,10 +84,26 @@ class Endboss extends MovableObject{
                 return;
             } else {
                 // Normale Geh-Animation, wenn der Endboss weder tot noch getroffen ist
-                this.playAnimation(this.IMAGES_WALKING);
+                // this.playAnimation(this.IMAGES_WALKING);
+                this.playSequentialAnimations(this.IMAGES_SEQUENCE);
             }
         }, 1000 / 6);
     }
+
+    // Neue Methode, um Animationen nacheinander abzuspielen
+playSequentialAnimations(animationGroups) {
+    if (!this.currentAnimationIndex) this.currentAnimationIndex = 0; // Aktuelle Animation initialisieren
+
+    const currentGroup = animationGroups[this.currentAnimationIndex];
+    this.playAnimation(currentGroup);
+
+    // Wechsle zur nächsten Animation
+    this.currentAnimationIndex++;
+    if (this.currentAnimationIndex >= animationGroups.length) {
+        th
+        is.currentAnimationIndex = 0; // Zurück zur ersten Animation
+    };
+}
 
     randomMove() {
         if (this.isDead || this.isBeingHit) return;

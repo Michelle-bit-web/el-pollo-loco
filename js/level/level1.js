@@ -16,7 +16,7 @@ function generateObject(objectType, numberOfObject, maxX, maxY, minY, maxSpeed, 
     let objArr = [];
     for (let i = 0; i < numberOfObject; i++) {
         let x = Math.random() * maxX + 200;
-        let y = Math.random() * maxY + minY;
+         let y = Math.random() * maxY + minY;
         let speed = Math.random() * maxSpeed + minSpeed ; 
         objArr.push(new objectType(x, y, speed));
     }

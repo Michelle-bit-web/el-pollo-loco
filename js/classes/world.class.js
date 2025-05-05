@@ -127,7 +127,7 @@ class World {
     }
 
     checkCharacterDistance(){
-        const treshold = [0, 800, 1600, 2500];
+        const treshold = [0, 800, 1600, 2800];
         treshold.forEach((treshold, index) =>{ //if-Abfrage: wenn noch nicht genereriert wurde
             if(this.character.x > treshold && !this[`collectableObjectsGenerated${index}`]){
                 // this.generateNewCollectable();
@@ -140,10 +140,12 @@ class World {
                     this.changeLevel(level2); // Lade das neue Level
                 });
             };
-            if (this.character.x > 1800 && !this.endbossAppeared) {
-                this.level.endboss.x = this.character.x + 800;
-                this.endbossAppeared = true;
-            }
+
+        if (this.character.x > 1600 && !this.endbossAppeared) {
+            this.level.endboss.x = endArrowPosition + 300; // Setze den Endboss etwas weiter hinten
+            this.endbossAppeared = true;
+            this.level.endboss.endbossAppeared = true; // Flag für Animation
+        }
         });
     }
 
