@@ -10,7 +10,20 @@ class Character extends MovableObject {
   sombreroDirection = 1;
   dyingAnimationPlayed = false;
 
-  IMAGES_SLEEPING = [
+  IMAGES_IDLE = [
+    "../assets/img/2_character_pepe/1_idle/idle/I-1.png",
+   "../assets/img/2_character_pepe/1_idle/idle/I-2.png",
+   "../assets/img/2_character_pepe/1_idle/idle/I-3.png",
+   "../assets/img/2_character_pepe/1_idle/idle/I-4.png",
+   "../assets/img/2_character_pepe/1_idle/idle/I-5.png",
+   "../assets/img/2_character_pepe/1_idle/idle/I-6.png",
+   "../assets/img/2_character_pepe/1_idle/idle/I-7.png",
+   "../assets/img/2_character_pepe/1_idle/idle/I-8.png",
+   "../assets/img/2_character_pepe/1_idle/idle/I-9.png",
+   "../assets/img/2_character_pepe/1_idle/idle/I-10.png",
+  ];
+
+  IMAGES_IDLE_LONG = [
     "../assets/img/2_character_pepe/1_idle/long_idle/I-11.png",
     "../assets/img/2_character_pepe/1_idle/long_idle/I-12.png",
     "../assets/img/2_character_pepe/1_idle/long_idle/I-13.png",
@@ -22,6 +35,7 @@ class Character extends MovableObject {
     "../assets/img/2_character_pepe/1_idle/long_idle/I-19.png",
     "../assets/img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
+
 
   IMAGES_WALKING = [
     "../assets/img/2_character_pepe/2_walk/W-21.png",
@@ -57,7 +71,7 @@ class Character extends MovableObject {
     "../assets/img/2_character_pepe/5_dead/D-56.png",
     "../assets/img/2_character_pepe/5_dead/D-57.png",
   ];
-  IMAGES_RIP = ["../assets/img/2_character_pepe/5_dead/rip.png", "../assets/img/2_character_pepe/5_dead/sombrero .png"];
+  IMAGES_RIP = ["../assets/img/2_character_pepe/5_dead/rip.png", "../assets/img/2_character_pepe/5_dead/sombrero.png"];
 
   world;
   offset = {
@@ -69,6 +83,8 @@ class Character extends MovableObject {
 
   constructor() {
     super().loadImage("../assets/img/2_character_pepe/2_walk/W-21.png");
+    this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_IDLE_LONG);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_HURT);
@@ -76,38 +92,54 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_RIP);
     this.animate();
     this.applyGravity();
+    this.lastTimeMoved = new Date().getTime();
   }
 
   animate() {
     this.animationIntervals["movement"] = setInterval(() => {
+
+      //Move right
       if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
         this.moveRight();
         this.otherDirection = false;
-        // this.walking_soung.play();
+        // this.walking_sound.play();
+        this.lastTimeMoved = new Date().getTime(); 
       }
+      //Move left
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
         this.otherDirection = true;
-        // this.walking_soung.play();
+        // this.walking_sound.play();
+        this.lastTimeMoved = new Date().getTime(); 
       }
+      //Jumping
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
+        // this.jumping_sound.play();
+        this.lastTimeMoved = new Date().getTime(); 
       }
+      //Camera focus on character
       this.world.camera_x = -this.x + 100;
     }, 1000 / 30);
 
+    //Imgage for different animation types
     this.animationIntervals["animation"] = setInterval(() => {
       if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
+         // this.hurt_sound.play();
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
           this.playAnimation(this.IMAGES_WALKING);
-        } else {
+        } else if (this.checkMovementStatus()){
+          //differenzieren zw. idle und idle long
+         this.playIdleAnimation();
+        }
+        else {
         // Kein Input → Default-Bild anzeigen
         this.loadImage("../assets/img/2_character_pepe/2_walk/W-21.png");
       }
-    }, 50);
+    }, 200);
 
     this.animationIntervals["dying"] = setInterval(() => {
       if (this.isDead()) {
@@ -125,6 +157,23 @@ class Character extends MovableObject {
         }, 1000 / 60);
       }
     }, 1000 / 30);
+  }
+
+  checkMovementStatus(){
+    return !this.world.keyboard.RIGHT && 
+    !this.world.keyboard.LEFT && 
+    !this.world.keyboard.SPACE && 
+    !this.world.keyboard.THROW;
+  }
+
+  playIdleAnimation() {
+    let pastTime = new Date().getTime() - this.lastTimeMoved;
+    pastTime = pastTime / 1000; 
+    if (pastTime < 7) {
+      this.playAnimation(this.IMAGES_IDLE);
+    } else {
+      this.playAnimation(this.IMAGES_IDLE_LONG);
+    }
   }
 
   drawImage(imagePath, x, y, width, height) {
