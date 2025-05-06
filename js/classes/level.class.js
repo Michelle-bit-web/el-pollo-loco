@@ -6,6 +6,7 @@ class Level{
     backgroundObjects;
     levelEndX = 2800;
     difficulty = 'easy';
+    endArrowPosition;
 
     constructor(levelSettings){
         
@@ -37,6 +38,7 @@ class Level{
             )
             if(i === 3){
                 collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-end-arrow.png`, position - 200, 295, 120, 120));
+                this.endArrowPosition = position - 200;
             }
         };  
         collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-end-zone.png`, position, 220, 120, 200));

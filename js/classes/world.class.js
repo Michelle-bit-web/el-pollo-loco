@@ -30,6 +30,7 @@ class World {
 
     setWorld(){
         this.character.world = this;
+        this.level.endboss.world = this; 
     }
 
     run(){
@@ -61,8 +62,9 @@ class World {
         
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if (!bottle.isSplashing && bottle.isColliding(this.level.endboss)) {
-                this.level.endboss.hit(); // oder andere Reaktion
                 bottle.splash();
+                this.level.endboss.hit();
+                this.level.endboss.takeDamage(10);
             }
         });
     }
@@ -142,7 +144,7 @@ class World {
             };
 
         if (this.character.x > 1600 && !this.endbossAppeared) {
-            this.level.endboss.x = endArrowPosition + 300; // Setze den Endboss etwas weiter hinten
+            this.level.endboss.x = this.level.endArrowPosition + 300; // Setze den Endboss etwas weiter hinten
             this.endbossAppeared = true;
             this.level.endboss.endbossAppeared = true; // Flag für Animation
         }

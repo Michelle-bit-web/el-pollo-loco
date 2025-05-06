@@ -3,6 +3,11 @@
     src: url(./assets/font/a_box_for/A\ Box\ For.ttf) format('truetype');
 }
 
+*{
+    margin: 0;
+    text-decoration: none;
+}
+
 html{
     height: 100vh;
 }
@@ -16,6 +21,12 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh - 20px;
+}
+
+a{
+    cursor: pointer;
+    color: rgb(72, 29, 2);
+    font-size: 20px;
 }
 
 canvas {

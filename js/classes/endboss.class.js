@@ -5,6 +5,11 @@ class Endboss extends MovableObject{
     isDead = false;
     endbossAppeared = false;
     isBeingHit = false;
+    state = "idle";
+    contactFrames = 0; 
+    energy = 100;
+    speed = 0.4; 
+    speedLevel = 1;
 
     IMAGES_WALKING =[
         '../assets/img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -13,14 +18,14 @@ class Endboss extends MovableObject{
         '../assets/img/4_enemie_boss_chicken/1_walk/G4.png',
     ];
     IMAGES_ALERT =[
-        '../assets/img/4_enemie_boss_chicken/1_walk/G5.png',
-        '../assets/img/4_enemie_boss_chicken/1_walk/G6.png',
-        '../assets/img/4_enemie_boss_chicken/1_walk/G7.png',
-        '../assets/img/4_enemie_boss_chicken/1_walk/G8.png',
-        '../assets/img/4_enemie_boss_chicken/1_walk/G9.png',
-        '../assets/img/4_enemie_boss_chicken/1_walk/G10.png',
-        '../assets/img/4_enemie_boss_chicken/1_walk/G11.png',
-        '../assets/img/4_enemie_boss_chicken/1_walk/G12.png',
+        '../assets/img/4_enemie_boss_chicken/2_alert/G5.png',
+        '../assets/img/4_enemie_boss_chicken/2_alert/G6.png',
+        '../assets/img/4_enemie_boss_chicken/2_alert/G7.png',
+        '../assets/img/4_enemie_boss_chicken/2_alert/G8.png',
+        '../assets/img/4_enemie_boss_chicken/2_alert/G9.png',
+        '../assets/img/4_enemie_boss_chicken/2_alert/G10.png',
+        '../assets/img/4_enemie_boss_chicken/2_alert/G11.png',
+        '../assets/img/4_enemie_boss_chicken/2_alert/G12.png',
     ];
     IMAGES_ATTACK =[
         '../assets/img/4_enemie_boss_chicken/3_attack/G13.png',
@@ -67,64 +72,117 @@ class Endboss extends MovableObject{
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.speed = 0.4 
         this.animate();
+        this.previousState = 'idle';
     }
     
     animate() {
-        setInterval(() => this.randomMove(), 1000 / 60);
-    
         setInterval(() => {
-            if (!this.endbossAppeared) return; // Animation nur starten, wenn der Endboss erschienen ist
+            if (!this.endbossAppeared) return;
+            this.updateSpeedBasedOnEnergy(); 
             if (this.isDead) {
-                // Spiele die Tod-Animation, falls der Endboss tot ist
+                this.state = 'dead';
                 this.playAnimation(this.IMAGES_DEAD);
-            } else if (this.isBeingHit) {
-                // Während der Endboss getroffen wird, keine andere Animation abspielen
-                return;
-            } else {
-                // Normale Geh-Animation, wenn der Endboss weder tot noch getroffen ist
-                // this.playAnimation(this.IMAGES_WALKING);
-                this.playSequentialAnimations(this.IMAGES_SEQUENCE);
+            } 
+            // else if (this.isBeingHit) {
+            //     this.state = 'hurt';
+                // bereits in der hit-Methode gesetzt
+            // } 
+            else if (this.firstContact()) {
+                this.hadFirstContact = true;
+                this.endbossAppeared = true;
+                this.state = 'alert';
+                this.contactFrames = 0;
             }
-        }, 1000 / 6);
+    
+            if (this.state === 'alert') {
+                this.contactFrames++;
+                this.playAnimation(this.IMAGES_ALERT);
+                if (this.contactFrames > 30) { // Nach ca. 5 Sekunden
+                    this.state = 'attack';
+                }
+            } else if (this.state === 'attack') {
+                this.moveTowardCharacter();
+                this.playAnimation(this.IMAGES_ATTACK);
+            }
+        }, 100);
     }
 
-    // Neue Methode, um Animationen nacheinander abzuspielen
-playSequentialAnimations(animationGroups) {
-    if (!this.currentAnimationIndex) this.currentAnimationIndex = 0; // Aktuelle Animation initialisieren
+    updateSpeedBasedOnEnergy() {
+        if (this.energy <= 25 && this.speedLevel < 3) {
+            this.speed = 0.9;
+            this.speedLevel = 3;
+        } else if (this.energy <= 50 && this.speedLevel < 2) {
+            this.speed = 0.6;
+            this.speedLevel = 2;
+        }
+    }
 
-    const currentGroup = animationGroups[this.currentAnimationIndex];
-    this.playAnimation(currentGroup);
-
-    // Wechsle zur nächsten Animation
-    this.currentAnimationIndex++;
-    if (this.currentAnimationIndex >= animationGroups.length) {
-        th
-        is.currentAnimationIndex = 0; // Zurück zur ersten Animation
-    };
-}
-
-    randomMove() {
+    takeDamage(amount) {
         if (this.isDead || this.isBeingHit) return;
     
-       let direction = -1
-       this.x += this.speed * direction;
+        this.energy -= amount;
+        if (this.energy <= 0) {
+            this.energy = 0;
+            this.markAsDead();
+        } else {
+            this.hit(); // Animation + Zustand setzen
+        };
+        console.log(this.energy);
+    }
+    // Neue Methode, um Animationen nacheinander abzuspielen
+// playSequentialAnimations(animationGroups) {
+//     if (!this.currentAnimationIndex) this.currentAnimationIndex = 0; // Aktuelle Animation initialisieren
+
+//     const currentGroup = animationGroups[this.currentAnimationIndex];
+//     this.playAnimation(currentGroup);
+
+//     // Wechsle zur nächsten Animation
+//     this.currentAnimationIndex++;
+//     if (this.currentAnimationIndex >= animationGroups.length) {
+//         th
+//         is.currentAnimationIndex = 0; // Zurück zur ersten Animation
+//     };
+// }
+
+//     randomMove() {
+//         if (this.isDead || this.isBeingHit) return;
     
-        // Begrenzung des Bewegungsbereichs
-        const minX = 2300;
-        const maxX = 2800;
+//        let direction = -1
+//        this.x += this.speed * direction;
     
-        if (this.x < minX) direction = 1;
-        if (this.x > maxX) direction = -1;
+//         // Begrenzung des Bewegungsbereichs
+//         const minX = 2300;
+//         const maxX = 2800;
+    
+//         if (this.x < minX) direction = 1;
+//         if (this.x > maxX) direction = -1;
+//     }
+
+    moveTowardCharacter() {
+        if (this.world.character.x > this.x) {
+            this.moveRight();
+            this.otherDirection = true;
+        } else {
+            this.moveLeft();
+            this.otherDirection = false;
+        }
+    }
+
+    firstContact() {
+        return this.world.character.x > 2100 && !this.hadFirstContact;
     }
 
     hit() {
         if (this.isDead) return;
+
+        this.previousState = this.state; // Zustand merken
+        this.isBeingHit = true;
+        this.state = 'hurt';
     
-        this.isBeingHit = true; // Setze den Zustand auf "wird getroffen"
         this.playAnimationOnce(this.IMAGES_HURT, () => {
-            this.isBeingHit = false; // Nach der HURT-Animation zurück zum normalen Zustand
+            this.isBeingHit = false;
+            this.state = this.previousState; // Zustand zurücksetzen
         });
     }
     
