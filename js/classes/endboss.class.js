@@ -4,6 +4,7 @@ class Endboss extends MovableObject{
     y = 60;
     isDead = false;
     endbossAppeared = false;
+    statusbar;
     isBeingHit = false;
     state = "idle";
     contactFrames = 0; 
@@ -91,6 +92,7 @@ class Endboss extends MovableObject{
             else if (this.firstContact()) {
                 this.hadFirstContact = true;
                 this.endbossAppeared = true;
+                this.statusbar = new Statusbar('energyEndboss', 550, 5);
                 this.state = 'alert';
                 this.contactFrames = 0;
             }
@@ -110,54 +112,31 @@ class Endboss extends MovableObject{
 
     updateSpeedBasedOnEnergy() {
         if (this.energy <= 25 && this.speedLevel < 3) {
-            this.speed = 0.9;
+            this.speed = 1.5;
             this.speedLevel = 3;
         } else if (this.energy <= 50 && this.speedLevel < 2) {
             this.speed = 0.6;
             this.speedLevel = 2;
         }
+        console.log(this.energy)
     }
 
     takeDamage(amount) {
-        if (this.isDead || this.isBeingHit) return;
+        if (this.isDead) return;
     
         this.energy -= amount;
+        this.energy = Math.max(0, this.energy); // Verhindere, dass die Energie negativ wird
+        console.log('[DEBUG] Endboss-Energie:', this.energy);
+    
+        if (this.statusbar) {
+            const percentage = (this.energy / 100) * 100;
+            this.statusbar.setPercentage(percentage); // Update der Statusleiste
+        }
+    
         if (this.energy <= 0) {
-            this.energy = 0;
             this.markAsDead();
-        } else {
-            this.hit(); // Animation + Zustand setzen
-        };
-        console.log(this.energy);
+        }
     }
-    // Neue Methode, um Animationen nacheinander abzuspielen
-// playSequentialAnimations(animationGroups) {
-//     if (!this.currentAnimationIndex) this.currentAnimationIndex = 0; // Aktuelle Animation initialisieren
-
-//     const currentGroup = animationGroups[this.currentAnimationIndex];
-//     this.playAnimation(currentGroup);
-
-//     // Wechsle zur nächsten Animation
-//     this.currentAnimationIndex++;
-//     if (this.currentAnimationIndex >= animationGroups.length) {
-//         th
-//         is.currentAnimationIndex = 0; // Zurück zur ersten Animation
-//     };
-// }
-
-//     randomMove() {
-//         if (this.isDead || this.isBeingHit) return;
-    
-//        let direction = -1
-//        this.x += this.speed * direction;
-    
-//         // Begrenzung des Bewegungsbereichs
-//         const minX = 2300;
-//         const maxX = 2800;
-    
-//         if (this.x < minX) direction = 1;
-//         if (this.x > maxX) direction = -1;
-//     }
 
     moveTowardCharacter() {
         if (this.world.character.x > this.x) {
@@ -193,7 +172,7 @@ class Endboss extends MovableObject{
             index++;
             if (index >= images.length) {
                 clearInterval(interval);
-                callback?.();
+                callback?.(); //Schreibfehler?
             }
         }, 1000 / 10);
     }

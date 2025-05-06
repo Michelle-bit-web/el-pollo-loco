@@ -29,6 +29,14 @@ class Statusbar extends DrawableObject{
         "../assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png",
         "../assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png",
     ];
+    IMAGES_ENERGY_ENDBOSS = [
+        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange0.png",
+        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange20.png",
+        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange40.png",
+        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange60.png",
+        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange80.png",
+        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange100.png",
+    ];
 
     constructor(type, x, y){
         super();
@@ -39,7 +47,7 @@ class Statusbar extends DrawableObject{
         this.height = 50;
         this.loadTypeImages();
         // Initialwert je nach Typ setzen
-        if (this.type === 'energy') {
+        if (this.type === 'energy' || this.type === 'energyEndboss') {
             this.setPercentage(100);
         } else {
             this.setPercentage(0); // gilt für 'coin' und 'bottle'
@@ -53,7 +61,9 @@ class Statusbar extends DrawableObject{
             this.images = this.IMAGES_COIN;
         }else if(this.type == "bottle"){
             this.images = this.IMAGES_BOTTLE;
-        };
+        }else if(this.type == "energyEndboss"){
+            this.images = this.IMAGES_ENERGY_ENDBOSS;
+        }
         this.loadImages(this.images);
     }
 
@@ -82,7 +92,7 @@ class Statusbar extends DrawableObject{
 
     //Hier nochmal die Max-Werte überlegen, damit man z.B. mehr Coins sammeln kann
     resolveImageIndex() {
-        let value = this.type === 'energy' ? this.percentage : (this.type === 'coin' ? this.coins : this.bottles);
+        let value = this.type === 'energy' || this.type === 'energyEndboss' ? this.percentage : (this.type === 'coin' ? this.coins : this.bottles);
         if (value >= 100 || value === 5) return 5;
         else if (value >= 80 || value === 4) return 4;
         else if (value >= 60 || value === 3) return 3;

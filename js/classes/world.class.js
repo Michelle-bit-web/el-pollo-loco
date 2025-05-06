@@ -62,9 +62,12 @@ class World {
         
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if (!bottle.isSplashing && bottle.isColliding(this.level.endboss)) {
+                console.log('[DEBUG] Endboss von Flasche getroffen!');
                 bottle.splash();
                 this.level.endboss.hit();
-                this.level.endboss.takeDamage(10);
+                console.log('[DEBUG] Vor takeDamage:', this.level.endboss.energy);
+                this.level.endboss.takeDamage(20);
+                console.log('[DEBUG] Nach takeDamage:', this.level.endboss.energy);
             }
         });
     }
@@ -218,6 +221,9 @@ class World {
         this.addToMap(this.energyStatusbar); //To move statusbar relative to camera
         this.addToMap(this.coinStatusbar);
         this.addToMap(this.bottleStatusbar);
+        if (this.level.endboss.statusbar) {
+            this.addToMap(this.level.endboss.statusbar);
+        }
         this.ctx.translate(this.camera_x, 0);
         
         this.addToMap(this.character);
