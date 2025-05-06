@@ -8,7 +8,7 @@ class MovableObject extends DrawableObject{
   bottles = 0;
   lastHit = 0;
   animationIntervals = {};
-  levelEndX = 2800;
+  levelEndX = 3000;
 
   moveRight() {
     this.x += this.speed;

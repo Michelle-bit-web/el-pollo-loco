@@ -6,7 +6,7 @@ const level1 = new Level({
     endboss: new Endboss(),
     enemies: generateObject(SmallChicken, 5, 2500, 20, 370, 0.5, 0.1)
     .concat(generateObject(Chicken, 5, 2500, 20, 350, 0.5, 0.1)),
-    clouds: generateObject(Cloud, 10, 2900, 100, 0, 0.5, 0.1),
+    clouds: generateObject(Cloud, 8, 3000, 110, -5, 0.5, 0.1),
     collectableObjects: setCollectableObjects(),
     backgroundObjectsTemplate: 'assets/img/5_background/layers',
 }
