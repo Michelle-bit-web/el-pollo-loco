@@ -14,13 +14,12 @@ function init() {
  // Zeige das Canvas
 //  const canvasElement = document.getElementById('canvas');
 //  canvasElement.style.display = 'block';
-
 }
 
 function startGame() {
     const startButton = document.getElementById('startButton');
     startButton.style.display = 'none';
-   
+    // new Audio('../assets/audio/game-start/mixkit-retro-game-notification-212.wav').play()
     loadGame();
 }
 

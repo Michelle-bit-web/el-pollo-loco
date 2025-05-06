@@ -11,6 +11,20 @@ class World {
     coinStatusbar = new Statusbar('coin', 10, 45);
     bottleStatusbar = new Statusbar('bottle', 10, 85);
     throwableObjects = [];
+    gameSounds = {
+        backgroundMusic: null,
+        chickenSound:new AudioManager('../assets/audio/background/mixkit-chickens-and-pigeons-1769.wav', 0.5, true, 1),
+        jumpSound: null,
+        coinSound: null,
+        endbossIntroSound: new AudioManager('../assets/audio/endboss-intro/mixkit-big-cinematic-impact-788.mp3', 0.5, false, 1),
+        endbossAttackSound: new AudioManager('../assets/audio/endboss/mixkit-cock-cry-1761.wav', 0.5, false, 1),
+        throwingSound: null,
+        splashSound: new AudioManager('../assets/audio/hurt/mixkit-player-hurt-2040.wav', 0.5, false, 1),
+        hurtSound: null,
+        walkingSound: new AudioManager('../assets/audio/walk/mixkit-footsteps-in-woods-loop-533.wav', 0.5, false, 1),
+        gameOverSound: new AudioManager('../assets/audio/game-over/mixkit-player-losing-or-failing-2042.wav', 0.5, false, 10)
+    }
+
     
 
     constructor(canvas, keyboard){
@@ -20,6 +34,8 @@ class World {
         this.setWorld();
         this.draw();
         this.run();
+        // this.gameSounds.chickenSound.play();
+
         // this.loadGameOverImage(); //Dazu gehören noch js26 & js211
     }
     

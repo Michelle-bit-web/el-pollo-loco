@@ -92,7 +92,8 @@ class Endboss extends MovableObject{
             else if (this.firstContact()) {
                 this.hadFirstContact = true;
                 this.endbossAppeared = true;
-                this.statusbar = new Statusbar('energyEndboss', 550, 5);
+                // this.world.gameSounds.endbossIntroSound.play();
+                this.statusbar = new Statusbar('energyEndboss', 500, 5);
                 this.state = 'alert';
                 this.contactFrames = 0;
             }
@@ -104,6 +105,7 @@ class Endboss extends MovableObject{
                     this.state = 'attack';
                 }
             } else if (this.state === 'attack') {
+                // this.world.gameSounds.endbossAttackSound.play();
                 this.moveTowardCharacter();
                 this.playAnimation(this.IMAGES_ATTACK);
             }

@@ -127,10 +127,14 @@ class Character extends MovableObject {
       if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
          // this.hurt_sound.play();
+
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
+
       } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
           this.playAnimation(this.IMAGES_WALKING);
+          // this.world.gameSounds.walkingSound.audio.play();
+
         } else if (this.checkMovementStatus()){
           //differenzieren zw. idle und idle long
          this.playIdleAnimation();
@@ -143,6 +147,8 @@ class Character extends MovableObject {
 
     this.animationIntervals["dying"] = setInterval(() => {
       if (this.isDead()) {
+        // this.world.gameSounds.gameOverSound.audio.play();
+
         this.stopAllAnimations("../assets/img/2_character_pepe/5_dead/rip.png");
         // document.querySelector("#canvas").style.backgroundImage = "url(../assets/img/Game over A.png)";
         this.height = 120; // Höhe des RIP-Bildes
