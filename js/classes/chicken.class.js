@@ -9,11 +9,12 @@ class Chicken extends MovableObject {
         '../assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
     ];
 
-    IMAGE_DEAD =
-        '../assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
+    IMAGE_DEAD = '../assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png';
+
+    IMAGE_GHOST = '../assets/img/3_enemies_chicken/chicken_ghost.png';
    
     offset = {
-        top: 10,
+        top: 8,
         left: 5,
         right: 10,
         bottom: 10
@@ -39,9 +40,30 @@ class Chicken extends MovableObject {
 
     markAsDead() {
         this.isDead = true;
-        this.stopAnimation('ChickenMovesLeft'); // Stoppe die Animation
-        this.stopAnimation('ChickenPlayAnimation'); // Stoppe die Animation
-        this.loadImage(this.IMAGE_DEAD); // Lade das "tote" Bild
-      }
-  
+        this.stopAnimation('ChickenMovesLeft');
+        this.stopAnimation('ChickenPlayAnimation');
+        this.loadImage(this.IMAGE_DEAD);
+        setTimeout(() => {
+            this.loadImage(this.IMAGE_GHOST);
+            this.speedY = -10;
+            this.acceleration = -1;
+            this.applyGravity();
+    
+            this.removalCheckInterval = setInterval(() => {
+                if (this.y + this.height < 0) { // vollständig nach oben verschwunden
+                    this.removeFromLevel();
+                    clearInterval(this.removalCheckInterval); // Sicherheitsmaßnahme
+                }
+            }, 1000 / 30); // 30 FPS-Check
+        }, 1000);
+    }
+
+    removeFromLevel() {
+        if (world && world.level && Array.isArray(world.level.enemies)) {
+            let index = world.level.enemies.indexOf(this);
+            if (index !== -1) {
+                world.level.enemies.splice(index, 1);
+            }
+        }
+    }
  }

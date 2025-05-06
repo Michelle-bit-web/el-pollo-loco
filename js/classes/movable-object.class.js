@@ -73,6 +73,10 @@ stopAllAnimations(path) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration; 
       }
+      if(this instanceof Chicken || this instanceof SmallChicken){
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration; 
+      }
     }, 1000 / 25);
   }
 

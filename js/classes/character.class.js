@@ -76,9 +76,9 @@ class Character extends MovableObject {
   world;
   offset = {
     top: 140,
-    left: 50,
+    left: 45,
     right: 47,
-    bottom: 20,
+    bottom: 13,
   };
 
   constructor() {

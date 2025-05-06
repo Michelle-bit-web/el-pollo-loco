@@ -64,9 +64,9 @@ class Endboss extends MovableObject{
         bottom: 40
       }
 
-    constructor(){
+    constructor(x){
         super().loadImage('../assets/img/4_enemie_boss_chicken/1_walk/G1.png');
-        this.x = 2600;
+        this.x = x;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
