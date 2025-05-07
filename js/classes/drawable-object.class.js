@@ -14,10 +14,12 @@ class DrawableObject {
   }
   
   loadImage(path) {
-    this.img = new Image(); //alternative zu: doc.ElById('image') <img id="image">
-    //Für Debugging
+    this.img = new Image();
+
+    //---Für Debugging---
     // this.img.onload = () => console.log(`[OK] Bild geladen: ${path}`);
     // this.img.onerror = () => console.error(`[FEHLER] Bild NICHT gefunden: ${path}`);
+    
     this.img.src = path;
   }
 
@@ -30,24 +32,28 @@ class DrawableObject {
   }
 
   draw(ctx) {
-    //Fürs Debugging
+    //----Fürs Debugging---
+    
     // console.log(`[DEBUG] draw() aufgerufen für Objekt mit x=${this.x}, y=${this.y}`);
+
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
-  drawOffsetFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss) {
-      ctx.beginPath();
-      ctx.lineWidth = "3";
-      ctx.strokeStyle = "red";
+  //---später entfernen---
+
+  // drawOffsetFrame(ctx) {
+  //   if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss) {
+  //     ctx.beginPath();
+  //     ctx.lineWidth = "3";
+  //     ctx.strokeStyle = "red";
   
-      const offsetX = this.x + this.offset.left;
-      const offsetY = this.y + this.offset.top;
-      const offsetWidth = this.width - this.offset.left - this.offset.right;
-      const offsetHeight = this.height - this.offset.top - this.offset.bottom;
+  //     const offsetX = this.x + this.offset.left;
+  //     const offsetY = this.y + this.offset.top;
+  //     const offsetWidth = this.width - this.offset.left - this.offset.right;
+  //     const offsetHeight = this.height - this.offset.top - this.offset.bottom;
   
-      ctx.rect(offsetX, offsetY, offsetWidth, offsetHeight);
-      ctx.stroke();
-    }
-  }
+  //     ctx.rect(offsetX, offsetY, offsetWidth, offsetHeight);
+  //     ctx.stroke();
+  //   }
+  // }
 }

@@ -1,5 +1,5 @@
 const level1 = new Level({
-    difficulty: 'easy',
+    difficulty: "easy",
     maxCoins: 10,
     maxBottles: 4,
     enemyResistance: 1,
@@ -8,7 +8,7 @@ const level1 = new Level({
     .concat(generateObject(Chicken, 5, 2500, 20, 350, 0.5, 0.1)),
     clouds: generateObject(Cloud, 8, 3000, 110, -5, 0.5, 0.1),
     collectableObjects: setCollectableObjects(),
-    backgroundObjectsTemplate: 'assets/img/5_background/layers',
+    backgroundObjectsTemplate: "assets/img/5_background/layers",
 }
 ); 
 
@@ -30,12 +30,12 @@ function setCollectableObjects(){
      distanceX += 800 * i;  
      
     collectableObjects.push(
-         new CollectableObject('coin', distanceX + 140, 150),
-         new CollectableObject('coin', distanceX + 200, 100),
-         new CollectableObject('coin', distanceX + 260, 100),
-         new CollectableObject('coin', distanceX + 320, 150),
-         new CollectableObject('bottle', distanceX + 260, 200),
-         new CollectableObject('bottleGround', distanceX + 240 , 350),
+         new CollectableObject("coin", distanceX + 140, 150),
+         new CollectableObject("coin", distanceX + 200, 100),
+         new CollectableObject("coin", distanceX + 260, 100),
+         new CollectableObject("coin", distanceX + 320, 150),
+         new CollectableObject("bottle", distanceX + 260, 200),
+         new CollectableObject("bottleGround", distanceX + 240 , 350),
         )
      };
      return collectableObjects;
@@ -47,19 +47,19 @@ function setCollectableObjects(){
 //falls nötig die Level in eigene js-Dateien auslagern und im html verknüpfen
 
 const level2 = new Level({
-    difficulty: 'easy',
+    difficulty: "easy",
     maxCoins: 10,
     maxBottles: 4,
     enemyResistance: 1,
     enemies: generateObject(Endboss, 10, 2500, 20, 350, 0.5, 0.1),
     clouds: generateObject(Cloud, 10, 2900, 100, 0, 0.5, 0.1),
     collectableObjects: setCollectableObjects(),
-    backgroundObjectsTemplate: 'assets/img/5_background/layers',
+    backgroundObjectsTemplate: "assets/img/5_background/layers",
 }
 ); 
 
 // const level3 = new Level({
-//     difficulty: 'hard',
+//     difficulty: "hard",
 //     maxCoins: 10,
 //     maxBottles: 2,
 //     enemyResistance: 3,
@@ -73,5 +73,5 @@ const level2 = new Level({
 //         new Cloud(),
 //         new Cloud()
 //     ],
-//     backgroundObjectsTemplate: 'assets/img/5_background/layers'
+//     backgroundObjectsTemplate: "assets/img/5_background/layers"
 // });

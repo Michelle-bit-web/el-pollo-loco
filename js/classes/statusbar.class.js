@@ -6,36 +6,36 @@ class Statusbar extends DrawableObject{
     images;
 
     IMAGES_ENERGY = [
-        "../assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
-        "../assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png",
-        "../assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png",
-        "../assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png",
-        "../assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png",
-        "../assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png",
+        "assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
+        "assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png",
+        "assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png",
+        "assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png",
+        "assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png",
+        "assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png",
     ];
     IMAGES_COIN = [
-        "../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png",
-        "../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png",
-        "../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/40.png",
-        "../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/60.png",
-        "../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png",
-        "../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png",
+        "assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png",
+        "assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png",
+        "assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/40.png",
+        "assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/60.png",
+        "assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png",
+        "assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png",
     ];
     IMAGES_BOTTLE = [
-        "../assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png",
-        "../assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png",
-        "../assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png",
-        "../assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/60.png",
-        "../assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png",
-        "../assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png",
+        "assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png",
+        "assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png",
+        "assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png",
+        "assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/60.png",
+        "assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png",
+        "assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png",
     ];
     IMAGES_ENERGY_ENDBOSS = [
-        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange0.png",
-        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange20.png",
-        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange40.png",
-        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange60.png",
-        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange80.png",
-        "../assets/img/7_statusbars/2_statusbar_endboss/orange/orange100.png",
+        "assets/img/7_statusbars/2_statusbar_endboss/orange/orange0.png",
+        "assets/img/7_statusbars/2_statusbar_endboss/orange/orange20.png",
+        "assets/img/7_statusbars/2_statusbar_endboss/orange/orange40.png",
+        "assets/img/7_statusbars/2_statusbar_endboss/orange/orange60.png",
+        "assets/img/7_statusbars/2_statusbar_endboss/orange/orange80.png",
+        "assets/img/7_statusbars/2_statusbar_endboss/orange/orange100.png",
     ];
 
     constructor(type, x, y){
@@ -69,6 +69,7 @@ class Statusbar extends DrawableObject{
 
     draw(ctx){
         let path = this.images[this.resolveImageIndex()]; //Da wird immer das aktuelle Bild geladen
+        console.log("[DEBUG] draw() wird ausgeführt. Bildpfad:", path);
         this.img = this.imageCache[path];
        super.draw(ctx);
     }

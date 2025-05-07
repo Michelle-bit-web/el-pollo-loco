@@ -1,34 +1,32 @@
 class World {
     level = level1;
-    character = new Character();
+    character = new Character(this);
     canvas;
     canvasState = "game"; // "startscreen" oder "game"
     ctx;
     keyboard;
     camera_x = 0;
     isFading = false
-    energyStatusbar = new Statusbar('energy', 10, 5);
-    coinStatusbar = new Statusbar('coin', 10, 45);
-    bottleStatusbar = new Statusbar('bottle', 10, 85);
+    energyStatusbar = new Statusbar("energy", 10, 5);
+    coinStatusbar = new Statusbar("coin", 10, 45);
+    bottleStatusbar = new Statusbar("bottle", 10, 85);
     throwableObjects = [];
-    gameSounds = {
-        backgroundMusic: null,
-        chickenSound:new AudioManager('../assets/audio/background/mixkit-chickens-and-pigeons-1769.wav', 0.5, true, 1),
-        jumpSound: null,
-        coinSound: null,
-        endbossIntroSound: new AudioManager('../assets/audio/endboss-intro/mixkit-big-cinematic-impact-788.mp3', 0.5, false, 1),
-        endbossAttackSound: new AudioManager('../assets/audio/endboss/mixkit-cock-cry-1761.wav', 0.5, false, 1),
-        throwingSound: null,
-        splashSound: new AudioManager('../assets/audio/hurt/mixkit-player-hurt-2040.wav', 0.5, false, 1),
-        hurtSound: null,
-        walkingSound: new AudioManager('../assets/audio/walk/mixkit-footsteps-in-woods-loop-533.wav', 0.5, false, 1),
-        gameOverSound: new AudioManager('../assets/audio/game-over/mixkit-player-losing-or-failing-2042.wav', 0.5, false, 10)
-    }
-
-    
+    // gameSounds = {
+    //     backgroundMusic: null,
+    //     chickenSound:new AudioManager("/assets/audio/background/mixkit-chickens-and-pigeons-1769.wav", 0.5, true, 1),
+    //     jumpSound: null,
+    //     coinSound: null,
+    //     endbossIntroSound: new AudioManager("/assets/audio/endboss-intro/mixkit-big-cinematic-impact-788.mp3", 0.5, false, 1),
+    //     endbossAttackSound: new AudioManager("/assets/audio/endboss/mixkit-cock-cry-1761.wav", 0.5, false, 1),
+    //     throwingSound: null,
+    //     splashSound: new AudioManager("/assets/audio/hurt/mixkit-player-hurt-2040.wav", 0.5, false, 1),
+    //     hurtSound: null,
+    //     walkingSound: new AudioManager("/assets/audio/walk/mixkit-footsteps-in-woods-loop-533.wav", 0.5, false, 1),
+    //     gameOverSound: new AudioManager("/assets/audio/game-over/mixkit-player-losing-or-failing-2042.wav", 0.5, false, 10)
+    // }
 
     constructor(canvas, keyboard){
-        this.ctx = canvas.getContext('2d');
+        this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.setWorld();
@@ -41,11 +39,10 @@ class World {
     
     // loadGameOverImage() {
     //     this.gameOverImage = new Image();
-    //     this.gameOverImage.src = './assets/img/You won, you lost/Game over A.png';
+    //     this.gameOverImage.src = "./assets/img/You won, you lost/Game over A.png";
     // }
 
     setWorld(){
-        this.character.world = this;
         this.level.endboss.world = this; 
     }
 
@@ -67,7 +64,7 @@ class World {
     checkCollisionsEnemies(){
         this.level.enemies.forEach((enemy, enemyIndex) => {
             if(this.character.isAboveGround() && this.character.isColliding(enemy)){
-                console.log('Enemy hit on jumping!');
+                console.log("Enemy hit on jumping!");
                 this.level.enemies[enemyIndex].markAsDead();
             }
             if(this.character.isColliding(enemy) && !enemy.isDead){
@@ -78,12 +75,12 @@ class World {
         
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if (!bottle.isSplashing && bottle.isColliding(this.level.endboss)) {
-                console.log('[DEBUG] Endboss von Flasche getroffen!');
+                console.log("[DEBUG] Endboss von Flasche getroffen!");
                 bottle.splash();
                 this.level.endboss.hit();
-                console.log('[DEBUG] Vor takeDamage:', this.level.endboss.energy);
+                console.log("[DEBUG] Vor takeDamage:", this.level.endboss.energy);
                 this.level.endboss.takeDamage(20);
-                console.log('[DEBUG] Nach takeDamage:', this.level.endboss.energy);
+                console.log("[DEBUG] Nach takeDamage:", this.level.endboss.energy);
             }
         });
     }
@@ -108,9 +105,9 @@ class World {
     checkCollisionsCollectables() {
         this.level.collectableObjects.forEach((item, index) => {
             if (this.character.isColliding(item)) {
-                if (item.imageType === 'coin') {
+                if (item.imageType === "coin") {
                     this.changeStatusbar(this.coinStatusbar, 1);
-                } else if (item.imageType === 'bottle' || item.imageType === 'bottleGround') {
+                } else if (item.imageType === "bottle" || item.imageType === "bottleGround") {
                     this.changeStatusbar(this.bottleStatusbar, 1);
                 }
     
@@ -121,16 +118,16 @@ class World {
     }
 
     changeStatusbar(statusbar, direction) {
-        if (statusbar.type === 'energy') {
+        if (statusbar.type === "energy") {
             statusbar.setPercentage(Math.max(0, statusbar.percentage + direction)); // z. B. -20 bei Schaden
         } else {
-            let current = statusbar.type === 'coin' ? this.character.coins : this.character.bottles;
+            let current = statusbar.type === "coin" ? this.character.coins : this.character.bottles;
             current = Math.max(0, Math.min(current + direction, 5)); // Begrenzung auf 0–5
             //Testen ob das Sammeln von Coins registriert wurde - funktioniert!
-            console.log(`[DEBUG] ${statusbar.type} vorher:`, statusbar.type === 'coin' ? this.character.coins : this.character.bottles);
+            console.log(`[DEBUG] ${statusbar.type} vorher:`, statusbar.type === "coin" ? this.character.coins : this.character.bottles);
             console.log(`[DEBUG] Änderung: ${direction}, neuer Wert: ${current}`);
 
-            if (statusbar.type === 'coin') {
+            if (statusbar.type === "coin") {
                 this.character.coins = current;
             } else {
                 this.character.bottles = current;
@@ -140,6 +137,7 @@ class World {
     }
 
     checkIsThrowing(){
+        if(this.keyboard.THROW)  this.character.lastTimeMoved = new Date().getTime();
         if (this.keyboard.THROW && this.character.bottles > 0) {
             let bottle = new ThrowableObject(this.character.x, this.character.y);
             this.throwableObjects.push(bottle);
@@ -156,16 +154,16 @@ class World {
             };
             if(this.character.x >= this.level.levelEndX){
                 // this.generateNewCollectable();
-                console.log('Level beendet, Übergang zu neuem Level...');
+                console.log("Level beendet, Übergang zu neuem Level...");
                 this.fadeToBlack(() => {
                     this.changeLevel(level2); // Lade das neue Level
                 });
             };
 
-        if (this.character.x > 1600 && !this.endbossAppeared) {
-            this.level.endboss.x = this.level.endArrowPosition + 300; // Setze den Endboss etwas weiter hinten
-            this.endbossAppeared = true;
-            this.level.endboss.endbossAppeared = true; // Flag für Animation
+        if (this.character.x > 2000 && ! this.level.endboss.firstContactCharacter) {
+            // this.level.endboss.x = this.level.endArrowPosition + 300; // Setze den Endboss etwas weiter hinten
+            this.level.endboss.firstContactCharacter = true;
+           
         }
         });
     }
@@ -190,7 +188,7 @@ class World {
         this.level = newLevel; // Hier wird das Level gewechselt
         this.character.x = 0;
         this.camera_x = 0;
-        console.log('Level gewechselt', this.level);
+        console.log("Level gewechselt", this.level);
         this.fadeIn();
 
     }
@@ -212,21 +210,6 @@ class World {
     }
 
     draw(){
-        if(this.isFading){
-            return
-        } else if(this.canvasState === 'startscreen'){
-            //Brauche Bild für den Startscreen
-            //Brauche Button als Eventlistener, der den canvasState zu game ändert
-            //Vielleicht nochmal Methodenaufruf für draw dann?
-        }
-        
-        else if(this.canvasState === 'game'){
-            // if (this.character.isDead()) {
-            //     this.addToMap(this.gameOverImage);
-            //     // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            //     // this.ctx.drawImage(this.gameOverImage, this.canvas.width / 2 - 200, this.canvas.height / 2 - 100, 400, 200);
-            //     return; // kein weiteres Zeichnen nötig
-            // }
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
@@ -252,7 +235,6 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
 
         requestAnimationFrame( () => this.draw());
-        };
     }
 
     addObjectsToMap(objects){
@@ -265,7 +247,7 @@ class World {
         }
         mo.draw(this.ctx);
         // mo.drawFrame(this.ctx);
-        mo.drawOffsetFrame(this.ctx);
+        // mo.drawOffsetFrame(this.ctx);
         if(mo.otherDirection){
            this.flipImageBack(mo);
         }

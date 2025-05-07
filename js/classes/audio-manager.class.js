@@ -4,7 +4,7 @@ class AudioManager {
         this.length = length;
         this.audio = new Audio(src);
         this.volume = vol;
-        this.audioLoop = loop;
+        this.audioLoop = loop; //Boolean zur Wiederholung der Audiodatei
         console.log('GameOverSound:', this.audio);
     }
 
@@ -25,15 +25,15 @@ class AudioManager {
 
     stop() {
         this.audio.pause();
-        this.audio.currentTime = 0; // Setze die Wiedergabe auf den Anfang zurück
+        this.audio.currentTime = 0; // Wiedergabe zurücksetzen
     }
 
     setVolume(volume) {
-        this.audio.volume = Math.min(Math.max(volume, 0), 1); // Begrenze das Volume zwischen 0 und 1
+        this.audio.volume = Math.min(Math.max(volume, 0), 1); // Begrenzung zw. 0 und 1
     }
 
     getLength() {
-        return this.audio.duration; // Gibt die Länge der Audiodatei in Sekunden zurück
+        return this.audio.duration; // Länge der Audiodatei in Sekunden
     }
 
     isPlaying() {

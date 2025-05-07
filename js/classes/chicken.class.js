@@ -4,14 +4,14 @@ class Chicken extends MovableObject {
     isDead = false;
     isFading = false;
     IMAGES_WALKING =[
-        '../assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
-        '../assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
-        '../assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
+        "assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
+        "assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
+        "assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
     ];
 
-    IMAGE_DEAD = '../assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png';
+    IMAGE_DEAD = "/assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png";
 
-    IMAGE_GHOST = '../assets/img/3_enemies_chicken/chicken_ghost.png';
+    IMAGE_GHOST = "/assets/img/3_enemies_chicken/chicken_ghost.png";
    
     offset = {
         top: 8,
@@ -21,7 +21,7 @@ class Chicken extends MovableObject {
       }
 
     constructor(x, y, speed){
-        super().loadImage('assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
+        super().loadImage("assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -30,18 +30,18 @@ class Chicken extends MovableObject {
     }
 
     animate(){
-        this.animationIntervals['ChickenMovesLeft'] = setInterval(() => {
+        this.animationIntervals["ChickenMovesLeft"] = setInterval(() => {
            this.moveLeft();
         }, 1000 / 60);
-        this.animationIntervals['ChickenPlayAnimation'] = setInterval(() =>{
+        this.animationIntervals["ChickenPlayAnimation"] = setInterval(() =>{
             this.playAnimation(this.IMAGES_WALKING);
         }, 1000/ 6);
     }
 
     markAsDead() {
         this.isDead = true;
-        this.stopAnimation('ChickenMovesLeft');
-        this.stopAnimation('ChickenPlayAnimation');
+        this.stopAnimation("ChickenMovesLeft");
+        this.stopAnimation("ChickenPlayAnimation");
         this.loadImage(this.IMAGE_DEAD);
         setTimeout(() => {
             this.loadImage(this.IMAGE_GHOST);

@@ -3,14 +3,14 @@ class SmallChicken extends MovableObject {
     width = 30;
     isDead = false;
     IMAGES_WALKING =[
-        '../assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
-        '../assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png',
-        '../assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png',
+        "assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
+        "assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
+        "assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
     ];
     IMAGE_DEAD =
-        '../assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png';
+        "assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png";
     
-    IMAGE_GHOST = '../assets/img/3_enemies_chicken/chicken_ghost.png';
+    IMAGE_GHOST = "assets/img/3_enemies_chicken/chicken_ghost.png";
    
     offset = {
         top: 0,
@@ -19,7 +19,7 @@ class SmallChicken extends MovableObject {
         bottom: 0
       }
       constructor(x, y, speed){
-        super().loadImage('assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
+        super().loadImage("assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png");
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -28,18 +28,18 @@ class SmallChicken extends MovableObject {
     }
 
     animate(){
-        this.animationIntervals['smallChickenMovesLeft'] = setInterval(() => {
+        this.animationIntervals["smallChickenMovesLeft"] = setInterval(() => {
            this.moveLeft();
         }, 1000 / 60);
-       this.animationIntervals['smallChickenPlayAnimation'] = setInterval(() =>{
+       this.animationIntervals["smallChickenPlayAnimation"] = setInterval(() =>{
             this.playAnimation(this.IMAGES_WALKING);
         }, 1000/ 6);
     }
 
     markAsDead() {
         this.isDead = true;
-        this.stopAnimation('smallChickenMovesLeft'); // Stoppe die Animation
-        this.stopAnimation('smallChickenPlayAnimation'); // Stoppe die Animation
+        this.stopAnimation("smallChickenMovesLeft"); // Stoppe die Animation
+        this.stopAnimation("smallChickenPlayAnimation"); // Stoppe die Animation
         this.loadImage(this.IMAGE_DEAD);
         setTimeout(() => {
             this.loadImage(this.IMAGE_GHOST);

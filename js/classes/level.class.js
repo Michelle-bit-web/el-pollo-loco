@@ -5,7 +5,7 @@ class Level{
     collectableObjects;
     backgroundObjects;
     levelEndX = 2900;
-    difficulty = 'easy';
+    difficulty = "easy";
     endArrowPosition;
 
     constructor(levelSettings){
