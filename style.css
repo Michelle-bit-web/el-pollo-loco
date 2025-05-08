@@ -8,6 +8,12 @@
     text-decoration: none;
 }
 
+button:hover{
+    scale: 0.95;
+    cursor: pointer;
+    border: none;
+}
+
 html{
     height: 100vh;
 }
@@ -15,8 +21,7 @@ html{
 body{
     font-family: 'A Box For';
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
     background-image: url(./assets/img/background/desert.jpg);
     background-repeat: no-repeat;
     background-size: cover;
@@ -34,7 +39,7 @@ canvas {
     background-image: url(./assets/img/9_intro_outro_screens/start/startscreen_1.png);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     border-radius: 20px;
     position: relative;
 }
@@ -60,6 +65,20 @@ h1{
 
 #startButton:hover{
     background-color: rgb(169, 79, 24);
-    scale: 0.95;
+    cursor: pointer;
    
+}
+
+#sound_btn_img{
+    border-radius: 20px;
+    width: 30px;
+    height: 30px;
+}
+
+#sound_btn{
+    width: fit-content;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

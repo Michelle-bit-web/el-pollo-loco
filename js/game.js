@@ -40,3 +40,12 @@ window.addEventListener("keyup", event => {
         {keyboard[keyMap[event.keyCode]] = false;
         }
 });
+
+function toggleSoundEffect(){
+    let soundImage = document.getElementById("sound_btn_img");
+    if(soundImage.src.includes("sound-on.png")){
+    soundImage.src = "assets/img/icons/sound-off.png";
+    } else{
+    soundImage.src = "assets/img/icons/sound-on.png";
+    }
+}

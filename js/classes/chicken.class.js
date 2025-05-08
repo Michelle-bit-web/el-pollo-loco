@@ -44,6 +44,7 @@ class Chicken extends MovableObject {
         this.stopAnimation("ChickenPlayAnimation");
         this.loadImage(this.IMAGE_DEAD);
         setTimeout(() => {
+            // this.keyboard.SPACE = false;
             this.loadImage(this.IMAGE_GHOST);
             this.speedY = -10;
             this.acceleration = -1;

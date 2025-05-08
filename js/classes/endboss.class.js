@@ -10,6 +10,7 @@ class Endboss extends MovableObject{
     totalContacts = 0;
     speed = 2; 
     speedLevel = 1;
+    isJumping = false;
 
     IMAGES_WALKING =[
         "assets/img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -94,17 +95,31 @@ class Endboss extends MovableObject{
 
     updateSpeedBasedOnEnergy() {
         if (this.energy <= 50) {
-            this.speed += 0.5;
+            this.speed += 0.3;
             this.speedLevel = 2;
         }
-        else if (this.energy <= 25 && this.speedLevel == 2) {
-            this.speed += 0.5;
-        } 
+        if (this.energy <= 25 && this.speedLevel == 2) {
+            this.moveRight();
+            // if(!this.isJumping) {
+            //     this.jump();
+            // };
+        }; 
     }
 
+    jump(){
+        if (!this.isJumping) { // Verhindere mehrfaches Springen
+            this.isJumping = true; // Setze den Sprungstatus
+            this.speedY = 50; // Vertikalgeschwindigkeit nach oben
+            this.applyGravity(); // Gravitation wirken lassen
+    
+            setTimeout(() => {
+                this.isJumping = false; // Nach dem Sprungstatus zurücksetzen
+            }, 1000); // Nach 1 Sekunde kann der Boss erneut springen
+            this.moveTowardCharacter();
+        }
     // checkFirstContact() {
     //     return this.world.character.x > 2100 && !this.firstContactCharacter;
-    // }
+    }
 
     handleFirstContact() {
         this.firstContactCharacter = true;
@@ -141,7 +156,11 @@ class Endboss extends MovableObject{
 
     deadAnimation(){
         this.playAnimation(this.IMAGES_DEAD);
+
+        //---Timeout funktioniert nicht dazu---
+    //    setTimeout(() => {
         clearInterval(this.endbossInterval);
+    //     }   , 1000); // Warte 1 Sekunde, bevor die Funktion aufgerufen wird
     }
 
     takeDamage(amount) {
@@ -151,7 +170,7 @@ class Endboss extends MovableObject{
         };
         if (this.statusbar) {
             const percentage = (this.energy / 100) * 100;
-            console.log("[DEBUG] Aktualisiere Statusbar auf:", percentage); // Debug-Ausgabe
+            // console.log("[DEBUG] Aktualisiere Statusbar auf:", percentage); // Debug-Ausgabe
             this.statusbar.setPercentage(percentage);
         }
         if (this.energy <= 0) {

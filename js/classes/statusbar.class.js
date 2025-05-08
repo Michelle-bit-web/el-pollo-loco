@@ -69,7 +69,7 @@ class Statusbar extends DrawableObject{
 
     draw(ctx){
         let path = this.images[this.resolveImageIndex()]; //Da wird immer das aktuelle Bild geladen
-        console.log("[DEBUG] draw() wird ausgeführt. Bildpfad:", path);
+        // console.log("[DEBUG] draw() wird ausgeführt. Bildpfad:", path);
         this.img = this.imageCache[path];
        super.draw(ctx);
     }
