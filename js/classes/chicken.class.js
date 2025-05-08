@@ -9,9 +9,9 @@ class Chicken extends MovableObject {
         "assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
     ];
 
-    IMAGE_DEAD = "/assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png";
+    IMAGE_DEAD = "assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png";
 
-    IMAGE_GHOST = "/assets/img/3_enemies_chicken/chicken_ghost.png";
+    IMAGE_GHOST = "assets/img/3_enemies_chicken/chicken_ghost.png";
    
     offset = {
         top: 8,

@@ -125,6 +125,7 @@ class Endboss extends MovableObject{
         this.firstContactCharacter = true;
         this.statusbar = new Statusbar("energyEndboss", 500, 5);
         this.playAnimation(this.IMAGES_ALERT);
+        this.world.controlEnabled = true;
     }
 
     hurtAnimation(){
@@ -160,6 +161,7 @@ class Endboss extends MovableObject{
         //---Timeout funktioniert nicht dazu---
     //    setTimeout(() => {
         clearInterval(this.endbossInterval);
+        this.world.fightScene = false;
     //     }   , 1000); // Warte 1 Sekunde, bevor die Funktion aufgerufen wird
     }
 

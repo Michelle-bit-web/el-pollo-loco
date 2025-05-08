@@ -119,7 +119,9 @@ class Character extends MovableObject {
         this.lastTimeMoved = new Date().getTime(); 
       }
       //Camera focus on character
-      this.world.camera_x = -this.x + 100;
+      if(!this.world.fightScene){
+        this.world.camera_x = -this.x + 100;
+      }
     }, 1000 / 30);
 
     //Imgage for different animation types

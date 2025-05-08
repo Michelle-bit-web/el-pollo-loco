@@ -26,26 +26,26 @@ function startGame() {
 function loadGame() {
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard);
-}
-
 
 window.addEventListener("keydown", event => {
-    if (keyMap[event.keyCode]) {
+    if (world.controlEnabled && keyMap[event.keyCode]) {
         keyboard[keyMap[event.keyCode]] = true;
     }
 });
 
 window.addEventListener("keyup", event => {
-    if (keyMap[event.keyCode]) 
+    if (world.controlEnabled &&keyMap[event.keyCode]) 
         {keyboard[keyMap[event.keyCode]] = false;
         }
 });
 
+}
+
 function toggleSoundEffect(){
     let soundImage = document.getElementById("sound_btn_img");
-    if(soundImage.src.includes("sound-on.png")){
+    if(soundImage.src.includes("sound-on-blk.png")){
     soundImage.src = "assets/img/icons/sound-off.png";
     } else{
-    soundImage.src = "assets/img/icons/sound-on.png";
+    soundImage.src = "assets/img/icons/sound-on-blk.png";
     }
 }

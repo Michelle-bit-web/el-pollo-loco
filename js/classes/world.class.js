@@ -6,6 +6,8 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    controlEnabled = true;
+    fightScene = false;
     isFading = false
     energyStatusbar = new Statusbar("energy", 10, 5);
     coinStatusbar = new Statusbar("coin", 10, 45);
@@ -160,12 +162,30 @@ class World {
                 });
             };
 
-        if (this.character.x > 2000 && ! this.level.endboss.firstContactCharacter) {
+        if (this.character.x > (this.level.endboss.x - 800) && ! this.level.endboss.firstContactCharacter) {
             // this.level.endboss.x = this.level.endArrowPosition + 300; // Setze den Endboss etwas weiter hinten
+            // Steuerung deaktivieren
+            this.controlEnabled = false;
+
+            // Kamera auf Endboss fokussieren
+            const endbossX = this.level.endboss.x;
+            this.focusCameraOnEndboss(endbossX);
             this.level.endboss.firstContactCharacter = true;
-           
         }
         });
+    }
+    focusCameraOnEndboss(endbossX) {
+        this.fightScene = true;
+        console.log(this.fightScene, this.camera_x)
+        this.cameraIntervalEndboss = setInterval(()=>{
+            if(this.camera_x < endbossX - 400){
+                this.camera_x += 10;
+            }
+        }, 1000);
+        if (this.camera_x = endbossX - 400){
+            clearInterval(this.cameraIntervalEndboss);
+            this.camera_x = -endbossX + 400;
+        }
     }
 
     fadeToBlack(callback) {
@@ -211,11 +231,17 @@ class World {
 
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        if(this.controlEnabled){
         this.ctx.translate(this.camera_x, 0);
+        }
+
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
 
+        if(this.controlEnabled){
         this.ctx.translate(-this.camera_x, 0);
+        }
         // ---- Space for fixed objects ----
         this.addToMap(this.energyStatusbar); //To move statusbar relative to camera
         this.addToMap(this.coinStatusbar);
@@ -223,7 +249,9 @@ class World {
         if (this.level.endboss.statusbar) {
             this.addToMap(this.level.endboss.statusbar);
         }
+       if(this.controlEnabled){
         this.ctx.translate(this.camera_x, 0);
+        }
         
         this.addToMap(this.character);
         
@@ -232,7 +260,9 @@ class World {
         this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.collectableObjects);
 
-        this.ctx.translate(-this.camera_x, 0);
+        if(this.controlEnabled){
+            this.ctx.translate(-this.camera_x, 0);
+            }
 
         requestAnimationFrame( () => this.draw());
     }
