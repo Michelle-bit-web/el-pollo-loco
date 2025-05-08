@@ -1,5 +1,5 @@
 let canvas;
-let world;
+let backgroundMusic = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.5, true, 1)
 let keyboard = new Keyboard();
 const keyMap = {
     37: "LEFT",
@@ -11,6 +11,34 @@ const keyMap = {
 };
 
 function init() {
+    const audioPrompt = document.getElementById("audio_prompt");
+    const promptContainer = document.getElementById("div_prompt");
+    let alpha = 1;
+    let fadingOut = true;
+    let firstUIInterval = setInterval(() => {
+        if (fadingOut) {
+            alpha -= 0.05; // Transparenz verringern
+            if (alpha <= 0) {
+                alpha = 0;
+                fadingOut = false; // Richtung ändern, wenn vollständig transparent
+            }
+        } else {
+            alpha += 0.05; // Transparenz erhöhen
+            if (alpha >= 1) {
+                alpha = 1;
+                fadingOut = true; // Richtung ändern, wenn vollständig sichtbar
+            }
+        }
+        audioPrompt.style.opacity = alpha; // Aktualisiere die Transparenz
+    }, 50); // Aktualisierung alle 50ms für flüssige Animation
+
+    document.addEventListener("keydown", () => {
+        backgroundMusic.play();
+        console.log("Hintergrundmusik gestartet.");
+        clearInterval(firstUIInterval);
+        audioPrompt.style.display = "none";
+        promptContainer.style.display = "none";
+    }, { once: true }); // Der Listener wird nur einmal ausgeführt
  // Zeige das Canvas
 //  const canvasElement = document.getElementById("canvas");
 //  canvasElement.style.display = "block";

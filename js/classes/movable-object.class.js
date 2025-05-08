@@ -8,7 +8,7 @@ class MovableObject extends DrawableObject{
   bottles = 0;
   lastHit = 0;
   animationIntervals = {};
-  levelEndX = 3300;
+  levelEndX = 3800;
 
   moveRight() {
     this.x += this.speed;
@@ -16,6 +16,14 @@ class MovableObject extends DrawableObject{
 
   moveLeft() {
     this.x -= this.speed;
+  }
+
+  automaticMovement(obj){
+    automaticMoveInterval = setInterval(() => {
+     obj.moveRight();
+     obj.playAnimation(this.IMAGES_WALKING);
+     console.log('automatische Bewegung');
+    }, 1000 / 60);
   }
 
   playAnimation(images) {

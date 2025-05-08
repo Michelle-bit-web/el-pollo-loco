@@ -13,8 +13,9 @@ class World {
     coinStatusbar = new Statusbar("coin", 10, 45);
     bottleStatusbar = new Statusbar("bottle", 10, 85);
     throwableObjects = [];
-    // gameSounds = {
-    //     backgroundMusic: null,
+    gameSounds = {
+        backgroundMusic: new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.5, true, 1),
+
     //     chickenSound:new AudioManager("/assets/audio/background/mixkit-chickens-and-pigeons-1769.wav", 0.5, true, 1),
     //     jumpSound: null,
     //     coinSound: null,
@@ -25,7 +26,7 @@ class World {
     //     hurtSound: null,
     //     walkingSound: new AudioManager("/assets/audio/walk/mixkit-footsteps-in-woods-loop-533.wav", 0.5, false, 1),
     //     gameOverSound: new AudioManager("/assets/audio/game-over/mixkit-player-losing-or-failing-2042.wav", 0.5, false, 10)
-    // }
+    }
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext("2d");
@@ -34,6 +35,8 @@ class World {
         this.setWorld();
         this.draw();
         this.run();
+
+        // this.gameSounds.backgroundMusic.play(); //gut als Intro vor dem Spielstart
         // this.gameSounds.chickenSound.play();
 
         // this.loadGameOverImage(); //Dazu gehören noch js26 & js211
@@ -154,13 +157,17 @@ class World {
                 // this.generateNewCollectable();
                 this[`collectableObjectsGenerated${index}`] = true; 
             };
-            if(this.character.x >= this.level.levelEndX){
-                // this.generateNewCollectable();
-                console.log("Level beendet, Übergang zu neuem Level...");
-                this.fadeToBlack(() => {
-                    this.changeLevel(level2); // Lade das neue Level
-                });
-            };
+
+            //---Hier für das Fading nach Spielende---
+            // Optimierung: Noch Timeout anstatt nur Position & Einblenden des Endscreens für Punkte, Restart usw
+
+            // if(this.character.x >= this.level.levelEndX){
+            //     // this.generateNewCollectable();
+            //     console.log("Level beendet, Übergang zu neuem Level...");
+            //     this.fadeToBlack(() => {
+            //         this.changeLevel(level2); // Lade das neue Level
+            //     });
+            // };
 
         if (this.character.x > (this.level.endboss.x - 800) && ! this.level.endboss.firstContactCharacter) {
             // this.level.endboss.x = this.level.endArrowPosition + 300; // Setze den Endboss etwas weiter hinten
@@ -172,20 +179,26 @@ class World {
             this.focusCameraOnEndboss(endbossX);
             this.level.endboss.firstContactCharacter = true;
         }
-        });
+        if(this.level.endboss.energy <= 0 && (this.levelEndX - 800) > this.character.x && this.character.x >= this.level.endArrowPosition + 250){
+            
+              this.character.automaticMovement(this.character);
+        
+        };
+    });
     }
+
     focusCameraOnEndboss(endbossX) {
         this.fightScene = true;
-        console.log(this.fightScene, this.camera_x)
+        console.log("character-x", this.character.x, "boolean fightScene", this.fightScene, "camera position",this.camera_x)
         this.cameraIntervalEndboss = setInterval(()=>{
-            if(this.camera_x < endbossX - 400){
+            if(this.camera_x < -endbossX + 400){
                 this.camera_x += 10;
-            }
-        }, 1000);
-        if (this.camera_x = endbossX - 400){
+            } 
+        }, 1000/60);
+        if (this.camera_x >= (-endbossX + 400)){
             clearInterval(this.cameraIntervalEndboss);
             this.camera_x = -endbossX + 400;
-        }
+        };
     }
 
     fadeToBlack(callback) {
@@ -253,12 +266,12 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         }
         
-        this.addToMap(this.character);
-        
         this.addToMap(this.level.endboss);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.collectableObjects);
+
+        this.addToMap(this.character);
 
         if(this.controlEnabled){
             this.ctx.translate(-this.camera_x, 0);

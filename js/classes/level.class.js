@@ -4,7 +4,7 @@ class Level{
     clouds;
     collectableObjects;
     backgroundObjects;
-    levelEndX = 3300;
+    levelEndX = 3800;
     difficulty = "easy";
     endArrowPosition;
 
