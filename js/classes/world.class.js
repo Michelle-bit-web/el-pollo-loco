@@ -144,7 +144,11 @@ class World {
     checkIsThrowing(){
         if(this.keyboard.THROW)  this.character.lastTimeMoved = new Date().getTime();
         if (this.keyboard.THROW && this.character.bottles > 0) {
-            let bottle = new ThrowableObject(this.character.x, this.character.y);
+            let bottle = new ThrowableObject(
+                this.character.x, 
+                this.character.y,
+               this.character.otherDirection
+            );
             this.throwableObjects.push(bottle);
             this.changeStatusbar(this.bottleStatusbar, -1);
         }
@@ -199,6 +203,10 @@ class World {
         if (this.camera_x >= (-endbossX + 400)){
             clearInterval(this.cameraIntervalEndboss);
             this.camera_x = -endbossX + 400;
+              // Automatically move character to Endboss
+            this.character.automaticMovement(this.level.endboss.x - 100, () => {
+            this.controlEnabled = true; // Enable fight mode
+        });
         };
     }
 
@@ -217,6 +225,25 @@ class World {
         }, 50);
        // Aktualisierung alle 50ms (20 FPS)
     }
+
+    displayEndScreen(isWin) {
+    const overlay = document.getElementById("game-over-overlay");
+    const message = isWin ? "You Win!" : "Game Over!";
+    const buttonText = isWin ? "Play Again" : "Back to Start";
+    overlay.innerHTML = `
+        <h1>${message}</h1>
+        <button id="play-again">${buttonText}</button>
+    `;
+    overlay.style.display = "block";
+
+    document.getElementById("play-again").addEventListener("click", () => {
+        if (isWin) {
+            this.resetGame(); // Reset the game state
+        } else {
+            window.location.reload(); // Reload the page
+        }
+    });
+}
 
     changeLevel(newLevel){
         this.level = newLevel; // Hier wird das Level gewechselt

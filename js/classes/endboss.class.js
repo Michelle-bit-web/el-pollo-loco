@@ -93,18 +93,27 @@ class Endboss extends MovableObject{
         }, 100);
     }
 
+    // updateSpeedBasedOnEnergy() {
+    //     if (this.energy <= 50) {
+    //         this.speed += 0.3;
+    //         this.speedLevel = 2;
+    //     }
+    //     if (this.energy <= 25 && this.speedLevel == 2) {
+    //         this.moveRight();
+    //         // if(!this.isJumping) {
+    //         //     this.jump();
+    //         // };
+    //     }; 
+    // }
+
     updateSpeedBasedOnEnergy() {
-        if (this.energy <= 50) {
-            this.speed += 0.3;
-            this.speedLevel = 2;
-        }
-        if (this.energy <= 25 && this.speedLevel == 2) {
-            this.moveRight();
-            // if(!this.isJumping) {
-            //     this.jump();
-            // };
-        }; 
+    if (this.energy <= 50 && !this.hasJumped) {
+        this.jump(); // Endboss jumps once
+        this.hasJumped = true;
+    } else {
+        this.moveTowardCharacter(); // Continue attacking
     }
+}
 
     jump(){
         if (!this.isJumping) { // Verhindere mehrfaches Springen
@@ -155,15 +164,26 @@ class Endboss extends MovableObject{
         }
     }
 
-    deadAnimation(){
-        this.playAnimation(this.IMAGES_DEAD);
+    // deadAnimation(){
+    //     this.playAnimation(this.IMAGES_DEAD);
 
-        //---Timeout funktioniert nicht dazu---
-    //    setTimeout(() => {
-        clearInterval(this.endbossInterval);
-        this.world.fightScene = false;
-    //     }   , 1000); // Warte 1 Sekunde, bevor die Funktion aufgerufen wird
-    }
+    //     //---Timeout funktioniert nicht dazu---
+    // //    setTimeout(() => {
+    //     clearInterval(this.endbossInterval);
+    //     this.world.fightScene = false;
+    // //     }   , 1000); // Warte 1 Sekunde, bevor die Funktion aufgerufen wird
+    // }
+
+    deadAnimation() {
+    const deadInterval = setInterval(() => {
+        this.playAnimation(this.IMAGES_DEAD);
+    }, 500); // Slow down the animation
+
+    setTimeout(() => {
+        clearInterval(deadInterval);
+        this.world.displayEndScreen(true); // Display win screen
+    }, 3000); // Play animation for 3 seconds
+}
 
     takeDamage(amount) {
         this.energy -= amount;
@@ -175,10 +195,10 @@ class Endboss extends MovableObject{
             // console.log("[DEBUG] Aktualisiere Statusbar auf:", percentage); // Debug-Ausgabe
             this.statusbar.setPercentage(percentage);
         }
-        if (this.energy <= 0) {
-            this.playAnimation(this.IMAGES_DEAD);
-            this.gameSounds.endbossIntroSound.stop();
-        } 
+        // if (this.energy <= 0) {
+        //     this.playAnimation(this.IMAGES_DEAD);
+        //     this.gameSounds.endbossIntroSound.stop();
+        // } 
     }
 
     moveTowardCharacter() {

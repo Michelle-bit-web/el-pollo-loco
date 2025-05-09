@@ -18,14 +18,25 @@ class MovableObject extends DrawableObject{
     this.x -= this.speed;
   }
 
-  automaticMovement(obj){
-    automaticMoveInterval = setInterval(() => {
-     obj.moveRight();
-     obj.playAnimation(this.IMAGES_WALKING);
-     console.log('automatische Bewegung');
+  // automaticMovement(obj){
+  //   automaticMoveInterval = setInterval(() => {
+  //    obj.moveRight();
+  //    obj.playAnimation(this.IMAGES_WALKING);
+  //    console.log('automatische Bewegung');
+  //   }, 1000 / 60);
+  // }
+
+  automaticMovement(targetX, callback) {
+    const interval = setInterval(() => {
+        if (this.x < targetX) {
+            this.moveRight();
+        } else {
+            clearInterval(interval);
+            callback();
+        }
     }, 1000 / 60);
   }
-
+  
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
@@ -116,5 +127,4 @@ stopAllAnimations(path) {
     return this.energy == 0;
   }
 
-  sleep(){}
 }
