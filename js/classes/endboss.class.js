@@ -130,6 +130,13 @@ class Endboss extends MovableObject{
     //     return this.world.character.x > 2100 && !this.firstContactCharacter;
     }
 
+    onLand() {
+    // Character wird bei Landung in die Luft geworfen
+    if (this.world.character.isColliding(this)) {
+        this.world.character.jump(45); // Character springt
+    }
+}
+
     handleFirstContact() {
         this.firstContactCharacter = true;
         this.statusbar = new Statusbar("energyEndboss", 500, 5);
@@ -143,6 +150,11 @@ class Endboss extends MovableObject{
     }
 
     attackAnimation(){
+        if(this.energy <= 0){
+            this.stopAllAnimations();
+            return;
+        }
+
         this.moveTowardCharacter();
         this.playAnimation(this.IMAGES_ATTACK);
     }
@@ -153,12 +165,12 @@ class Endboss extends MovableObject{
         // Bewege den Boss basierend auf der Richtung
         if (!this.otherDirection) {
             this.moveLeft();
-            if (this.x <= 2000) { // Grenze links
+            if (this.x <= 2100) { // Grenze links
                 this.otherDirection = true; // Richtung wechseln
             }
         } else {
             this.moveRight();
-            if (this.x >= 2500) { // Grenze rechts
+            if (this.x >= 2700) { // Grenze rechts
                 this.otherDirection = false; // Richtung wechseln
             }
         }
@@ -175,16 +187,23 @@ class Endboss extends MovableObject{
     // }
 
     deadAnimation() {
-    const deadInterval = setInterval(() => {
+        clearInterval(this.endbossInterval);
+        this.world.gameSounds.endbossIntroSound.stop(); 
+        this.stopAllAnimations();
+
+        let frameCount = 0; // Anzahl der Abspielungen der Animation
+
+        const deadInterval = setInterval(() => {
         this.playAnimation(this.IMAGES_DEAD);
-    }, 500); // Slow down the animation
-
-    setTimeout(() => {
-        clearInterval(deadInterval);
-        this.world.displayEndScreen(true); // Display win screen
-    }, 3000); // Play animation for 3 seconds
+        frameCount++;
+        if (frameCount >= 4 ) { // Animation 3 Sekunden lang
+            clearInterval(deadInterval);
+            this.loadImage("assets/img/4_enemie_boss_chicken/5_dead/G26.png");
+            this.world.fightScene = false;
+        }
+    }, 1000); // Animation alle 500ms
+   
 }
-
     takeDamage(amount) {
         this.energy -= amount;
         if (this.energy <= 0){

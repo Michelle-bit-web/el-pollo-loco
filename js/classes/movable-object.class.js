@@ -34,7 +34,7 @@ class MovableObject extends DrawableObject{
             clearInterval(interval);
             callback();
         }
-    }, 1000 / 60);
+    }, 800);
   }
   
   playAnimation(images) {
@@ -59,13 +59,19 @@ stopAllAnimations(path) {
     for (let key in this.animationIntervals) {
         clearInterval(this.animationIntervals[key]);
         delete this.animationIntervals[key];
-    }if (path) {
+    };
+    clearInterval(this.endbossInterval); 
+    if (path) {
       this.loadImage(path); // Setze ein statisches Bild (optional)
   }
 }
 
-  jump() {
-    this.speedY = 30;
+  jump(higherJump) {
+   if(higherJump == undefined){
+     this.speedY = 30;
+   }else{
+    this.speedY = higherJump;
+   }
   }
   
   isColliding(mo) {
@@ -96,13 +102,22 @@ stopAllAnimations(path) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration; 
       }
+      // Endboss landet 30px höher als der Boden
+        if (this instanceof Endboss && this.y > 120) { 
+            this.y = 120; // Setze Endboss auf höhere Bodenposition
+            this.speedY = 0; // Beende Gravitation
+            this.onLand(); // Trigger für Landung
+        }
     }, 1000 / 25);
   }
 
   isAboveGround() {
     if((this instanceof ThrowableObject)){
       return true
-    }else{
+    } 
+    if (this instanceof Endboss) {
+        return this.y < 120; // Endboss landet 30px höher
+    } else{
       return this.y < 150;
     }
     

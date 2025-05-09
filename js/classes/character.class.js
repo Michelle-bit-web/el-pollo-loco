@@ -163,8 +163,10 @@ class Character extends MovableObject {
             clearInterval(fallInterval);
           }
         }, 1000 / 60);
+        this.world.displayEndScreen("characterIsDead");
       }
     }, 1000 / 30);
+    
   }
 
   checkMovementStatus(){

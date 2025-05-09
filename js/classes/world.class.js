@@ -76,7 +76,7 @@ class World {
                 this.character.hit(enemy);
                 this.changeStatusbar(this.energyStatusbar, -2)
             }
-        });
+        }); 
         
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if (!bottle.isSplashing && bottle.isColliding(this.level.endboss)) {
@@ -87,8 +87,12 @@ class World {
                 this.level.endboss.takeDamage(20);
                 console.log("[DEBUG] Nach takeDamage:", this.level.endboss.energy);
             }
-        });
-    }
+    });
+    if((this.character.height < this.level.endboss.y) && this.character.isColliding(this.level.endboss)){
+                console.log("Enemy hit on jumping!");
+                  this.level.endboss.takeDamage(20);
+        };
+}
 
     checkCollisionsThrowableObjects(){
        this.level.enemies.forEach((enemy, enemyIndex) => {
@@ -155,7 +159,7 @@ class World {
     }
 
     checkCharacterDistance(){
-        const treshold = [0, 800, 1600, 2800];
+        const treshold = [0, 800, 1600, 2800, this.level.endArrowPosition];
         treshold.forEach((treshold, index) =>{ //if-Abfrage: wenn noch nicht genereriert wurde
             if(this.character.x > treshold && !this[`collectableObjectsGenerated${index}`]){
                 // this.generateNewCollectable();
@@ -165,13 +169,13 @@ class World {
             //---Hier für das Fading nach Spielende---
             // Optimierung: Noch Timeout anstatt nur Position & Einblenden des Endscreens für Punkte, Restart usw
 
-            // if(this.character.x >= this.level.levelEndX){
-            //     // this.generateNewCollectable();
-            //     console.log("Level beendet, Übergang zu neuem Level...");
-            //     this.fadeToBlack(() => {
-            //         this.changeLevel(level2); // Lade das neue Level
-            //     });
-            // };
+            if(this.character.x >= this.level.levelEndX){
+                // this.generateNewCollectable();
+                console.log("Level beendet, Übergang zu neuem Level...");
+                this.fadeToBlack(() => {
+                    this.changeLevel(level2); // Lade das neue Level
+                });
+            };
 
         if (this.character.x > (this.level.endboss.x - 800) && ! this.level.endboss.firstContactCharacter) {
             // this.level.endboss.x = this.level.endArrowPosition + 300; // Setze den Endboss etwas weiter hinten
@@ -189,6 +193,7 @@ class World {
               this.character.automaticMovement(this.character);
             
         };
+        
     });
     }
 
@@ -204,9 +209,11 @@ class World {
             clearInterval(this.cameraIntervalEndboss);
             this.camera_x = -endbossX + 400;
               // Automatically move character to Endboss
-            this.character.automaticMovement(this.level.endboss.x - 100, () => {
-            this.controlEnabled = true; // Enable fight mode
+           setTimeout(() => {
+             this.character.automaticMovement(this.level.endboss.x - 200, () => {
+             this.controlEnabled = true; // Enable fight mode
         });
+           }, 1000);
         };
     }
 
@@ -223,25 +230,42 @@ class World {
                 this.isFading = false; // Setze den Fade-Zustand zurück
             }
         }, 50);
+        if(this.level.endboss.energy == 0){
+              this.world.displayEndScreen("endbossIsDead"); // Overlay anzeigen
+        }
        // Aktualisierung alle 50ms (20 FPS)
     }
 
-    displayEndScreen(isWin) {
+    displayEndScreen(deadObj) {
     const overlay = document.getElementById("game-over-overlay");
-    const message = isWin ? "You Win!" : "Game Over!";
-    const buttonText = isWin ? "Play Again" : "Back to Start";
+    let message = "";
+    let imageSrc = "";
+
+    // Entscheide basierend auf dem Zustand, welche Nachricht und welches Bild angezeigt werden soll
+    if (deadObj === "characterIsDead") {
+        message = "Game Over!";
+        imageSrc = "assets/img/You won, you lost/Game over A.png";
+    } else if (deadObj === "endbossIsDead") {
+        message = "You Win!";
+        imageSrc = "assets/img/You won, you lost/You Win A.png";
+    }
+
+    // Setze den Hintergrund und den Text des Overlays
+    overlay.style.backgroundImage = `url(${imageSrc})`;
     overlay.innerHTML = `
         <h1>${message}</h1>
-        <button id="play-again">${buttonText}</button>
+        <button id="play-again">Play Again</button>
+        <button id="back-to-start">Back To Start</button>
     `;
     overlay.style.display = "block";
 
+    // Event-Listener für die Buttons
     document.getElementById("play-again").addEventListener("click", () => {
-        if (isWin) {
-            this.resetGame(); // Reset the game state
-        } else {
-            window.location.reload(); // Reload the page
-        }
+        this.resetGame(); // Spiel zurücksetzen
+    });
+
+    document.getElementById("back-to-start").addEventListener("click", () => {
+        window.location.reload(); // Seite neu laden
     });
 }
 
