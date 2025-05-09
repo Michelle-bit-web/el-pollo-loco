@@ -14,12 +14,12 @@ class World {
     bottleStatusbar = new Statusbar("bottle", 10, 85);
     throwableObjects = [];
     gameSounds = {
-        backgroundMusic: new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.5, true, 1),
+        backgroundMusicGeneral: new AudioManager("assets/audio/background/Slower_Version-2023-05-15_-_Chicken_Chase_-_www.FesliyanStudios.com.mp3", 0.5, true, 1),
 
     //     chickenSound:new AudioManager("/assets/audio/background/mixkit-chickens-and-pigeons-1769.wav", 0.5, true, 1),
     //     jumpSound: null,
     //     coinSound: null,
-    //     endbossIntroSound: new AudioManager("/assets/audio/endboss-intro/mixkit-big-cinematic-impact-788.mp3", 0.5, false, 1),
+        endbossIntroSound: new AudioManager("assets/audio/endboss-intro/2019-05-09_-_Escape_Chase_-_David_Fesliyan.mp3", 0.5, false, 1),
     //     endbossAttackSound: new AudioManager("/assets/audio/endboss/mixkit-cock-cry-1761.wav", 0.5, false, 1),
     //     throwingSound: null,
     //     splashSound: new AudioManager("/assets/audio/hurt/mixkit-player-hurt-2040.wav", 0.5, false, 1),
@@ -36,7 +36,7 @@ class World {
         this.draw();
         this.run();
 
-        // this.gameSounds.backgroundMusic.play(); //gut als Intro vor dem Spielstart
+        this.gameSounds.backgroundMusicGeneral.play();
         // this.gameSounds.chickenSound.play();
 
         // this.loadGameOverImage(); //Dazu gehören noch js26 & js211
@@ -173,7 +173,8 @@ class World {
             // this.level.endboss.x = this.level.endArrowPosition + 300; // Setze den Endboss etwas weiter hinten
             // Steuerung deaktivieren
             this.controlEnabled = false;
-
+            this.gameSounds.backgroundMusicGeneral.stop();
+            this.gameSounds.endbossIntroSound.play();
             // Kamera auf Endboss fokussieren
             const endbossX = this.level.endboss.x;
             this.focusCameraOnEndboss(endbossX);
@@ -182,7 +183,7 @@ class World {
         if(this.level.endboss.energy <= 0 && (this.levelEndX - 800) > this.character.x && this.character.x >= this.level.endArrowPosition + 250){
             
               this.character.automaticMovement(this.character);
-        
+            
         };
     });
     }

@@ -1,5 +1,5 @@
 let canvas;
-let backgroundMusic = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.5, true, 1)
+let backgroundMusicIntro = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.5, true, 1)
 let keyboard = new Keyboard();
 const keyMap = {
     37: "LEFT",
@@ -33,7 +33,7 @@ function init() {
     }, 50); // Aktualisierung alle 50ms für flüssige Animation
 
     document.addEventListener("keydown", () => {
-        backgroundMusic.play();
+        backgroundMusicIntro.play();
         console.log("Hintergrundmusik gestartet.");
         clearInterval(firstUIInterval);
         audioPrompt.style.display = "none";
@@ -45,6 +45,7 @@ function init() {
 }
 
 function startGame() {
+    backgroundMusicIntro.stop();
     const startButton = document.getElementById("startButton");
     startButton.style.display = "none";
     // new Audio("../assets/audio/game-start/mixkit-retro-game-notification-212.wav").play()
