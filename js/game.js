@@ -12,8 +12,25 @@ let alpha = 1;
 function init() {
     getFromLocalStorage();
     startPrompt();
-
+     // Geräteabhängig Events hinzufügen
+    if (isTouchDevice()) {
+        console.log("Touch device detected. Initializing touch events...");
+        touchEvents();
+    } else {
+        console.log("Non-touch device detected. Initializing keyboard events...");
+        keyboardEvents();
+    }
 }
+
+// Funktion zur Erkennung von Touch-Geräten
+function isTouchDevice() {
+    return (
+        "ontouchstart" in window || // Prüft, ob das Gerät Touch-Events unterstützt
+        navigator.maxTouchPoints > 0 || // Für neuere Geräte mit mehreren Touchpunkten
+        navigator.msMaxTouchPoints > 0 // Für ältere Microsoft-Geräte
+    );
+}
+
 
 function startGame() {
     soundStartScreen.stop();
@@ -25,7 +42,6 @@ function startGame() {
 function loadLevel() {
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard, level1);
-    keyboardEvents();
 }
 
 

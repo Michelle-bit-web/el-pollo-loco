@@ -30,9 +30,10 @@ function keyboardEvents(){
 }
 
 function touchEvents(){
-    const action = getButtonId()
-    const button = document.getElementById(action);
-
+    let action;
+    Object.values(buttonMap).forEach(buttonId => {
+    const button = document.getElementById(`${buttonId}`);
+    console.log(button);
     button.addEventListener("touchstart", event => {
         event.preventDefault(); //to prevent other standard actions for this event-type by browser
         keyboard[action] = true;
@@ -41,8 +42,5 @@ function touchEvents(){
          event.preventDefault();
         keyboard[action] = false;
     });
-}
-
-function getButtonId(){
-   return Object.keys(buttonMap).forEach(buttonId => buttonMap[buttonId])
+});  
 }
