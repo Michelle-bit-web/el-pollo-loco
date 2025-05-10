@@ -37,7 +37,8 @@ function touchEvents(){
         event.preventDefault(); //to prevent other standard actions for this event-type by browser
         keyboard[action] = true;
     });
-    button.addEventListener("touchend", () => {
+    button.addEventListener("touchend", event => {
+         event.preventDefault();
         keyboard[action] = false;
     });
 }

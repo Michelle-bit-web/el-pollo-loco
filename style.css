@@ -47,6 +47,7 @@ a{
 
 canvas {
     background-color: black;
+    display: block;
     background-image: url(./assets/img/9_intro_outro_screens/start/startscreen_1.png);
     background-position: center;
     background-repeat: no-repeat;
@@ -148,11 +149,30 @@ h1{
 
 .panel{
     width: 100%;
-    display: flex;
+    display: flex; /*wirkt leider nicht mit space-between weil position fixed benutzt wird*/
     justify-content: space-between;
 }
 
 .panel-wrapper{
     display: flex;
     justify-content: space-between;
+}
+
+/*Smartphones ----*/
+@media only screen and (max-width: 720px){
+    canvas{
+        width: 100%;
+    }
+}
+
+/*Smartphones ----*/
+@media only screen and (max-height: 480px){
+    canvas{
+        height: 100vh;
+    }
+    h1, 
+    footer,
+    #startButton{
+        display: none;
+    }
 }
