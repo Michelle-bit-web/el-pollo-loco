@@ -66,7 +66,7 @@ function startMusic(audioPrompt){
     const promptContainer = document.getElementById("div_prompt");
 
     document.addEventListener("keydown", () => {
-        soundStartScreen.play();
+        playSounds(soundStartScreen);
         stopAllIntervals();
         audioPrompt.style.display = "none";
         promptContainer.style.display = "none";
@@ -78,12 +78,22 @@ function stopAllIntervals(){
     intervals = [];
 }
 
-function toggleSoundEffect(){
+function switchSoundSetting(){
     let soundImage = document.getElementById("sound_btn_img");
     if(soundImage.src.includes("sound-on-blk.png")){
     soundImage.src = "assets/img/icons/sound-off.png";
+    muteSounds(soundStartScreen);
     } else{
     soundImage.src = "assets/img/icons/sound-on-blk.png";
+    playSounds(soundStartScreen);
     }
+}
+
+function muteSounds(audio){
+   audio.pause();
+}
+
+function playSounds(audio){
+    audio.play();
 }
 
