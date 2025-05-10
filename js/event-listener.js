@@ -34,7 +34,7 @@ function touchEvents(){
     const button = document.getElementById(action);
 
     button.addEventListener("touchstart", event => {
-        event.preventDefault();
+        event.preventDefault(); //to prevent other standard actions for this event-type by browser
         keyboard[action] = true;
     });
     button.addEventListener("touchend", () => {

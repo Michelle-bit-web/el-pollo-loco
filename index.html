@@ -31,14 +31,36 @@
 <body onload="init()">
     <h1>El pollo loco </h1>
     <div id="div_prompt">
-        <p id="audio_prompt">Press any key</p>
+        <p id="prompt-overlay">Press any key</p>
     </div>
     <div>
         <button id="startButton" onclick="startGame()">Start Game</button>
-        <button id="sound_btn" onclick="toggleSoundEffect()"><img id="sound_btn_img" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option"></button>
     </div>
     <canvas id="canvas" width="720" height="480"></canvas>
     <div id="game-over-overlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; text-align: center; padding-top: 20%;">
+    </div>
+    <div class="overlay">
+        <div id="mobile-overlay" class="mobile-overlay">
+            <div class="panel">
+                 <button id="sound_btn" onclick="toggleSoundEffect()">
+                    <img id="sound_btn_img" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option">
+                </button>
+                <button></button>
+            </div>
+            <div class="panel">
+                <div class="panel-wrapper">
+                    <button id="LEFT">&larr;</button>
+                    <button id="RIGHT">&rarr;</button>
+                </div>
+                <div class="panel-wrapper">
+                   
+                    <button id="JUMP">&uarr;</button>
+                    <button id="THROW">
+                        <img class="throw-img" src="./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png" alt="">
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
     <footer>
         <a href="./impressum.html">Impressum</a>

@@ -27,7 +27,7 @@ function loadLevel() {
 
 
 function startPrompt(){
-    const audioPrompt = document.getElementById("audio_prompt");
+    const audioPrompt = document.getElementById("prompt-overlay");
     let showPromptInterval = setInterval(() => {
         alpha = fadeOutPrompt();
         audioPrompt.style.opacity = alpha; //fading in and out the prompt

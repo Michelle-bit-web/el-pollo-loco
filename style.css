@@ -8,6 +8,16 @@
     text-decoration: none;
 }
 
+button{
+    border-radius: 20px;
+    width: 50px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
 button:hover{
     scale: 0.95;
     cursor: pointer;
@@ -52,6 +62,8 @@ h1{
 }
 
 #startButton{
+    width: 150px;
+    height: 60px;
     background-color: rgb(142, 57, 4);
     color: rgb(72, 29, 2);
     font-size: 20px;
@@ -70,10 +82,9 @@ h1{
    
 }
 
-#sound_btn_img{
-    border-radius: 20px;
-    width: 30px;
-    height: 30px;
+#sound_btn_img,
+.throw-img{
+    width: 35px;
 }
 
 #sound_btn{
@@ -97,11 +108,51 @@ h1{
     z-index: 9999;
 }
 
-#audio_prompt{
+#prompt-overlay{
     width: 100%; 
     color: white; 
     font-size: 48px;
     display: flex; 
     align-items: center; 
     justify-content: center; 
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    z-index: 1000; 
+    pointer-events: none; /* Damit es nur sichtbar ist, aber keine Interaktionen blockiert */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.mobile-overlay{
+    height: 480px;
+    width: 720px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.mobile-overlay .panel {
+    pointer-events: auto; /* Aktiviert Interaktionen nur für die Buttons */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.panel-wrapper{
+    display: flex;
+    justify-content: space-between;
 }
