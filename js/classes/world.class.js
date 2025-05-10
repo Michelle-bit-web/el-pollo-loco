@@ -1,5 +1,4 @@
 class World {
-    level = level1;
     character = new Character(this);
     canvas;
     canvasState = "game"; // "startscreen" oder "game"
@@ -28,10 +27,11 @@ class World {
     //     gameOverSound: new AudioManager("/assets/audio/game-over/mixkit-player-losing-or-failing-2042.wav", 0.5, false, 10)
     }
 
-    constructor(canvas, keyboard){
+    constructor(canvas, keyboard, level){
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.level = level;
         this.setWorld();
         this.draw();
         this.run();
@@ -88,7 +88,7 @@ class World {
                 console.log("[DEBUG] Nach takeDamage:", this.level.endboss.energy);
             }
     });
-    if((this.character.height < this.level.endboss.y) && this.character.isColliding(this.level.endboss)){
+    if((this.character.height >= this.level.endboss.y) && (this.character.y < this.level.endboss.y) && this.character.isColliding(this.level.endboss)){
                 console.log("Enemy hit on jumping!");
                   this.level.endboss.takeDamage(20);
         };

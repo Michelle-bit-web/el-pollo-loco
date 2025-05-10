@@ -1,5 +1,7 @@
 let canvas;
-let backgroundMusicIntro = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.5, true, 1)
+let world;
+let gameIsRunning = true;
+let soundStartScreen = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.5, true, 1)
 let keyboard = new Keyboard();
 const keyMap = {
     37: "LEFT",
@@ -9,52 +11,26 @@ const keyMap = {
     32: "SPACE",
     68: "THROW" // Key D
 };
+let intervals = [];
+let fadingOut = true;
+let alpha = 1;
 
 function init() {
-    const audioPrompt = document.getElementById("audio_prompt");
-    const promptContainer = document.getElementById("div_prompt");
-    let alpha = 1;
-    let fadingOut = true;
-    let firstUIInterval = setInterval(() => {
-        if (fadingOut) {
-            alpha -= 0.05; // Transparenz verringern
-            if (alpha <= 0) {
-                alpha = 0;
-                fadingOut = false; // Richtung ändern, wenn vollständig transparent
-            }
-        } else {
-            alpha += 0.05; // Transparenz erhöhen
-            if (alpha >= 1) {
-                alpha = 1;
-                fadingOut = true; // Richtung ändern, wenn vollständig sichtbar
-            }
-        }
-        audioPrompt.style.opacity = alpha; // Aktualisiere die Transparenz
-    }, 50); // Aktualisierung alle 50ms für flüssige Animation
+    startPrompt();
 
-    document.addEventListener("keydown", () => {
-        backgroundMusicIntro.play();
-        console.log("Hintergrundmusik gestartet.");
-        clearInterval(firstUIInterval);
-        audioPrompt.style.display = "none";
-        promptContainer.style.display = "none";
-    }, { once: true }); // Der Listener wird nur einmal ausgeführt
- // Zeige das Canvas
-//  const canvasElement = document.getElementById("canvas");
-//  canvasElement.style.display = "block";
 }
 
 function startGame() {
-    backgroundMusicIntro.stop();
+    soundStartScreen.stop();
     const startButton = document.getElementById("startButton");
     startButton.style.display = "none";
     // new Audio("../assets/audio/game-start/mixkit-retro-game-notification-212.wav").play()
-    loadGame();
+    loadLevel();
 }
 
-function loadGame() {
+function loadLevel() {
     canvas = document.getElementById("canvas");
-    world = new World(canvas, keyboard);
+    world = new World(canvas, keyboard, level1);
 
 window.addEventListener("keydown", event => {
     if (world.controlEnabled && keyMap[event.keyCode]) {
@@ -70,6 +46,50 @@ window.addEventListener("keyup", event => {
 
 }
 
+function startPrompt(){
+    const audioPrompt = document.getElementById("audio_prompt");
+    let showPromptInterval = setInterval(() => {
+        alpha = fadeOutPrompt();
+        audioPrompt.style.opacity = alpha; //fading in and out the prompt
+    }, 50); 
+    intervals.push(showPromptInterval)
+    startMusic(audioPrompt,);
+}
+
+function fadeOutPrompt(){
+    if (fadingOut) {
+        alpha -= 0.05; // Transparenz verringern
+        if (alpha <= 0) {
+            alpha = 0;
+           fadingOut = false; // Richtung ändern, wenn vollständig transparent
+        };
+        return alpha;
+    } else {
+        alpha += 0.05; // Transparenz erhöhen
+        if (alpha >= 1) {
+            alpha = 1;
+            fadingOut = true; // Richtung ändern, wenn vollständig sichtbar
+        };
+        return alpha;
+    };
+}
+
+function startMusic(audioPrompt){
+    const promptContainer = document.getElementById("div_prompt");
+
+    document.addEventListener("keydown", () => {
+        soundStartScreen.play();
+        stopAllIntervals();
+        audioPrompt.style.display = "none";
+        promptContainer.style.display = "none";
+    }, { once: true }); // Der Listener wird nur einmal ausgeführt
+}
+
+function stopAllIntervals(){
+    intervals.forEach(interval => clearInterval(interval));
+    intervals = [];
+}
+
 function toggleSoundEffect(){
     let soundImage = document.getElementById("sound_btn_img");
     if(soundImage.src.includes("sound-on-blk.png")){
@@ -78,3 +98,4 @@ function toggleSoundEffect(){
     soundImage.src = "assets/img/icons/sound-on-blk.png";
     }
 }
+

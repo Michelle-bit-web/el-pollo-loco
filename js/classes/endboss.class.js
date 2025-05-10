@@ -221,13 +221,14 @@ class Endboss extends MovableObject{
     }
 
     moveTowardCharacter() {
-        if (this.world.character.x > this.x || this.world.character.x == this.x) {
-            this.moveRight();
-            this.otherDirection = true;
-        } else {
-            this.moveLeft();
-            this.otherDirection = false;
-        }
+        return
+    //     if (this.world.character.x >= this.x{
+    //         this.moveRight();
+    //         this.otherDirection = true;
+    //     } else {
+    //         this.moveLeft();
+    //         this.otherDirection = false;
+    //     }
     }
 
     hit() {
