@@ -65,16 +65,16 @@ h1{
 }
 
 #startButton{
-    width: 150px;
+    /* width: 150px;
     height: 60px;
     background-color: rgb(142, 57, 4);
     color: rgb(72, 29, 2);
     font-size: 20px;
-    font-weight: bold;
+    font-weight: bold; */
     padding: 10px 20px;
-    margin-bottom: 32px;
+    /* margin-bottom: 32px; */
     border-radius: 10px;
-    border: 3px solid rgb(72, 29, 2);
+    /* border: 3px solid rgb(72, 29, 2); */
     cursor: pointer;
     transition:  rgb(241, 235, 231) 0.3s ease;
 }

@@ -47,12 +47,15 @@ function loadLevel() {
 
 function startPrompt(){
     const promptOverlay = document.getElementById("prompt-overlay");
+    if(isTouchDevice()){
+        promptOverlay.innerText = "Touch screen";
+    }
     let showPromptInterval = setInterval(() => {
         alpha = fadeOutPrompt();
         promptOverlay.style.opacity = alpha; //fading in and out the prompt
     }, 50); 
     intervals.push(showPromptInterval);
-    removeOverlay(promptOverlay);
+    checkUserResponse(promptOverlay);
 }
 
 function fadeOutPrompt(){
@@ -81,16 +84,24 @@ function increaseTransparence(){
         };
 }
 
-function removeOverlay(promptOverlay){
+function checkUserResponse(promptOverlay){
     const promptContainer = document.getElementById("div_prompt");
 
     document.addEventListener("keydown", () => {
-        AudioManager.sounds.push(soundStartScreen);
-        stopAllIntervals();
-        promptOverlay.style.display = "none";
-        promptContainer.style.display = "none";
-        AudioManager.loadMuteStatus();
+        removePrompt(promptOverlay, promptContainer);
     }, { once: true }); // Der Listener wird nur einmal ausgeführt
+   
+    document.addEventListener("touchstart", () => {
+        removePrompt(promptOverlay, promptContainer);
+    }, { once: true }); // Der Listener wird nur einmal ausgeführt
+}
+
+function removePrompt(promptOverlay, promptContainer) {
+    AudioManager.sounds.push(soundStartScreen);
+    stopAllIntervals();
+    promptOverlay.style.display = "none";
+    promptContainer.style.display = "none";
+    AudioManager.loadMuteStatus();
 }
 
 function stopAllIntervals(){

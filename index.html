@@ -34,16 +34,14 @@
     <div id="div_prompt">
         <p id="prompt-overlay">Press any key</p>
     </div>
-    <div>
-        <button id="startButton" onclick="startGame()">Start Game</button>
-    </div>
     <canvas id="canvas" width="720" height="480"></canvas>
     <div id="game-over-overlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; text-align: center; padding-top: 20%;">
     </div>
     <div class="overlay">
         <div id="mobile-overlay" class="mobile-overlay">
             <div class="panel">
-                 <button id="sound_btn">
+                <button id="startButton" onclick="startGame()">Start Game</button>
+                <button id="sound_btn">
                     <img id="sound_btn_img" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option">
                 </button>
                 <button></button>
