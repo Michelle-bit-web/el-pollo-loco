@@ -11,7 +11,7 @@ let alpha = 1;
 
 function init() {
     AudioManager.loadMuteStatus(); //Mute-Status des localStorage über AM
-    toggleSoundSetting(); // Initialisiere den Sound-Status
+    setSoundImage();
     startPrompt();
     soundEvent();
 }
@@ -112,8 +112,12 @@ function stopAllIntervals(){
 function toggleSoundSetting() {
     // Schalte den globalen Mute-Status um
     AudioManager.toggleMute();
+    setSoundImage();
+   
+}
 
-    // Aktualisiere das Sound-Icon basierend auf dem Mute-Status
+function setSoundImage(){
+     // Aktualisiere das Sound-Icon basierend auf dem Mute-Status
     const soundImage = document.getElementById("sound_btn_img");
     if (AudioManager.isMuted) {
         soundImage.src = "assets/img/icons/sound-off.png"; // Icon für "Sound aus"
