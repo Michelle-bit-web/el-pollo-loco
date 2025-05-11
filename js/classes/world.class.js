@@ -5,7 +5,7 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
-    controlEnabled = true;
+   
     fightScene = false;
     isFading = false
     energyStatusbar = new Statusbar("energy", 10, 5);
@@ -27,11 +27,12 @@ class World {
     //     gameOverSound: new AudioManager("/assets/audio/game-over/mixkit-player-losing-or-failing-2042.wav", 0.5, false, 10)
     }
 
-    constructor(canvas, keyboard, level){
+    constructor(canvas, keyboard, level, controlEnabled){
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.level = level;
+        this.controlEnabled =controlEnabled;
         this.setWorld();
         this.draw();
         this.run();

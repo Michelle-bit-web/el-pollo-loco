@@ -57,6 +57,7 @@ function checkOrientation(promptOverlay) {
             // Wenn das Gerät jetzt im Querformat ist
             promptOverlay.innerText = "Touch screen"; // Aktualisiere den Text
             window.removeEventListener("orientationchange", handleOrientationChange); // Entferne den Listener
+            checkUserResponse(promptOverlay);
         }
     }
 

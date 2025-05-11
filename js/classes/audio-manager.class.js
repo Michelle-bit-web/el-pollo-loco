@@ -52,6 +52,20 @@ class AudioManager {
         }
     }
 
+    static pauseAll() {
+        AudioManager.sounds.forEach(sound => sound.pause());
+    }
+
+    static resumeAll() {
+        if (!AudioManager.isMuted) {
+            AudioManager.sounds.forEach(sound => {
+                if (sound.audio.currentTime > 0 && sound.audio.paused) {
+                    sound.audio.play().catch(() => {});
+                }
+            });
+        }
+    }
+    
     static toggleMute() {
         AudioManager.isMuted = !AudioManager.isMuted;
 

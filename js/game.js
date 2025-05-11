@@ -1,6 +1,7 @@
 let canvas;
 let world;
 let gameIsRunning = true;
+let controlEnabled = true;
 let soundStartScreen = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.5, true, 1)
 let keyboard = new Keyboard();
 let intervals = [];
@@ -31,7 +32,7 @@ function startGame() {
 
 function loadLevel() {
     canvas = document.getElementById("canvas");
-    world = new World(canvas, keyboard, level1);
+    world = new World(canvas, keyboard, level1, controlEnabled);
     if (isTouchDevice()) {
         console.log("Touch device detected. Initializing touch events...");
         touchEvents();
@@ -45,6 +46,7 @@ function startPrompt(){
     const promptOverlay = document.getElementById("prompt-overlay");
    // Überprüfe, ob es ein Touch-Gerät ist
     if (isTouchDevice()) {
+        monitorOrientation();
         // Überprüfe die aktuelle Geräteausrichtung
         if (window.screen.orientation.type.startsWith("portrait")) {
             promptOverlay.innerText = "Rotate device  \u21BB"; // Nachricht zum Drehen
@@ -96,15 +98,26 @@ function checkUserResponse(promptOverlay){
     }, { once: true }); // Der Listener wird nur einmal ausgeführt
    
     document.addEventListener("touchstart", () => {
-        removePrompt(promptOverlay, promptContainer);
+       if (window.screen.orientation.type.startsWith("landscape")) {
+            removePrompt(promptOverlay, promptContainer);
+        }
     }, { once: true }); // Der Listener wird nur einmal ausgeführt
 }
 
 function removePrompt(promptOverlay, promptContainer) {
+    if (promptOverlay) {
+        promptOverlay.style.display = "none";
+    } else {
+        console.warn("Prompt overlay not found.");
+    }
+
+    if (promptContainer) {
+        promptContainer.style.display = "none";
+    } else {
+        console.warn("Prompt container not found.");
+    }
     AudioManager.sounds.push(soundStartScreen);
     stopAllIntervals();
-    promptOverlay.style.display = "none";
-    promptContainer.style.display = "none";
     AudioManager.loadMuteStatus();
 }
 
@@ -125,4 +138,48 @@ function setSoundImage(){
     } else {
         soundImage.src = "assets/img/icons/sound-on-blk.png"; 
     }
+}
+
+function monitorOrientation(){
+    let monitorOrientationInterval = setInterval(() => {
+        if (!window.screen.orientation.type.startsWith("landscape")) {
+            if (gameIsRunning) {
+                pauseGame();
+                showOrientationWarning();
+            }
+        } else {
+            if (gameIsRunning) {
+                 const promptOverlay = document.getElementById("prompt-overlay");
+                resumeGame();
+                checkOrientation(promptOverlay)
+            }else return;
+        }
+    }, 500);
+    intervals.push(monitorOrientationInterval);
+}
+
+function pauseGame() {
+    console.log("Game paused due to incorrect orientation.");
+    gameIsRunning = true;
+    controlEnabled = false; // Deaktiviere Steuerung
+    AudioManager.pauseAll();
+}
+
+function resumeGame() {
+    console.log("Game resumed after orientation corrected.");
+    gameIsRunning = false;
+    controlEnabled = true; // Aktiviere Steuerung
+    AudioManager.resumeAll();
+}
+
+function showOrientationWarning() {
+    const promptOverlay = document.getElementById("prompt-overlay");
+    promptOverlay.style.display = "flex"; // Zeige den Overlay
+    promptOverlay.innerText = "Rotate device  \u21BB"; // Nachricht zum Drehen
+    promptOverlay.style.textAlign = "center";
+}
+
+function hideOrientationWarning() {
+    const promptOverlay = document.getElementById("prompt-overlay");
+    promptOverlay.style.display = "none"; // Verstecke den Overlay
 }
