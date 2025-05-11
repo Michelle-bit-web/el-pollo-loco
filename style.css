@@ -22,9 +22,9 @@ button{
 }
 
 button:hover{
+    border: 2px solid rgb(72, 29, 2);
     scale: 0.95;
     cursor: pointer;
-    border: none;
 }
 
 html{
@@ -35,7 +35,7 @@ body{
     font-family: 'A Box For';
     display: flex;
     flex-direction: column;
-   align-items: center;
+    align-items: center;
     background-image: url(./assets/img/background/desert.jpg);
     background-repeat: no-repeat;
     background-size: cover;
@@ -49,6 +49,7 @@ a{
 }
 
 canvas {
+    position: relative;
     background-color: black;
     display: block;
     background-image: url(./assets/img/9_intro_outro_screens/start/startscreen_1.png);
@@ -56,7 +57,6 @@ canvas {
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 20px;
-    position: relative;
     border: 2px solid black;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
 }
@@ -118,11 +118,11 @@ h1{
 }
 
 .overlay {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%; 
-    height: 100%;
+    width: 720px; 
+    height: 480px;
     z-index: 1000; 
     pointer-events: none; /* Damit es nur sichtbar ist, aber keine Interaktionen blockiert */
     display: flex;
@@ -148,6 +148,7 @@ h1{
 
 .panel{
     width: 100%;
+    gap: 420px;
     display: flex; /*wirkt leider nicht mit space-between weil position fixed benutzt wird*/
     justify-content: space-between;
 }
