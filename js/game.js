@@ -43,8 +43,16 @@ function loadLevel() {
 
 function startPrompt(){
     const promptOverlay = document.getElementById("prompt-overlay");
-    if(isTouchDevice()){
-        promptOverlay.innerText = "Touch screen";
+   // Überprüfe, ob es ein Touch-Gerät ist
+    if (isTouchDevice()) {
+        // Überprüfe die aktuelle Geräteausrichtung
+        if (window.screen.orientation.type.startsWith("portrait")) {
+            promptOverlay.innerText = "Rotate device  \u21BB"; // Nachricht zum Drehen
+            promptOverlay.style.textAlign = "center";
+            checkOrientation(promptOverlay); // Warte auf Änderung der Ausrichtung
+        } else {
+            promptOverlay.innerHTML = "Touch screen"; // Standardnachricht
+        }
     }
     let showPromptInterval = setInterval(() => {
         alpha = fadeOutPrompt();

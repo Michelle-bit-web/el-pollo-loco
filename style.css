@@ -2,6 +2,14 @@
     font-family: 'A Box For';
     src: url(./assets/font/a_box_for/A\ Box\ For.ttf) format('truetype');
 }
+@font-face {
+    font-family: 'New Mexico Demo';
+    src: url(./assets/font/new_mexico/New\ Mexico\ Demo.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Viva México cabrones';
+    src: url(./assets/font/viva_mexico_cabrones/Viva\ México\ cabrones.ttf) format('truetype');
+}
 
 *{
     margin: 0;
@@ -18,6 +26,7 @@ button{
     align-items: center;
     background-color: rgba(255, 255, 255, 0.579);
     color: rgb(72, 29, 2);
+    font-family: 'Viva México cabrones'; /*Schriftart wählen & im Impressum anpassen*/
 
 }
 
@@ -32,7 +41,9 @@ html{
 }
 
 body{
-    font-family: 'A Box For';
+    font-family: 'A Box For'; /*Schriftart wählen & im Impressum anpassen*/
+    /* font-family: 'New Mexico Demo'; */ /*gut geeignet für ein story board*/
+    font-family: 'Viva México cabrones';
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,7 +55,7 @@ body{
 
 a{
     cursor: pointer;
-    color: rgb(72, 29, 2);
+    color: white;
     font-size: 20px;
 }
 
@@ -62,9 +73,11 @@ canvas {
 }
 
 h1{
-    color: rgb(72, 29, 2);
+    color: rgb(255, 255, 255);
     font-size: 80px;
     margin: 32px 0;
+    text-align: center;
+    font-family: 'Viva México cabrones'; /*Schriftart wählen & im Impressum anpassen*/
 }
 
 #startButton{

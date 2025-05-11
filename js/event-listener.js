@@ -49,3 +49,17 @@ function touchEvents(){
 function soundEvent(){
      document.getElementById("sound_btn").addEventListener("click", toggleSoundSetting);
 }
+
+// Funktion zur Überprüfung auf Geräteausrichtung
+function checkOrientation(promptOverlay) {
+    function handleOrientationChange() {
+        if (window.screen.orientation.type.startsWith("landscape")) {
+            // Wenn das Gerät jetzt im Querformat ist
+            promptOverlay.innerText = "Touch screen"; // Aktualisiere den Text
+            window.removeEventListener("orientationchange", handleOrientationChange); // Entferne den Listener
+        }
+    }
+
+    // Eventlistener für Änderungen der Geräteausrichtung
+    window.addEventListener("orientationchange", handleOrientationChange);
+}
