@@ -1,5 +1,4 @@
 class AudioManager {
-
     static sounds = [];
     static isMuted = false;
 
@@ -74,34 +73,4 @@ class AudioManager {
     }
     AudioManager.sounds.forEach((sound) => sound.updateMuteStatus()); // Aktualisiere den Status aller Sounds
 }
-    // muteSounds(audio){
-    // if(audio == undefined){
-    //     sounds.forEach(sound => {
-    //         sound.pause();
-    //     })
-    // } else{
-    //     audio.pause();
-    // };
-    // }
-
-    // playSounds(audio){
-    //     if(audio == undefined){
-    //         sounds.forEach(sound => {
-    //             sound.play();
-    //         })
-    //     } else{
-    //         audio.play();
-    //     };
-    // }
-
-    // applyMuteStatus(){
-    //     let soundImage = document.getElementById("sound_btn_img");
-    //     if(isMuted){
-    //     soundImage.src = "assets/img/icons/sound-off.png";
-    //     muteSounds(soundStartScreen);
-    //     } else{
-    //     soundImage.src = "assets/img/icons/sound-on-blk.png";
-    //     playSounds(soundStartScreen);
-    //     }
-    // }
 }

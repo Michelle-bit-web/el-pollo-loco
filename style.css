@@ -10,11 +10,14 @@
 
 button{
     border-radius: 20px;
-    width: 50px;
-    height: 40px;
+    border: 2px solid rgba(72, 29, 2, 0.672);
+    width: 37px;
+    height: 37px;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(255, 255, 255, 0.579);
+    color: rgb(72, 29, 2);
 
 }
 
@@ -65,24 +68,14 @@ h1{
 }
 
 #startButton{
-    /* width: 150px;
-    height: 60px;
-    background-color: rgb(142, 57, 4);
-    color: rgb(72, 29, 2);
-    font-size: 20px;
-    font-weight: bold; */
     padding: 10px 20px;
-    /* margin-bottom: 32px; */
     border-radius: 10px;
-    /* border: 3px solid rgb(72, 29, 2); */
-    cursor: pointer;
-    transition:  rgb(241, 235, 231) 0.3s ease;
+    width: 120px;
 }
 
 #startButton:hover{
     background-color: rgb(169, 79, 24);
     cursor: pointer;
-   
 }
 
 .active{
@@ -96,7 +89,6 @@ h1{
 }
 
 #sound_btn{
-    width: fit-content;
     border-radius: 100%;
     display: flex;
     align-items: center;

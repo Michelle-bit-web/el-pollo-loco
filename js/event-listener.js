@@ -46,11 +46,6 @@ function touchEvents(){
 });  
 }
 
-// // Umschalten des Mute-Status
-// document.getElementById("sound_btn").addEventListener("click", () => {
-//     AudioManager.toggleMute(); // Schaltet den globalen Mute-Status um
-// });
-
 function soundEvent(){
      document.getElementById("sound_btn").addEventListener("click", toggleSoundSetting);
 }
