@@ -16,13 +16,13 @@ const buttonMap = {
 
 function keyboardEvents(){
     window.addEventListener("keydown", event => {
-        if (this.world.controlEnabled && keyMap[event.keyCode]) {
+        if (world.controlEnabled && keyMap[event.keyCode]) {
             keyboard[keyMap[event.keyCode]] = true;
         }
     });
 
     window.addEventListener("keyup", event => {
-        if (this.world.controlEnabled &&keyMap[event.keyCode]) 
+        if (world.controlEnabled &&keyMap[event.keyCode]) 
             {keyboard[keyMap[event.keyCode]] = false;
             }
     });
@@ -35,10 +35,12 @@ function touchEvents(){
     console.log(button);
     button.addEventListener("touchstart", event => {
         event.preventDefault(); //to prevent other standard actions for this event-type by browser
+        button.classList.add("active"); // Füge eine CSS-Klasse hinzu
         keyboard[buttonId]= true;
     });
     button.addEventListener("touchend", event => {
-         event.preventDefault();
+        event.preventDefault();
+        button.classList.remove("active"); // Entferne die CSS-Klasse
         keyboard[buttonId] = false;
     });
 });  
