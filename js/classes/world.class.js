@@ -36,7 +36,8 @@ class World {
         this.draw();
         this.run();
 
-        this.gameSounds.backgroundMusicGeneral.play();
+        // this.gameSounds.backgroundMusicGeneral.play();
+        AudioManager.sounds.push(this.gameSounds.backgroundMusicGeneral)
         // this.gameSounds.chickenSound.play();
 
         // this.loadGameOverImage(); //Dazu gehören noch js26 & js211

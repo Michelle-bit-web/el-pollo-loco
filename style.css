@@ -54,6 +54,8 @@ canvas {
     background-size: cover;
     border-radius: 20px;
     position: relative;
+    border: 2px solid black;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 h1{

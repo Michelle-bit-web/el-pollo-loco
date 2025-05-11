@@ -16,13 +16,13 @@ const buttonMap = {
 
 function keyboardEvents(){
     window.addEventListener("keydown", event => {
-        if (world.controlEnabled && keyMap[event.keyCode]) {
+        if (this.world.controlEnabled && keyMap[event.keyCode]) {
             keyboard[keyMap[event.keyCode]] = true;
         }
     });
 
     window.addEventListener("keyup", event => {
-        if (world.controlEnabled &&keyMap[event.keyCode]) 
+        if (this.world.controlEnabled &&keyMap[event.keyCode]) 
             {keyboard[keyMap[event.keyCode]] = false;
             }
     });
@@ -30,17 +30,25 @@ function keyboardEvents(){
 }
 
 function touchEvents(){
-    let action;
     Object.values(buttonMap).forEach(buttonId => {
     const button = document.getElementById(`${buttonId}`);
     console.log(button);
     button.addEventListener("touchstart", event => {
         event.preventDefault(); //to prevent other standard actions for this event-type by browser
-        keyboard[action] = true;
+        keyboard[buttonId]= true;
     });
     button.addEventListener("touchend", event => {
          event.preventDefault();
-        keyboard[action] = false;
+        keyboard[buttonId] = false;
     });
 });  
+}
+
+// // Umschalten des Mute-Status
+// document.getElementById("sound_btn").addEventListener("click", () => {
+//     AudioManager.toggleMute(); // Schaltet den globalen Mute-Status um
+// });
+
+function soundEvent(){
+     document.getElementById("sound_btn").addEventListener("click", toggleSoundSetting);
 }

@@ -1,8 +1,8 @@
 let canvas;
 let world;
 let gameIsRunning = true;
-let sounds = [];
-let isMuted = false;
+// let sounds = [];
+// let isMuted = false;
 let soundStartScreen = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.5, true, 1)
 let keyboard = new Keyboard();
 let intervals = [];
@@ -10,16 +10,10 @@ let fadingOut = true;
 let alpha = 1;
 
 function init() {
-    getFromLocalStorage();
+    AudioManager.loadMuteStatus(); //Mute-Status des localStorage über AM
+    toggleSoundSetting(); // Initialisiere den Sound-Status
     startPrompt();
-     // Geräteabhängig Events hinzufügen
-    if (isTouchDevice()) {
-        console.log("Touch device detected. Initializing touch events...");
-        touchEvents();
-    } else {
-        console.log("Non-touch device detected. Initializing keyboard events...");
-        keyboardEvents();
-    }
+    soundEvent();
 }
 
 // Funktion zur Erkennung von Touch-Geräten
@@ -31,7 +25,6 @@ function isTouchDevice() {
     );
 }
 
-
 function startGame() {
     soundStartScreen.stop();
     const startButton = document.getElementById("startButton");
@@ -42,8 +35,15 @@ function startGame() {
 function loadLevel() {
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard, level1);
+      // Geräteabhängig Events hinzufügen
+    if (isTouchDevice()) {
+        console.log("Touch device detected. Initializing touch events...");
+        touchEvents();
+    } else {
+        console.log("Non-touch device detected. Initializing keyboard events...");
+        keyboardEvents();
+    };
 }
-
 
 function startPrompt(){
     const promptOverlay = document.getElementById("prompt-overlay");
@@ -85,11 +85,11 @@ function removeOverlay(promptOverlay){
     const promptContainer = document.getElementById("div_prompt");
 
     document.addEventListener("keydown", () => {
-        sounds.push(soundStartScreen);
+        AudioManager.sounds.push(soundStartScreen);
         stopAllIntervals();
         promptOverlay.style.display = "none";
         promptContainer.style.display = "none";
-        applyMuteStatus();
+        AudioManager.loadMuteStatus();
     }, { once: true }); // Der Listener wird nur einmal ausgeführt
 }
 
@@ -98,49 +98,63 @@ function stopAllIntervals(){
     intervals = [];
 }
 
-function switchSoundSetting(){
-    let soundImage = document.getElementById("sound_btn_img");
-    if(!isMuted){
-    soundImage.src = "assets/img/icons/sound-off.png";
-    muteSounds(soundStartScreen);
-     isMuted = true;
-    } else if (isMuted){
-    soundImage.src = "assets/img/icons/sound-on-blk.png";
-    playSounds(soundStartScreen);
-    isMuted = false;
-    };
+function toggleSoundSetting() {
+    // Schalte den globalen Mute-Status um
+    AudioManager.toggleMute();
 
-    saveToLocalStorage();
-}
-
-function muteSounds(audio){
-    if(audio == undefined){
-        sounds.forEach(sound => {
-            sound.pause();
-        })
-    } else{
-        audio.pause();
-    };
-    
-}
-
-function playSounds(audio){
-    if(audio == undefined){
-        sounds.forEach(sound => {
-            sound.play();
-        })
-    } else{
-        audio.play();
-    };
-}
-
-function applyMuteStatus(){
-     let soundImage = document.getElementById("sound_btn_img");
-    if(isMuted){
-    soundImage.src = "assets/img/icons/sound-off.png";
-    muteSounds(soundStartScreen);
-    } else{
-    soundImage.src = "assets/img/icons/sound-on-blk.png";
-    playSounds(soundStartScreen);
+    // Aktualisiere das Sound-Icon basierend auf dem Mute-Status
+    const soundImage = document.getElementById("sound_btn_img");
+    if (AudioManager.isMuted) {
+        soundImage.src = "assets/img/icons/sound-off.png"; // Icon für "Sound aus"
+    } else {
+        soundImage.src = "assets/img/icons/sound-on-blk.png"; // Icon für "Sound an"
     }
 }
+
+
+// function switchSoundSetting(){
+//     let soundImage = document.getElementById("sound_btn_img");
+//     if(!isMuted){
+//     soundImage.src = "assets/img/icons/sound-off.png";
+//     muteSounds(soundStartScreen);
+//      isMuted = true;
+//     } else if (isMuted){
+//     soundImage.src = "assets/img/icons/sound-on-blk.png";
+//     playSounds(soundStartScreen);
+//     isMuted = false;
+//     };
+
+//     saveToLocalStorage();
+// }
+
+// function muteSounds(audio){
+//     if(audio == undefined){
+//         sounds.forEach(sound => {
+//             sound.pause();
+//         })
+//     } else{
+//         audio.pause();
+//     };
+    
+// }
+
+// function playSounds(audio){
+//     if(audio == undefined){
+//         sounds.forEach(sound => {
+//             sound.play();
+//         })
+//     } else{
+//         audio.play();
+//     };
+// }
+
+// function applyMuteStatus(){
+//      let soundImage = document.getElementById("sound_btn_img");
+//     if(isMuted){
+//     soundImage.src = "assets/img/icons/sound-off.png";
+//     muteSounds(soundStartScreen);
+//     } else{
+//     soundImage.src = "assets/img/icons/sound-on-blk.png";
+//     playSounds(soundStartScreen);
+//     }
+// }
