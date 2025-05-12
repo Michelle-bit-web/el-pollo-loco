@@ -11,6 +11,10 @@
     src: url(./assets/font/viva_mexico_cabrones/Viva\ México\ cabrones.ttf) format('truetype');
 }
 
+:root {
+    --text-color:rgb(72, 29, 2);
+}
+
 *{
     margin: 0;
     text-decoration: none;
@@ -23,7 +27,7 @@ a{
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgb(72, 29, 2);
+    color: var(--text-color);
 }
 
 button{
@@ -41,7 +45,7 @@ button{
 }
 
 button:hover{
-    border: 2px solid rgb(72, 29, 2);
+    border: 2px solid var(--text-color);
     scale: 0.95;
     cursor: pointer;
 }
@@ -155,7 +159,7 @@ h1{
     max-height: 480px;
     z-index: 1000; 
     border-radius: 20px;
-    pointer-events: none; /* Damit es nur sichtbar ist, aber keine Interaktionen blockiert */
+    /* pointer-events: none; Damit es nur sichtbar ist, aber keine Interaktionen blockiert */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -216,4 +220,15 @@ h1{
     h1{
         display: none;
     }
+}
+
+/*Imprint ----*/
+.content-impressum{
+    color: var(--text-color);
+    background-color: rgba(255, 255, 255, 0.371);
+    padding: 5%;
+}
+
+h2{
+    margin: 2% 0;
 }
