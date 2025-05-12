@@ -52,15 +52,15 @@ function soundEvent(){
 
 // Funktion zur Überprüfung auf Geräteausrichtung
 function checkOrientation(promptOverlay) {
-    function handleOrientationChange() {
+    // Eventlistener für Änderungen der Geräteausrichtung
+    window.addEventListener("orientationchange", handleOrientationChange(promptOverlay));
+}
+
+function handleOrientationChange(promptOverlay) {
         if (window.screen.orientation.type.startsWith("landscape")) {
-            // Wenn das Gerät jetzt im Querformat ist
+            document.getElementById("panel").style.display = "flex";
             promptOverlay.innerText = "Touch screen"; // Aktualisiere den Text
             window.removeEventListener("orientationchange", handleOrientationChange); // Entferne den Listener
             checkUserResponse(promptOverlay);
         }
     }
-
-    // Eventlistener für Änderungen der Geräteausrichtung
-    window.addEventListener("orientationchange", handleOrientationChange);
-}

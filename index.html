@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" translate ="no">
-<head>
-    <link rel="icon" href="./assets/img/favicon/sombrero.png" type="image/png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en" translate="no">
+  <head>
+    <link rel="icon" href="./assets/img/favicon/sombrero.png" type="image/png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El Pollo Loco with Pepe peligroso</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css" />
     <script src="./js/classes/local-storage-manager.class.js"></script>
     <script src="./js/classes/drawable-object.class.js"></script>
     <script src="./js/classes/statusbar.class.js"></script>
     <script src="./js/classes/movable-object.class.js"></script>
     <script src="./js/classes/background.object.class.js"></script>
     <script src="./js/classes/keyboard.class.js"></script>
-    
+
     <script src="./js/classes/chicken.class.js"></script>
     <script src="./js/classes/small-chicken.class.js"></script>
     <script src="./js/classes/cloud.class.js"></script>
@@ -20,50 +20,49 @@
     <script src="./js/classes/endboss.class.js"></script>
     <script src="./js/classes/throwable-object.class.js"></script>
     <script src="./js/classes/colleactable-object.class.js"></script>
-     <script src="./js/classes/audio-manager.class.js"></script>
-    
+    <script src="./js/classes/audio-manager.class.js"></script>
+
     <script src="./js/classes/level.class.js"></script>
     <script src="./js/level/level1.js"></script>
+    <script src="./js/level/level2.js"></script>
     <script src="./js/classes/world.class.js"></script>
-    
+
     <script src="./js/event-listener.js"></script>
     <script src="./js/game.js"></script>
-</head>
-<body onload="init()">
-    <h1>El pollo loco </h1>
+  </head>
+  <body onload="init()">
+    <h1>El pollo loco</h1>
     <div id="div_prompt">
-        <p id="prompt-overlay">Press any key</p>
+      <p id="prompt-overlay">Press any key</p>
     </div>
-    <div style="position: relative;">
-    <canvas id="canvas" width="720" height="480"></canvas>
-    <div class="overlay">
-        <div id="mobile-overlay" class="mobile-overlay">
-            <div class="panel">
-                <button id="startButton" onclick="startGame()">Start Game</button>
-                <div>
-                 <button id="sound_btn">
-                    <img id="sound_btn_img" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option">
-                 </button>
-                 <button></button>
-               </div>
-            </div>
-            <div class="panel">
-                <div class="panel-wrapper">
-                    <button id="LEFT">&larr;</button>
-                    <button id="RIGHT">&rarr;</button>
-                </div>
-                <div class="panel-wrapper">
-                    <button id="SPACE">&uarr;</button>
-                    <button id="THROW">
-                        <img class="throw-img" src="./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png" alt="">
-                    </button>
-                </div>
-            </div>
+    <div style="position: relative">
+      <canvas id="canvas" width="720" height="480"></canvas>
+      <div class="overlay">
+        <div class="container-sound-btn">
+          <button id="sound_btn">
+            <img id="sound_btn_img" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option" />
+          </button>
         </div>
+        <div id="menu-overlay" class="menu-overlay">
+          <div class="panel-menu">
+            <button id="startButton" class="menu-btn" onclick="startGame()">Start Game</button>
+            <button id="controls" class="menu-btn" onclick="renderControls()">Controls</button>
+            <button class="menu-btn"><a class="menu-btn" href="./impressum.html" target="_blank">Imprint</a></button>
+          </div>
+          <div id="panel" class="panel" style="display: none">
+            <div class="panel-wrapper">
+              <button id="LEFT">&larr;</button>
+              <button id="SPACE">&uarr;</button>
+            </div>
+            <div class="panel-wrapper">
+              <button id="THROW">
+                <img class="throw-img" src="./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png" alt="" />
+              </button>
+              <button id="RIGHT">&rarr;</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-    <footer>
-        <a href="./impressum.html">Impressum</a>
-    </footer>
-</body>
+  </body>
 </html>

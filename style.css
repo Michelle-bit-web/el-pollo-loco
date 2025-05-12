@@ -16,11 +16,21 @@
     text-decoration: none;
 }
 
+a{
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(72, 29, 2);
+}
+
 button{
     border-radius: 20px;
     border: 2px solid rgba(72, 29, 2, 0.672);
-    width: 37px;
-    height: 37px;
+    width: 7vw;
+    height: 9vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,19 +60,16 @@ body{
     background-image: url(./assets/img/background/desert.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
     height: 100vh - 20px;
-}
-
-a{
-    cursor: pointer;
-    color: white;
-    font-size: 20px;
 }
 
 canvas {
     position: relative;
     background-color: black;
     display: block;
+    max-width: 720px;
+    max-height: 420px;
     background-image: url(./assets/img/9_intro_outro_screens/start/startscreen_1.png);
     background-position: center;
     background-repeat: no-repeat;
@@ -74,35 +81,41 @@ canvas {
 
 h1{
     color: rgb(255, 255, 255);
-    font-size: 80px;
-    margin: 32px 0;
+    font-size: 8vw;
+    margin: 2vh 0;
     text-align: center;
     font-family: 'Viva México cabrones'; /*Schriftart wählen & im Impressum anpassen*/
 }
 
-#startButton{
+.menu-btn{
     padding: 10px 20px;
     border-radius: 10px;
-    width: 120px;
+    width: 24vw;
+    height: 20%;
 }
 
-#startButton:hover{
+.menu-btn:hover{
     background-color: rgb(169, 79, 24);
     cursor: pointer;
 }
 
-.active{
-    background-color: rgb(169, 79, 24);
-    cursor: pointer;
+.container-sound-btn{
+    width: 90%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 #sound_btn_img,
 .throw-img{
-    width: 35px;
+    width: 8vh;
+    height: auto;
 }
 
 #sound_btn{
     border-radius: 100%;
+    border: none;
+    height: 8vh;
+    width: 8vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -123,46 +136,63 @@ h1{
 
 #prompt-overlay{
     width: 100%; 
+    height: 100%;
     color: white; 
-    font-size: 48px;
+    font-size: 8vw;
     display: flex; 
     align-items: center; 
     justify-content: center; 
+    text-align: center;
 }
 
 .overlay {
     position: absolute;
     top: 0;
     left: 0;
-    width: 720px; 
-    height: 480px;
+    width: 100%; 
+    height: 100%;
+    max-width: 720px;
+    max-height: 480px;
     z-index: 1000; 
+    border-radius: 20px;
     pointer-events: none; /* Damit es nur sichtbar ist, aber keine Interaktionen blockiert */
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-
+    background-color: rgba(0, 0, 0, 0.634);
+    /* background-image: url("assets/img/5_background/wood.png");
+    background-size: contain; */
 }
 
-.mobile-overlay{
-    height: 480px;
-    width: 720px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.menu-overlay{
+    width: 80%; 
+    height: 90%;
+    max-width: 720px;
+    max-height: 420px;
+    border-radius: 10px;
 }
 
-.mobile-overlay .panel {
+.menu-overlay .panel {
     pointer-events: auto; /* Aktiviert Interaktionen nur für die Buttons */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.panel-menu{
+    height: 50%;
+    gap: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 .panel{
-    width: 100%;
-    gap: 420px;
+    gap: 60%;
     display: flex; /*wirkt leider nicht mit space-between weil position fixed benutzt wird*/
+    flex: 1;
     justify-content: space-between;
 }
 
@@ -176,18 +206,6 @@ h1{
     canvas{
         width: 100%;
     }
-    .panel{
-        width: 100%;
-        gap: 150px;
-    }
-    .overlay {
-    width: 100%; 
-    height: 260px;
-    }
-    .mobile-overlay{
-    height: 260px;
-    width: 100%;
-    }
 }
 
 /*Smartphones ----*/
@@ -195,20 +213,7 @@ h1{
     canvas{
         height: 100vh;
     }
-    h1, 
-    footer{
+    h1{
         display: none;
-    }
-    .panel{
-        width: 100%;
-        gap: 270px;
-    }
-    .overlay {
-    width: 100%; 
-    height: 390px;
-    }
-    .mobile-overlay{
-    height: 390px;
-    width: 100%;
     }
 }

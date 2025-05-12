@@ -36,6 +36,11 @@ class MovableObject extends DrawableObject{
         }
     }, 800);
   }
+
+  stopMoving() {
+        this.speed = 0;     
+        this.speedY = 0;
+    }
   
   playAnimation(images) {
     let i = this.currentImage % images.length;

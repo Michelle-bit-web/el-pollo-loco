@@ -2,7 +2,7 @@ let canvas;
 let world;
 let gameIsRunning = true;
 let controlEnabled = true;
-let soundStartScreen = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.5, true, 1)
+let soundStartScreen = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.2, true, 1)
 let keyboard = new Keyboard();
 let intervals = [];
 let fadingOut = true;
@@ -32,7 +32,7 @@ function startGame() {
 
 function loadLevel() {
     canvas = document.getElementById("canvas");
-    world = new World(canvas, keyboard, level1, controlEnabled);
+    world = new World(canvas, keyboard, level1, controlEnabled); //gibt man level2 mit, würde das level 2 integriert werden
     if (isTouchDevice()) {
         console.log("Touch device detected. Initializing touch events...");
         touchEvents();

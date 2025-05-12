@@ -115,20 +115,23 @@ class Endboss extends MovableObject{
     }
 }
 
-    jump(){
-        if (!this.isJumping) { // Verhindere mehrfaches Springen
-            this.isJumping = true; // Setze den Sprungstatus
-            this.speedY = 50; // Vertikalgeschwindigkeit nach oben
-            this.applyGravity(); // Gravitation wirken lassen
-    
-            setTimeout(() => {
-                this.isJumping = false; // Nach dem Sprungstatus zurücksetzen
-            }, 1000); // Nach 1 Sekunde kann der Boss erneut springen
-            this.moveTowardCharacter();
+    jump() {
+    if (!this.isJumping) {
+        this.isJumping = true;
+        this.speedY = 30; // Sprunghöhe
+        this.applyGravity();
+
+        // Character wird in die Luft geworfen
+        if (this.world.character.isColliding(this)) {
+            this.world.character.speedY = 20;
         }
-    // checkFirstContact() {
-    //     return this.world.character.x > 2100 && !this.firstContactCharacter;
-    }
+
+        setTimeout(() => {
+            this.isJumping = false;
+        }, 3000); // Nach 1 Sekunde kann der Boss erneut springen
+    };
+    this.moveTowardCharacter();
+}
 
     onLand() {
     // Character wird bei Landung in die Luft geworfen
@@ -141,7 +144,7 @@ class Endboss extends MovableObject{
         this.firstContactCharacter = true;
         this.statusbar = new Statusbar("energyEndboss", 500, 5);
         this.playAnimation(this.IMAGES_ALERT);
-        this.world.controlEnabled = true;
+        // this.world.controlEnabled = true;
     }
 
     hurtAnimation(){

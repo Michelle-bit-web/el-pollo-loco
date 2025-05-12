@@ -1,7 +1,5 @@
 const level1 = new Level({
     difficulty: "easy",
-    maxCoins: 10,
-    maxBottles: 4,
     enemyResistance: 1,
     endboss: new Endboss(2900),
     enemies: generateObject(SmallChicken, 5, 2500, 20, 370, 0.5, 0.1)
@@ -15,8 +13,8 @@ const level1 = new Level({
 function generateObject(objectType, numberOfObject, maxX, maxY, minY, maxSpeed, minSpeed) {
     let objArr = [];
     for (let i = 0; i < numberOfObject; i++) {
-        let x = Math.random() * maxX + 200;
-         let y = Math.random() * maxY + minY;
+        let x = Math.random() * maxX + 300;
+        let y = Math.random() * maxY + minY;
         let speed = Math.random() * maxSpeed + minSpeed ; 
         objArr.push(new objectType(x, y, speed));
     }
@@ -40,38 +38,3 @@ function setCollectableObjects(){
      };
      return collectableObjects;
  }
-// console.log(level1) //Die Bilder werden richtig erzeugt
-
-
-
-//falls nötig die Level in eigene js-Dateien auslagern und im html verknüpfen
-
-const level2 = new Level({
-    difficulty: "easy",
-    maxCoins: 10,
-    maxBottles: 4,
-    enemyResistance: 1,
-    enemies: generateObject(Endboss, 10, 2500, 20, 350, 0.5, 0.1),
-    clouds: generateObject(Cloud, 10, 2900, 100, 0, 0.5, 0.1),
-    collectableObjects: setCollectableObjects(),
-    backgroundObjectsTemplate: "assets/img/5_background/layers",
-}
-); 
-
-// const level3 = new Level({
-//     difficulty: "hard",
-//     maxCoins: 10,
-//     maxBottles: 2,
-//     enemyResistance: 3,
-//     enemies: [
-//         new Chicken(), 
-//         new Chicken(), 
-//         new Chicken(),
-//         new Endboss()
-//     ],
-//     clouds: [
-//         new Cloud(),
-//         new Cloud()
-//     ],
-//     backgroundObjectsTemplate: "assets/img/5_background/layers"
-// });
