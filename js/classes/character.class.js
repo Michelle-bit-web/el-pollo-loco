@@ -204,9 +204,9 @@ class Character extends MovableObject {
     };
   }
 
-  hit(hittenObject) {
-    if (hittenObject instanceof Chicken || hittenObject instanceof SmallChicken || hittenObject instanceof Endboss) {
-      this.changeEnergy();
-    }
-  }
+  // hit(hittenObject) {
+  //   if (hittenObject instanceof Chicken || hittenObject instanceof SmallChicken || hittenObject instanceof Endboss) {
+  //     this.changeEnergy();
+  //   }
+  // }
 }

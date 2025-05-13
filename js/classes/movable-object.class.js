@@ -69,24 +69,7 @@ stopAllAnimations(path) {
     this.speedY = higherJump;
    }
   }
-  
-  isColliding(mo) {
-    const offsetX = this.x + this.offset.left;
-    const offsetY = this.y + this.offset.top;
-    const offsetWidth = this.width - this.offset.left - this.offset.right;
-    const offsetHeight = this.height - this.offset.top - this.offset.bottom;
-  
-    const moOffsetX = mo.x + mo.offset.left;
-    const moOffsetY = mo.y + mo.offset.top;
-    const moOffsetWidth = mo.width - mo.offset.left - mo.offset.right;
-    const moOffsetHeight = mo.height - mo.offset.top - mo.offset.bottom;
-  
-    return offsetX + offsetWidth > moOffsetX &&
-           offsetY + offsetHeight > moOffsetY &&
-           offsetX < moOffsetX + moOffsetWidth &&
-           offsetY < moOffsetY + moOffsetHeight;
-  }
-  
+
   applyGravity() {
    this.gravityInterval = setInterval(() => {
       if(this.isSplashing) return;
@@ -116,26 +99,92 @@ stopAllAnimations(path) {
     } else{
       return this.y < 150;
     }
-    
   }
   
-  changeEnergy(){
-      if(this.energy == 0){
-        this.isDead();
-       }else{
-         this.energy -= 5;
-         this.lastHit = new Date().getTime();
-       }
+  isColliding(mo) {
+    const offsetX = this.x + this.offset.left;
+    const offsetY = this.y + this.offset.top;
+    const offsetWidth = this.width - this.offset.left - this.offset.right;
+    const offsetHeight = this.height - this.offset.top - this.offset.bottom;
+  
+    const moOffsetX = mo.x + mo.offset.left;
+    const moOffsetY = mo.y + mo.offset.top;
+    const moOffsetWidth = mo.width - mo.offset.left - mo.offset.right;
+    const moOffsetHeight = mo.height - mo.offset.top - mo.offset.bottom;
+  
+    return offsetX + offsetWidth > moOffsetX &&
+           offsetY + offsetHeight > moOffsetY &&
+           offsetX < moOffsetX + moOffsetWidth &&
+           offsetY < moOffsetY + moOffsetHeight;
   }
+
+   // Energie abziehen
+  takeDamage(damage) {
+    if(this.isHurt()){
+      return;
+    }
+    this.energy = Math.max(0, this.energy - damage); // Verhindert negative Werte
+    this.updateStatusbar("energy"); // Statusbar aktualisieren
+    this.lastHit = new Date().getTime();
+    if (this.energy == 0) {
+       this.isDead();
+    }
+  }
+
+  // Energie zurückgewinnen
+  recoverEnergy(amount) {
+    this.energy = Math.min(100, this.energy + amount); // Verhindert Werte über 100
+    this.updateStatusbar("energy"); // Statusbar aktualisieren
+  }
+
+  // changeEnergy(){
+  //     if(this.energy == 0){
+  //       this.isDead();
+  //      }else{
+  //        this.energy -= 5;
+  //        this.lastHit = new Date().getTime();
+  //      }
+  // }
 
   isHurt(){
     let timepassed = new Date().getTime() - this.lastHit; //miliseconds
     timepassed = timepassed / 1000 //time in seconds
-    return timepassed < 1;
+    return timepassed < 2;
   }
 
   isDead(){
-    return this.energy == 0;
+    return this.energy <= 0;
+  }
+
+   // Coins sammeln und Energie wiederherstellen, wenn Coins voll sind
+  collectCoin() {
+    this.coins++;
+    this.updateStatusbar("coin"); // Statusbar für Coins aktualisieren
+
+    if (this.coins >= this.world.coinStatusbar.maxCoins) {
+      this.recoverEnergy(20); // Beispiel: 20 Energiepunkte zurückgewinnen
+      this.coins = 0; // Coins zurücksetzen
+      this.updateStatusbar("coin"); // Coins-Leiste zurücksetzen
+    }
+  }
+
+  // Flaschen sammeln
+  collectBottle() {
+    this.bottles++;
+    this.updateStatusbar("bottle"); // Statusbar für Flaschen aktualisieren
+  }
+
+  // Statusbar aktualisieren
+  updateStatusbar(type) {
+    if (type === "energy") {
+      this.world.energyStatusbar.setPercentage(this.energy);
+    } else if (type === "coin") {
+      const coinPercentage = (this.coins / this.world.coinStatusbar.maxCoins) * 100;
+      this.world.coinStatusbar.setPercentage(coinPercentage);
+    } else if (type === "bottle") {
+      const bottlePercentage = (this.bottles / this.world.bottleStatusbar.maxBottles) * 100;
+      this.world.bottleStatusbar.setPercentage(bottlePercentage);
+    }
   }
 
 }

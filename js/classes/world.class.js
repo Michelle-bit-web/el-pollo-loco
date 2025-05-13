@@ -68,7 +68,7 @@ class World {
         if (this.character.isAboveGround() && this.character.speedY < 0) {
           this.level.enemies[enemyIndex].markAsDead();
         } else if (!this.character.isDead() && !enemy.isDead) {
-          this.handleCharacterEnergy(enemy);
+          this.character.takeDamage(10);
         }
       };
     });
@@ -80,9 +80,9 @@ class World {
       this.character.isColliding(this.level.endboss) &&
       this.level.endboss.isJumping
     ) {
-      this.level.endboss.takeDamage(20);
+      this.level.endboss.takeDamage(10);
     } else if (this.character.isColliding(this.level.endboss)) {
-      this.changeStatusbar(this.energyStatusbar, -15);
+       this.character.takeDamage(15);
     }
   }
 
@@ -90,9 +90,9 @@ class World {
     this.throwableObjects.forEach((bottle) => {
       if (!bottle.isSplashing && bottle.isColliding(this.level.endboss)) {
         bottle.splash();
-        this.level.endboss.hit(); //braucht man hit & takeDamage dann noch?
-        this.changeStatusbar(this.level.endboss.statusbar, -10);
-        this.level.endboss.takeDamage(20);
+        // this.level.endboss.hit(); //braucht man hit & takeDamage dann noch?
+        // this.changeStatusbar(this.level.endboss.statusbar, -10);
+        this.level.endboss.takeDamage(10);
         this.gameSounds.splashSound.play();
       }
     });
@@ -127,13 +127,9 @@ class World {
     this.level.collectableObjects.forEach((item, index) => {
       if (this.character.isColliding(item)) {
         if (item.imageType === "coin") {
-          console.log("[DEBUG] Coin eingesammelt");
-          console.log("[DEBUG] Übergabe an changeStatusbar für Coin:", 1);
-          this.changeStatusbar(this.coinStatusbar, 1);
+          this.character.collectCoin();
         } else if (item.imageType === "bottle" || item.imageType === "bottleGround") {
-          console.log("[DEBUG] Bottle eingesammelt");
-          console.log("[DEBUG] Übergabe an changeStatusbar für Bottle:", 1);
-          this.changeStatusbar(this.bottleStatusbar, 1);
+         this.character.collectBottle();;
         }
         // Collectable entfernen
         this.level.collectableObjects.splice(index, 1);
@@ -141,48 +137,43 @@ class World {
     });
   }
 
-  handleCharacterEnergy(enemy){
-    this.character.hit(enemy);
-    this.changeStatusbar(this.energyStatusbar, -10);
-  }
+  // handleCharacterEnergy(enemy){
+  //   this.character.hit(enemy);
+  //   this.changeStatusbar(this.energyStatusbar, -10);
+  // }
 
-  changeStatusbar(statusbar, value) {
-    if (statusbar.type === "coin") {
-      const increment = value * (100 / statusbar.maxCoins); // Jeder Coin trägt gleichmäßig bei
-      if (statusbar.percentage + increment >= 100) {
-        // Wenn Coins-Leiste gefüllt ist
-        if (this.energyStatusbar.percentage < 100) {
-          // Nur Energie auffüllen, wenn Energie < 100
-          const missingEnergy = 100 - this.energyStatusbar.percentage;
-          this.changeStatusbar(this.energyStatusbar, missingEnergy);
-        }
-        statusbar.setPercentage(0); // Coins-Leiste zurücksetzen
-      } else {
-        statusbar.setPercentage(statusbar.percentage + increment);
-      }
-    } else if (statusbar.type === "bottle") {
-        const increment = value * (100 / statusbar.maxBottles); // Berechnung des Prozentsatzes
-        if (statusbar.percentage + increment <= 100 && statusbar.percentage + increment >= 0) {
-            statusbar.setPercentage(statusbar.percentage + increment);
-        } 
-        //später entfernen
-        else if (statusbar.percentage >= 100) {
-            console.log("[DEBUG] Flaschenleiste ist voll, keine weiteren Flaschen gesammelt.");
-        } else if (statusbar.percentage <= 0) {
-            console.log("[DEBUG] Keine Flaschen-Prozente mehr verfügbar.");
-        }
-    }
-  }
+  // changeStatusbar(statusbar, value) {
+  //   if (statusbar.type === "coin") {
+  //     const increment = value * (100 / statusbar.maxCoins); // Jeder Coin trägt gleichmäßig bei
+  //     if (statusbar.percentage + increment >= 100) {
+  //       // Wenn Coins-Leiste gefüllt ist
+  //       if (this.energyStatusbar.percentage < 100) {
+  //         // Nur Energie auffüllen, wenn Energie < 100
+  //         const missingEnergy = 100 - this.energyStatusbar.percentage;
+  //         this.changeStatusbar(this.energyStatusbar, missingEnergy);
+  //       }
+  //       statusbar.setPercentage(0); // Coins-Leiste zurücksetzen
+  //     } else {
+  //       statusbar.setPercentage(statusbar.percentage + increment);
+  //     }
+  //   } else if (statusbar.type === "bottle") {
+  //       const increment = value * (100 / statusbar.maxBottles); // Berechnung des Prozentsatzes
+  //       if (statusbar.percentage + increment <= 100 && statusbar.percentage + increment >= 0) {
+  //           statusbar.setPercentage(statusbar.percentage + increment);
+  //       } 
+  //   }
+  // }
 
   checkIsThrowing() {
     if (this.keyboard.THROW) {
       this.character.lastTimeMoved = new Date().getTime();
       let percentageSingleBottle = 100 / this.bottleStatusbar.maxBottles;
-      if (this.bottleStatusbar.percentage >= percentageSingleBottle) {
+      if (this.character.bottles >= 1 && this.bottleStatusbar.percentage >= percentageSingleBottle) {
         let bottle = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection, this);
         this.throwableObjects.push(bottle);
         bottle.throw();
-        this.changeStatusbar(this.bottleStatusbar, -percentageSingleBottle);
+        this.character.bottles--;
+        this.character.updateStatusbar("bottle");
       }
     };
   }
@@ -260,14 +251,10 @@ class World {
   }
 
   addToMap(mo) {
-    if (mo.otherDirection) {
-      this.flipImage(mo);
-    }
+    if (mo.otherDirection) {this.flipImage(mo);}
     mo.draw(this.ctx);
     // mo.drawOffsetFrame(this.ctx); /*---später entfernen---*/
-    if (mo.otherDirection) {
-      this.flipImageBack(mo);
-    }
+    if (mo.otherDirection) {this.flipImageBack(mo);}
   }
 
   flipImage(mo) {
@@ -293,8 +280,7 @@ class World {
      endScreenImage = "assets/img/You won, you lost/You Win A.png"; 
     };
      overlay.innerHTML = getEndScreenTemplate(endScreenImage);
-     overlay.style.display = "flex";
-    //  overlay.style.backgroundImage = `url(${endScreenImage})`; 
+     overlay.style.display = "flex"; 
   }
 }
 

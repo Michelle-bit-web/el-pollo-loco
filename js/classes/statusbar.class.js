@@ -1,11 +1,11 @@
 class Statusbar extends DrawableObject{
-    percentage = 0;
+    percentage = 0; //100?
     bottle = 0;
     coins= 0;
     type;
     images;
-    maxCoins = 16;
-    maxBottles = 8;
+    maxCoins = 16; //10?
+    maxBottles = 8; //5?
 
     IMAGES_ENERGY = [
         "assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
@@ -75,7 +75,11 @@ class Statusbar extends DrawableObject{
     setPercentage(percentage){
         // console.log("[DEBUG] Neuer Percentage-Wert:", percentage);
         this.percentage = Math.max(0, Math.min(percentage, 100));
-        let path = this.images[this.resolveImageIndex()];
+        this.updateBarImage();
+    }
+
+    updateBarImage(){
+         let path = this.images[this.resolveImageIndex()];
         // console.log("[DEBUG] Bildpfad für Statusbar:", path);
         this.img = this.imageCache[path];
     }
