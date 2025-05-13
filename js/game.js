@@ -25,8 +25,8 @@ function isTouchDevice() {
 
 function startGame() {
     soundStartScreen.stop();
-    const startButton = document.getElementById("startButton");
-    startButton.style.display = "none";
+    const hiddenOverlay = document.getElementById("overlay");
+    hiddenOverlay.style.display = "none";
     loadLevel();
 }
 

@@ -27,6 +27,7 @@
     <script src="./js/level/level2.js"></script>
     <script src="./js/classes/world.class.js"></script>
 
+    <script src="./js/templates.js"></script>
     <script src="./js/event-listener.js"></script>
     <script src="./js/game.js"></script>
   </head>
@@ -37,7 +38,7 @@
     </div>
     <div style="position: relative">
       <canvas id="canvas" width="720" height="480"></canvas>
-      <div class="overlay">
+      <div class="overlay" id="overlay">
         <div class="container-sound-btn">
           <button id="sound_btn">
             <img id="sound_btn_img" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option" />
@@ -47,7 +48,9 @@
           <div class="panel-menu">
             <button id="startButton" class="menu-btn" onclick="startGame()">Start Game</button>
             <button id="controls" class="menu-btn" onclick="renderControls()">Controls</button>
-            <button class="menu-btn"><a class="menu-btn" href="./impressum.html" target="_blank">Imprint</a></button>
+            <button class="menu-btn">
+              <a  href="./impressum.html" target="_blank">Imprint</a>
+            </button>
           </div>
           <div id="panel" class="panel" style="display: none">
             <div class="panel-wrapper">

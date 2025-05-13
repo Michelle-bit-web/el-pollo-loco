@@ -171,10 +171,13 @@ h1{
 
 .menu-overlay{
     width: 80%; 
-    height: 90%;
+    height: 80%;
     max-width: 720px;
     max-height: 420px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .menu-overlay .panel {
@@ -201,8 +204,52 @@ h1{
 }
 
 .panel-wrapper{
+    gap: 10%;
     display: flex;
     justify-content: space-between;
+}
+
+.controls-overlay{
+    padding: 5%;
+    height: 300px;
+    gap: 20%;
+}
+
+.controls-overlay p{
+  font-size: 1.5rem;
+}
+
+
+.exit-btn-container{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.exit-btn{
+    height: 60%;
+    width: 12%;
+}
+
+.key-controls{
+    gap:5%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.key-controls p{
+    text-align: center;
+}
+
+.key-controls img{
+    height: 150px;
+    width: 100px;
+}
+
+.img-throw-bottle{
+    width: 150px;
 }
 
 /*Smartphones ----*/

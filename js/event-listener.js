@@ -63,4 +63,18 @@ function handleOrientationChange(promptOverlay) {
             window.removeEventListener("orientationchange", handleOrientationChange); // Entferne den Listener
             checkUserResponse(promptOverlay);
         }
-    }
+}
+
+function renderControls(){
+    let controls = document.getElementById("menu-overlay");
+    controls.style.backgroundColor = "rgba(0, 0, 0, 0.797)";
+    controls.style.color = "white";
+    controls.innerHTML = controlsHtmlTemplate();
+}
+
+function renderMainMenu(){
+    let controls = document.getElementById("menu-overlay");
+    controls.style.backgroundColor = "unset";
+    controls.style.color = "white";
+    controls.innerHTML = mainMenuHtmlTemplate();
+}
