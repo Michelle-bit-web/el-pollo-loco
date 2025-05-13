@@ -14,12 +14,7 @@ class DrawableObject {
   }
   
   loadImage(path) {
-    this.img = new Image();
-
-    //---Für Debugging---
-    // this.img.onload = () => console.log(`[OK] Bild geladen: ${path}`);
-    // this.img.onerror = () => console.error(`[FEHLER] Bild NICHT gefunden: ${path}`);
-    
+    this.img = new Image(); 
     this.img.src = path;
   }
 
@@ -32,10 +27,6 @@ class DrawableObject {
   }
 
   draw(ctx) {
-    //----Fürs Debugging---
-    
-    // console.log(`[DEBUG] draw() aufgerufen für Objekt mit x=${this.x}, y=${this.y}`);
-
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 

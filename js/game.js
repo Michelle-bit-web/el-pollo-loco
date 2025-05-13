@@ -29,6 +29,9 @@ function startGame() {
     menuOverlay.style.display = "none";
     getGameplayOverlay();
     loadLevel();
+    if(isTouchDevice()){
+         document.getElementById("panel").style.display = "flex";
+    };
 }
 
 function getGameplayOverlay(){
@@ -51,16 +54,16 @@ function loadLevel() {
 
 function startPrompt(){
     const promptOverlay = document.getElementById("prompt-overlay");
-   // Überprüfe, ob es ein Touch-Gerät ist
+  
     if (isTouchDevice()) {
         monitorOrientation();
-        // Überprüfe die aktuelle Geräteausrichtung
+       
         if (window.screen.orientation.type.startsWith("portrait")) {
-            promptOverlay.innerText = "Rotate device  \u21BB"; // Nachricht zum Drehen
+            promptOverlay.innerText = "Rotate device  \u21BB"; 
             promptOverlay.style.textAlign = "center";
-            checkOrientation(promptOverlay); // Warte auf Änderung der Ausrichtung
+            checkOrientation(promptOverlay); 
         } else {
-            promptOverlay.innerHTML = "Touch screen"; // Standardnachricht
+            promptOverlay.innerHTML = "Touch screen";
         }
     }
     let showPromptInterval = setInterval(() => {

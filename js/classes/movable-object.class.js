@@ -18,14 +18,6 @@ class MovableObject extends DrawableObject{
     this.x -= this.speed;
   }
 
-  // automaticMovement(obj){
-  //   automaticMoveInterval = setInterval(() => {
-  //    obj.moveRight();
-  //    obj.playAnimation(this.IMAGES_WALKING);
-  //    console.log('automatische Bewegung');
-  //   }, 1000 / 60);
-  // }
-
   automaticMovement(targetX, callback) {
     const interval = setInterval(() => {
         if (this.x < targetX) {
@@ -51,23 +43,22 @@ class MovableObject extends DrawableObject{
 
   stopAnimation(intervalType, path) {
     if (this.animationIntervals[intervalType]) {
-        clearInterval(this.animationIntervals[intervalType]); // Stoppe das spezifische Intervall
+        clearInterval(this.animationIntervals[intervalType]); 
         delete this.animationIntervals[intervalType]; // Entferne den Eintrag
     }
     if (path) {
-        this.loadImage(path); // Setze ein statisches Bild (optional)
+        this.loadImage(path);
     }
 }
 
 stopAllAnimations(path) {
-    // Stoppe alle gespeicherten Animationen
     for (let key in this.animationIntervals) {
         clearInterval(this.animationIntervals[key]);
         delete this.animationIntervals[key];
     };
     clearInterval(this.endbossInterval); 
     if (path) {
-      this.loadImage(path); // Setze ein statisches Bild (optional)
+      this.loadImage(path); 
   }
 }
 
