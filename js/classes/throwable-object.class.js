@@ -34,7 +34,6 @@ class ThrowableObject extends MovableObject{
     throw(){
         this.speedY = 20;
         this.applyGravity();
-        let rotationIndex = 0;
         this.throwInterval = setInterval(() => {
             if(this.otherDirection){
                this.x -= 10; //throw to left
@@ -42,16 +41,19 @@ class ThrowableObject extends MovableObject{
                 this.x += 10; //throw to right
             }
         }, 25);
+       this.startFlyingAnimation();  
+    }
 
-        this.rotationInterval = setInterval(() => {
+    startFlyingAnimation(){
+         let rotationIndex = 0;
+         this.rotationInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_ROTATION);
             if (rotationIndex < this.IMAGES_ROTATION.length - 1) {
                 rotationIndex++;
             } else {
                 rotationIndex = 0;
             }
-        }, 50);   
-        
+        }, 50); 
     }
 
     splash(){
@@ -62,6 +64,6 @@ class ThrowableObject extends MovableObject{
 
         setTimeout(() => {
             this.remove = true;
-        }, 500); //remove bottle after 500ms
+        }, 500);
     }
 }

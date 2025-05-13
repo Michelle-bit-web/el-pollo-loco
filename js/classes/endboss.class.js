@@ -141,9 +141,12 @@ class Endboss extends MovableObject{
 }
 
     handleFirstContact() {
+        // AudioManager.backgroundMusicGeneral.stop(); wirft noch Fehler
+        // AudioManager.chickenSound.stop(); 
         this.firstContactCharacter = true;
         this.statusbar = new Statusbar("energyEndboss", 500, 5);
         this.playAnimation(this.IMAGES_ALERT);
+        
         // this.world.controlEnabled = true;
     }
 

@@ -18,15 +18,15 @@ function keyboardEvents(){
     window.addEventListener("keydown", event => {
         if (world.controlEnabled && keyMap[event.keyCode]) {
             keyboard[keyMap[event.keyCode]] = true;
+            console.log(`Key ${keyMap[event.keyCode]} set to true: ${ keyboard[keyMap[event.keyCode]]}`)
         }
     });
 
     window.addEventListener("keyup", event => {
         if (world.controlEnabled &&keyMap[event.keyCode]) 
             {keyboard[keyMap[event.keyCode]] = false;
-            }
+            } 
     });
-
 }
 
 function touchEvents(){

@@ -138,7 +138,6 @@ class Character extends MovableObject {
           // this.world.gameSounds.walkingSound.audio.play();
 
         } else if (this.checkMovementStatus()){
-          //differenzieren zw. idle und idle long
          this.playIdleAnimation();
         }
         else {
@@ -163,7 +162,6 @@ class Character extends MovableObject {
             clearInterval(fallInterval);
           }
         }, 1000 / 60);
-        this.world.displayEndScreen("characterIsDead");
       }
     }, 1000 / 30);
     
@@ -181,8 +179,10 @@ class Character extends MovableObject {
     pastTime = pastTime / 1000; 
     if (pastTime < 9) {
       this.playAnimation(this.IMAGES_IDLE);
-    } else {
+      //here a sound
+    } else if( pastTime >= 9){
       this.playAnimation(this.IMAGES_IDLE_LONG);
+      //here a sound
     }
   }
 

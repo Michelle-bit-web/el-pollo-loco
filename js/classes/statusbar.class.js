@@ -73,10 +73,10 @@ class Statusbar extends DrawableObject{
     }
 
     setPercentage(percentage){
-        console.log("[DEBUG] Neuer Percentage-Wert:", percentage);
+        // console.log("[DEBUG] Neuer Percentage-Wert:", percentage);
         this.percentage = Math.max(0, Math.min(percentage, 100));
         let path = this.images[this.resolveImageIndex()];
-        console.log("[DEBUG] Bildpfad für Statusbar:", path);
+        // console.log("[DEBUG] Bildpfad für Statusbar:", path);
         this.img = this.imageCache[path];
     }
 

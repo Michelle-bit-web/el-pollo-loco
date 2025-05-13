@@ -9,7 +9,7 @@ class AudioManager {
         this.audio.volume = vol;
         this.audio.loop = loop; //Boolean zur Wiederholung der Audiodatei
         AudioManager.sounds.push(this);
-        console.log('GameOverSound:', this.audio);
+        // console.log('GameOverSound:', this.audio);
     }
 
     play() {
