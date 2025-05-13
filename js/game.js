@@ -44,20 +44,16 @@ function loadLevel() {
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard, level1, controlEnabled); //gibt man level2 mit, würde das level 2 integriert werden
     if (isTouchDevice()) {
-        console.log("Touch device detected. Initializing touch events...");
         touchEvents();
     } else {
-        console.log("Non-touch device detected. Initializing keyboard events...");
         keyboardEvents();
     };
 }
 
 function startPrompt(){
     const promptOverlay = document.getElementById("prompt-overlay");
-  
     if (isTouchDevice()) {
         monitorOrientation();
-       
         if (window.screen.orientation.type.startsWith("portrait")) {
             promptOverlay.innerText = "Rotate device  \u21BB"; 
             promptOverlay.style.textAlign = "center";
@@ -102,30 +98,24 @@ function increaseTransparence(){
 
 function checkUserResponse(promptOverlay){
     const promptContainer = document.getElementById("div_prompt");
-
     document.addEventListener("keydown", () => {
         removePrompt(promptOverlay, promptContainer);
-    }, { once: true }); // Der Listener wird nur einmal ausgeführt
-   
+    }, { once: true }); // Listener nur 1x ausgeführt
     document.addEventListener("touchstart", () => {
        if (window.screen.orientation.type.startsWith("landscape")) {
             removePrompt(promptOverlay, promptContainer);
         }
-    }, { once: true }); // Der Listener wird nur einmal ausgeführt
+    }, { once: true });
 }
 
 function removePrompt(promptOverlay, promptContainer) {
     if (promptOverlay) {
         promptOverlay.style.display = "none";
-    } else {
-        console.warn("Prompt overlay not found.");
-    }
+    } 
 
     if (promptContainer) {
         promptContainer.style.display = "none";
-    } else {
-        console.warn("Prompt container not found.");
-    }
+    } 
     AudioManager.sounds.push(soundStartScreen);
     stopAllIntervals();
     AudioManager.loadMuteStatus();

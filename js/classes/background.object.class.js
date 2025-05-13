@@ -10,8 +10,5 @@ class BackgroundObject extends MovableObject {
             this.height = h;
             this.y = y;
         };
-        if(imagePath === "assets/img/5_background/level-end/level-end-arrow.png"){
-            console.log('Level-End geladen', { width: this.width, height: this.height });
-        }
     }
 }
