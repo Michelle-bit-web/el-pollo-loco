@@ -1,12 +1,8 @@
 class World {
-  character = new Character(this);
-  canvas;
-  canvasState = "game"; // "startscreen" oder "game"
-  ctx;
-  keyboard;
   camera_x = 0;
   fightScene = false;
-  isFading = false;
+  // isFading = false;
+  character = new Character(this);
   energyStatusbar = new Statusbar("energy", 10, 5, this);
   coinStatusbar = new Statusbar("coin", 10, 45, this);
   bottleStatusbar = new Statusbar("bottle", 10, 85, this);
@@ -14,15 +10,21 @@ class World {
   gameSounds = {
     backgroundMusicGeneral: new AudioManager("assets/audio/background/Slower_Version-2023-05-15_-_Chicken_Chase_-_www.FesliyanStudios.com.mp3",0.2,true,1),
     chickenSound: new AudioManager("assets/audio/background/mixkit-chickens-and-pigeons-1769.wav", 0.1, true, 1),
+    onLandingSound: new AudioManager("assets/audio/jump-on-chicken/mixkit-falling-hit-on-gravel-756.wav", 0.1, true, 1),
+    landingOnChickenSound: new AudioManager("assets/audio/jump/mixkit-body-punch-quick-hit-2153.wav", 0.1, true, 1),
     //     jumpSound: null,
-    //     coinSound: null,
+    coinCollectedSound: new AudioManager("assets/audio/collect/mixkit-retro-game-notification-212.wav", 0.1, true, 1),
     endbossIntroSound: new AudioManager("assets/audio/endboss-intro/2019-05-09_-_Escape_Chase_-_David_Fesliyan.mp3",0.1,false,1),
-    //     endbossAttackSound: new AudioManager("/assets/audio/endboss/mixkit-cock-cry-1761.wav", 0.5, false, 1),
+    endbossHurtSound: new AudioManager("/assets/audio/endboss/mixkit-cock-cry-1761.wav", 0.5, false, 1),
     //     throwingSound: null,
-    splashSound: new AudioManager("assets/audio/throw/mixkit-glass-break-with-hammer-thud-759.wav", 0.08, false, 1),
-    //     hurtSound: null,
-    //     walkingSound: new AudioManager("/assets/audio/walk/mixkit-footsteps-in-woods-loop-533.wav", 0.5, false, 1),
-    gameOverSound: new AudioManager("assets/audio/game-over/mixkit-player-losing-or-failing-2042.wav", 0.2, false, 10),
+    breakGlassSound: new AudioManager("assets/audio/throw/mixkit-glass-break-with-hammer-thud-759.wav", 0.08, false, 1),
+    splashSound: new AudioManager("assets/audio/throw/mixkit-gore-video-game-blood-splash-263.wav", 0.08, false, 1),
+    characterHurtSound: new AudioManager("assets/audio/hurt/mixkit-arcade-retro-game-over-213.wav", 0.08, false, 1),
+    energyRecoverySound: new AudioManager("assets/audio/collect/mixkit-extra-bonus-in-a-video-game-2045.wav", 0.08, false, 1),
+    walkingSound: new AudioManager("/assets/audio/walk/mixkit-footsteps-in-woods-loop-533.wav", 0.5, false, 10),
+    characterDead: new AudioManager("assets/audio/game-over/mixkit-player-losing-or-failing-2042.wav", 0.2, false, 1),
+    gameOverSound: new AudioManager("assets/audio/game-over/mixkit-retro-arcade-game-over-470.wav", 0.2, false, 10),
+    gameWinSound: new AudioManager("assets/audio/game-win/mixkit-video-game-win-2016.wav", 0.2, false, 10),
   };
 
   constructor(canvas, keyboard, level, controlEnabled) {
@@ -37,20 +39,7 @@ class World {
 
     this.gameSounds.backgroundMusicGeneral.play();
     this.gameSounds.chickenSound.play(); 
-    AudioManager.sounds.push(
-      this.gameSounds.backgroundMusicGeneral,
-      this.gameSounds.chickenSound,
-      this.gameSounds.endbossIntroSound,
-      this.gameSounds.splashSound,
-      this.gameSounds.gameOverSound
-    );
-    
   }
-
-  // loadGameOverImage() {
-  //     this.gameOverImage = new Image();
-  //     this.gameOverImage.src = "./assets/img/You won, you lost/Game over A.png";
-  // }
 
   setWorld() {
     this.level.endboss.world = this;
@@ -62,7 +51,7 @@ class World {
       this.checkIsThrowing();
       this.checkCharacterDistance();
       this.checkGameEnd();
-    }, 100);
+    }, 10);
   }
 
   checkCollisions() {
@@ -75,13 +64,13 @@ class World {
 
   collisionsCharacterChicken() {
     this.level.enemies.forEach((enemy, enemyIndex) => {
-      if (this.character.isAboveGround() && this.character.isColliding(enemy)) {
-        this.level.enemies[enemyIndex].markAsDead();
-      }
-      if (this.character.isColliding(enemy) && !enemy.isDead) {
-        this.character.hit(enemy);
-        this.changeStatusbar(this.energyStatusbar, -10);
-      }
+      if(this.character.isColliding(enemy) && !enemy.isDead){
+        if (this.character.isAboveGround() && this.character.speedY < 0) {
+          this.level.enemies[enemyIndex].markAsDead();
+        } else if (!this.character.isDead() && !enemy.isDead) {
+          this.handleCharacterEnergy(enemy);
+        }
+      };
     });
   }
 
@@ -112,19 +101,26 @@ class World {
   collisionsBottleChicken() {
     this.level.enemies.forEach((enemy, enemyIndex) => {
       this.throwableObjects.forEach((bottle) => {
-        if (bottle.isColliding(enemy, enemyIndex) & !bottle.isSplashing) {
-          bottle.splash();
-          this.gameSounds.splashSound.play();
-          this.level.enemies[enemyIndex].markAsDead();
-        }
-        setTimeout(() => {
-          if (enemy.isDead) {
-            this.level.enemies.splice(enemyIndex, 1); // Entferne den Gegner
-          }
-        }, 100);
+        if (bottle.isColliding(enemy, enemyIndex) && !enemy.isDead && !bottle.isSplashing) {
+          this.handleBottleCollision(bottle, enemyIndex);
+        };
+        this.removeDeadEnemy(enemy, enemyIndex);
       });
     });
-    this.throwableObjects = this.throwableObjects.filter((obj) => !obj.remove);
+    // this.throwableObjects = this.throwableObjects.filter((obj) => !obj.remove);
+  }
+
+  handleBottleCollision(bottle, enemyIndex){
+    bottle.splash();
+    this.level.enemies[enemyIndex].markAsDead();
+  }
+
+  removeDeadEnemy(enemy, enemyIndex){
+    setTimeout(() => {
+          if (enemy.isDead) {
+            this.level.enemies.splice(enemyIndex, 1);
+          }
+        }, 100);
   }
 
   collisionsWithCollectables() {
@@ -145,6 +141,11 @@ class World {
     });
   }
 
+  handleCharacterEnergy(enemy){
+    this.character.hit(enemy);
+    this.changeStatusbar(this.energyStatusbar, -10);
+  }
+
   changeStatusbar(statusbar, value) {
     if (statusbar.type === "coin") {
       const increment = value * (100 / statusbar.maxCoins); // Jeder Coin trägt gleichmäßig bei
@@ -163,7 +164,9 @@ class World {
         const increment = value * (100 / statusbar.maxBottles); // Berechnung des Prozentsatzes
         if (statusbar.percentage + increment <= 100 && statusbar.percentage + increment >= 0) {
             statusbar.setPercentage(statusbar.percentage + increment);
-        } else if (statusbar.percentage >= 100) {
+        } 
+        //später entfernen
+        else if (statusbar.percentage >= 100) {
             console.log("[DEBUG] Flaschenleiste ist voll, keine weiteren Flaschen gesammelt.");
         } else if (statusbar.percentage <= 0) {
             console.log("[DEBUG] Keine Flaschen-Prozente mehr verfügbar.");
@@ -176,14 +179,11 @@ class World {
       this.character.lastTimeMoved = new Date().getTime();
       let percentageSingleBottle = 100 / this.bottleStatusbar.maxBottles;
       if (this.bottleStatusbar.percentage >= percentageSingleBottle) {
-        let bottle = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection);
-        console.log('throwing ausgelöst')
+        let bottle = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection, this);
         this.throwableObjects.push(bottle);
         bottle.throw();
         this.changeStatusbar(this.bottleStatusbar, -percentageSingleBottle);
-      }else {
-            console.log("Nicht genug Flaschen-Prozente, um zu werfen.");
-        };
+      }
     };
   }
 
@@ -294,7 +294,7 @@ class World {
     };
      overlay.innerHTML = getEndScreenTemplate(endScreenImage);
      overlay.style.display = "flex";
-     overlay.style.backgroundImage = `url(${endScreenImage})`; 
+    //  overlay.style.backgroundImage = `url(${endScreenImage})`; 
   }
 }
 

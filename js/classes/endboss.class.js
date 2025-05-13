@@ -59,6 +59,11 @@ class Endboss extends MovableObject{
         bottom: 40
       }
 
+    //---hier vllt Sounds definieren & prüfen, ob endboss auf AudioManager zugreifen kann
+    // alert_sound = new AudioManager(src...);
+    // hurt_sound = new AudioManager(src..);
+    // dead_sound = new AudioManager(src);
+
     constructor(x){
         super().loadImage("assets/img/4_enemie_boss_chicken/1_walk/G1.png");
         this.x = x;
@@ -67,6 +72,8 @@ class Endboss extends MovableObject{
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        // AudioManager.sounds.push(this.alert_sound, this.hurt_sound, this.dead_sound)
+        this.animationIntervals = [];
         this.animate();
     }
     
@@ -80,7 +87,7 @@ class Endboss extends MovableObject{
             if (this.isBeingHit) {
                 this.hurtAnimation();
             }
-            else if (this.firstContactCharacter && this.totalContacts > 10) {
+            else if (this.firstContactCharacter && this.totalContacts > 30) {
                 this.attackAnimation();
             }
             else if (this.firstContactCharacter) {
@@ -91,6 +98,16 @@ class Endboss extends MovableObject{
                 this.walkingAnimation();
             }
         }, 100);
+    }
+
+    handleFirstContact() {
+        // AudioManager.backgroundMusicGeneral.stop(); wirft noch Fehler
+        // AudioManager.chickenSound.stop(); 
+        this.firstContactCharacter = true;
+        this.statusbar = new Statusbar("energyEndboss", 500, 5);
+        this.playAnimation(this.IMAGES_ALERT);
+        
+        // this.world.controlEnabled = true;
     }
 
     // updateSpeedBasedOnEnergy() {
@@ -107,12 +124,21 @@ class Endboss extends MovableObject{
     // }
 
     updateSpeedBasedOnEnergy() {
-    if (this.energy <= 50 && !this.hasJumped) {
+    if(this.energy <= 80){
+       this.speed += 0.2;
+       this.speedLevel = 2;
+       this.moveTowardCharacter();
+    }
+    if (this.energy <= 40 && this.speedLevel == 2 && !this.hasJumped) {
+        setInterval(() => {
         this.jump(); // Endboss jumps once
         this.hasJumped = true;
-    } else {
-        this.moveTowardCharacter(); // Continue attacking
-    }
+        this.moveTowardCharacter();
+        }, 5000)
+    } 
+    // else {
+    //     this.moveTowardCharacter(); // Continue attacking
+    // }
 }
 
     jump() {
@@ -122,32 +148,23 @@ class Endboss extends MovableObject{
         this.applyGravity();
 
         // Character wird in die Luft geworfen
-        if (this.world.character.isColliding(this)) {
-            this.world.character.speedY = 20;
-        }
-
+        // if (this.world.character.isColliding(this)) {
+        //     this.world.character.speedY = 20;
+        // }
         setTimeout(() => {
             this.isJumping = false;
         }, 3000); // Nach 1 Sekunde kann der Boss erneut springen
     };
-    this.moveTowardCharacter();
+    
 }
 
     onLand() {
-    // Character wird bei Landung in die Luft geworfen
-    if (this.world.character.isColliding(this)) {
-        this.world.character.jump(45); // Character springt
-    }
-}
+         this.world.character.jump(45); 
 
-    handleFirstContact() {
-        // AudioManager.backgroundMusicGeneral.stop(); wirft noch Fehler
-        // AudioManager.chickenSound.stop(); 
-        this.firstContactCharacter = true;
-        this.statusbar = new Statusbar("energyEndboss", 500, 5);
-        this.playAnimation(this.IMAGES_ALERT);
-        
-        // this.world.controlEnabled = true;
+    // Character wird bei Landung in die Luft geworfen
+    // if (this.world.character.isColliding(this)) {
+    //     this.world.character.jump(45); // Character springt
+    // }
     }
 
     hurtAnimation(){
@@ -217,7 +234,6 @@ class Endboss extends MovableObject{
         };
         if (this.statusbar) {
             const percentage = (this.energy / 100) * 100;
-            // console.log("[DEBUG] Aktualisiere Statusbar auf:", percentage); // Debug-Ausgabe
             this.statusbar.setPercentage(percentage);
         }
         // if (this.energy <= 0) {
@@ -227,14 +243,18 @@ class Endboss extends MovableObject{
     }
 
     moveTowardCharacter() {
-        return
-    //     if (this.world.character.x >= this.x{
-    //         this.moveRight();
-    //         this.otherDirection = true;
-    //     } else {
-    //         this.moveLeft();
-    //         this.otherDirection = false;
-    //     }
+         if (this.world.character.x >= this.x){
+            setTimeout(() => {
+             this.moveRight();
+             this.otherDirection = true;
+        }, 1000);
+           
+        } else {
+            setTimeout(() => {
+              this.moveLeft();
+              this.otherDirection = false;
+        }, 1000);
+        }
     }
 
     hit() {

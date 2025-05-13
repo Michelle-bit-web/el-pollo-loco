@@ -148,10 +148,21 @@ class Character extends MovableObject {
 
     this.animationIntervals["dying"] = setInterval(() => {
       if (this.isDead()) {
-        // this.world.gameSounds.gameOverSound.audio.play();
-        if(this.otherDirection) {this.otherDirection = false;}
+        this.isPlayingDyingAnimation = true;
+        this.world.gameSounds.characterDead.audio.play();
+        this.handleRipanimation();
+      }
+      if(this.isPlayingDyingAnimation){
+        clearInterval(this.animationIntervals["dying"]);
+        AudioManager.sounds.forEach(sound => sound.stop());
+      }
+    }, 1000 / 30);
+    
+  }
+
+  handleRipanimation(){
+    if(this.otherDirection) {this.otherDirection = false}
         this.stopAllAnimations("assets/img/2_character_pepe/5_dead/rip.png");
-        // document.querySelector("#canvas").style.backgroundImage = "url(../assets/img/Game over A.png)";
         this.height = 120; // Höhe des RIP-Bildes
         this.width = 70;
         this.y = 0; // Setze die Y-Position auf 0, damit es am oberen Bildschirmrand erscheint
@@ -160,13 +171,12 @@ class Character extends MovableObject {
             this.y += 5;
           } else {
             clearInterval(fallInterval);
+            this.world.gameSounds.onLandingSound.audio.play();
           }
         }, 1000 / 60);
-      }
-    }, 1000 / 30);
-    
-  }
-
+        this.world.gameSounds.onLandingSound.audio.stop();
+    }
+  
   checkMovementStatus(){
     return !this.world.keyboard.RIGHT && 
     !this.world.keyboard.LEFT && 

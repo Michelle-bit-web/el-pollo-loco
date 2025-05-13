@@ -18,7 +18,6 @@ function keyboardEvents(){
     window.addEventListener("keydown", event => {
         if (world.controlEnabled && keyMap[event.keyCode]) {
             keyboard[keyMap[event.keyCode]] = true;
-            console.log(`Key ${keyMap[event.keyCode]} set to true: ${ keyboard[keyMap[event.keyCode]]}`)
         }
     });
 
@@ -32,7 +31,6 @@ function keyboardEvents(){
 function touchEvents(){
     Object.values(buttonMap).forEach(buttonId => {
     const button = document.getElementById(`${buttonId}`);
-    console.log(button);
     button.addEventListener("touchstart", event => {
         event.preventDefault(); //to prevent other standard actions for this event-type by browser
         button.classList.add("active"); // Füge eine CSS-Klasse hinzu
@@ -58,8 +56,8 @@ function checkOrientation(promptOverlay) {
 
 function handleOrientationChange(promptOverlay) {
         if (window.screen.orientation.type.startsWith("landscape")) {
-            promptOverlay.innerText = "Touch screen"; // Aktualisiere den Text
-            window.removeEventListener("orientationchange", handleOrientationChange); // Entferne den Listener
+            promptOverlay.innerText = "Touch screen"; 
+            // window.removeEventListener("orientationchange", handleOrientationChange); // Entferne den Listener
             checkUserResponse(promptOverlay);
         }
 }
