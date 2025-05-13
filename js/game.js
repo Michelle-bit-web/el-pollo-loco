@@ -25,9 +25,16 @@ function isTouchDevice() {
 
 function startGame() {
     soundStartScreen.stop();
-    const hiddenOverlay = document.getElementById("overlay");
-    hiddenOverlay.style.display = "none";
+    const menuOverlay = document.getElementById("overlay");
+    menuOverlay.style.display = "none";
+    getGameplayOverlay();
     loadLevel();
+}
+
+function getGameplayOverlay(){
+    let gameplayOverlay = document.getElementById("overlay-gameplay");
+    gameplayOverlay.style.display = "flex";
+    gameplayOverlay.innerHTML = gamePlayHtmlTemplate();
 }
 
 function loadLevel() {
@@ -182,4 +189,12 @@ function showOrientationWarning() {
 function hideOrientationWarning() {
     const promptOverlay = document.getElementById("prompt-overlay");
     promptOverlay.style.display = "none"; // Verstecke den Overlay
+}
+
+function backToMenu(){
+    console.log('should reload now')
+    location.reload();
+}
+function resetGame(){
+    loadLevel();
 }

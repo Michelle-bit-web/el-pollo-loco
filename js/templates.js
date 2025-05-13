@@ -8,11 +8,11 @@ function controlsHtmlTemplate(){
         <div class="key-controls">
              <div>
                 <img src="./assets/img/controls/left.png" />
-                <p>&larr;</p>
+                <p><b>&larr;</b></p>
              </div>
              <div>
                 <img src="./assets/img/controls/right.png" />
-                <p>&rarr;</p>
+                <p><b>&rarr;</b></p>
              </div>
              <div>
                 <img src="./assets/img/controls/jump.png" />
@@ -47,5 +47,27 @@ function mainMenuHtmlTemplate(){
             </div>
           </div>
         </div>
+    `;
+}
+
+function gamePlayHtmlTemplate(){
+   return `
+      <div class="gameplay-div">
+          <button id="sound_btn" class="sound-btn-gameplay">
+            <img id="sound_btn_img" class="sound-btn-gameplay" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option" />
+          </button>
+          <button id="controls" class="controls-btn-gameplay" onclick="renderControls()">&#x2699;</button>
+      </div>
+    `;
+}
+
+function getEndScreenTemplate(endScreenImage){
+ return `
+    <div class="end-screen-div">
+      <img id="end-screen-img" class="end-screen-img" src="${endScreenImage}" alt="mute-sound-option" />
+      <button id="play-again-btn" class="menu-btn" onclick="resetGame()">Play again</button>
+      <button id="to-menu-btn" class="menu-btn" onclick="backToMenu()">Back to menu</button>
+    </div>
+          
     `;
 }

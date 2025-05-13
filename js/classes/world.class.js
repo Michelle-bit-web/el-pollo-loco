@@ -72,6 +72,7 @@ class World {
       this.checkCollisions();
       this.checkIsThrowing();
       this.checkCharacterDistance();
+      this.checkGameEnd();
     }, 100);
   }
 
@@ -421,4 +422,19 @@ class World {
     mo.x = mo.x * -1;
     this.ctx.restore();
   }
+
+  checkGameEnd(){
+    let overlay = document.getElementById("overlay");
+    let endScreenImage;
+    if(!this.character.isDead() && !this.level.endboss.isDead()) return;
+    if(this.character.isDead()){
+     endScreenImage = "assets/img/You won, you lost/Game Over.png";
+    }else if(this.level.endboss.isDead()){
+     endScreenImage = "assets/img/You won, you lost/You Win A.png"; 
+    };
+     overlay.innerHTML = getEndScreenTemplate(endScreenImage);
+     overlay.style.backgroundImage = `url(${endScreenImage})`; 
+  }
 }
+
+
