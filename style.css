@@ -18,6 +18,7 @@
 *{
     margin: 0;
     text-decoration: none;
+    font-size: 10px; 
 }
 
 a{
@@ -95,8 +96,9 @@ h1{
     padding: 10px 20px;
     border-radius: 10px;
     width: 32vw;
-    height: 25%;
-    font-size: 100%;
+    height: 30%;
+    max-width: 350px;
+    font-size: clamp(1rem, 3vw, 3rem);
 }
 
 .menu-btn:hover{
@@ -113,6 +115,7 @@ h1{
 .sound_btn_img,
 .throw-img{
     width: 7vw;
+    max-width: 50px;
     height: auto;
 }
 
@@ -121,6 +124,8 @@ h1{
     border: none;
     height: 7vw;
     width: 7vw;
+    max-width: 50px;
+    max-height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -210,14 +215,16 @@ h1{
     justify-content: space-between;
 }
 
+/*controls menu*/
+
 .controls-overlay{
-    padding: 5%;
-    height: 300px;
+    padding: 3vw;
+    height: 70vw;
     gap: 20%;
 }
 
 .controls-overlay p{
-  font-size: 1.5rem;
+   font-size: clamp(1rem, 3vw, 3rem);
 }
 
 
@@ -229,8 +236,11 @@ h1{
 }
 
 .exit-btn{
-    height: 60%;
-    width: 12%;
+    font-size: clamp(0.5rem, 2vw, 2rem);
+    height: 5vw;
+    width: 12vw;
+    max-height: 40px;
+    max-width: 80px;
 }
 
 .key-controls{
@@ -245,8 +255,10 @@ h1{
 }
 
 .key-controls img{
-    height: 150px;
-    width: 100px;
+    height: 20vw;
+    width: 15vw;
+    max-height: 150px;
+    max-width: 100px;
 }
 
 .img-throw-bottle{
@@ -310,13 +322,6 @@ h1{
     }
 }
 
-@media only screen and (max-width: 500px){
-    .menu-btn{
-    font-size: 65%;
-    padding: 5px 10px;
-    }
-}
-
 /*Smartphones ----*/
 @media only screen and (max-height: 480px){
     canvas{
@@ -324,6 +329,20 @@ h1{
     }
     h1{
         display: none;
+    }
+    .sound_btn_img{
+        width: 12vh;
+        height: auto;
+    }
+
+    .sound_btn{
+        border-radius: 100%;
+        border: none;
+        height: 12vh;
+        width: 12vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 

@@ -8,11 +8,11 @@ function controlsHtmlTemplate(){
         <div class="key-controls">
              <div>
                 <img src="./assets/img/controls/left.png" />
-                <p><b>&larr;</b></p>
+                <p> &larr;</p>
              </div>
              <div>
                 <img src="./assets/img/controls/right.png" />
-                <p><b>&rarr;</b></p>
+                <p>&rarr;</p>
              </div>
              <div>
                 <img src="./assets/img/controls/jump.png" />
