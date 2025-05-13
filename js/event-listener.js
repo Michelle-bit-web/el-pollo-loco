@@ -58,7 +58,7 @@ function checkOrientation(promptOverlay) {
 
 function handleOrientationChange(promptOverlay) {
         if (window.screen.orientation.type.startsWith("landscape")) {
-            document.getElementById("panel").style.display = "flex";
+            // document.getElementById("panel").style.display = "flex";
             promptOverlay.innerText = "Touch screen"; // Aktualisiere den Text
             window.removeEventListener("orientationchange", handleOrientationChange); // Entferne den Listener
             checkUserResponse(promptOverlay);

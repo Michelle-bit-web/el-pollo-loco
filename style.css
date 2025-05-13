@@ -21,6 +21,19 @@
     font-size: 10px; 
 }
 
+body{
+    font-family: 'A Box For'; /*Schriftart wählen & im Impressum anpassen*/
+    /* font-family: 'New Mexico Demo'; */ /*gut geeignet für ein story board*/
+    font-family: 'Viva México cabrones';
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url(./assets/img/background/desert.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
 a{
     cursor: pointer;
     text-decoration: none;
@@ -29,6 +42,7 @@ a{
     justify-content: center;
     align-items: center;
     color: var(--text-color);
+    font-size: clamp(1rem, 3vw, 3rem);
 }
 
 button{
@@ -49,24 +63,6 @@ button:hover{
     border: 2px solid var(--text-color);
     scale: 0.95;
     cursor: pointer;
-}
-
-html{
-    height: 100vh;
-}
-
-body{
-    font-family: 'A Box For'; /*Schriftart wählen & im Impressum anpassen*/
-    /* font-family: 'New Mexico Demo'; */ /*gut geeignet für ein story board*/
-    font-family: 'Viva México cabrones';
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-image: url(./assets/img/background/desert.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    height: 100vh - 20px;
 }
 
 canvas {
@@ -283,6 +279,13 @@ h1{
 }
 
 .gameplay-div{
+    /* height: 100%; */
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+}
+
+.gameplay-settings{
     height: 100%;
     padding: 2.5%;
     display: flex;
@@ -315,6 +318,78 @@ h1{
     width: 60%
 }
 
+/*Imprint ----*/
+.content-impressum{
+    color: var(--text-color);
+    background-color: rgba(255, 255, 255, 0.371);
+    padding: 5%;
+}
+
+.content-impressum p,
+.content-impressum a,
+.content-impressum li,
+.content-impressum b,
+.content-impressum span,
+footer a{
+    font-size: clamp(1rem, 2vw, 2rem);
+    text-align: start;
+    display: flex;
+}
+
+.content-impressum i{
+    display: flex;
+    gap: 2vw;
+}
+
+.content-impressum a:hover,
+footer a:hover{
+    color: white;
+}
+
+h2{
+    margin: 2% 0;
+    font-size: clamp(1.5rem, 3vw, 3rem);
+}
+
+.imprint-btn{
+    font-size: clamp(1rem, 2vw, 2rem);
+    height: 5vw;
+    width: 32vw;
+    max-height: 40px;
+    max-width: 250px;
+    border-radius: 20px;
+}
+
+.imprint-btn:hover{
+  background-color:rgb(72, 29, 2);
+
+}
+
+
+.credits-container{
+    background-color: rgba(0, 0, 0, 0.313);
+    border-radius: 20px;
+    padding: 2vw;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.credtis-catergory{
+    margin-top: 2vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
 /*Smartphones ----*/
 @media only screen and (max-width: 720px){
     canvas{
@@ -344,15 +419,4 @@ h1{
         align-items: center;
         justify-content: center;
     }
-}
-
-/*Imprint ----*/
-.content-impressum{
-    color: var(--text-color);
-    background-color: rgba(255, 255, 255, 0.371);
-    padding: 5%;
-}
-
-h2{
-    margin: 2% 0;
 }

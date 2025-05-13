@@ -192,9 +192,12 @@ function hideOrientationWarning() {
 }
 
 function backToMenu(){
-    console.log('should reload now')
-    location.reload();
+    document.getElementById("overlay-gameplay").style.display = "none";
+    init();
+    // document.getElementById("prompt-overlay").style.display = "none";
 }
+
 function resetGame(){
-    loadLevel();
+    document.getElementById("overlay-gameplay").style.display = "none";
+    startGame();
 }
