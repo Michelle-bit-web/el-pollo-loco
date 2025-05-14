@@ -154,7 +154,6 @@ class Character extends MovableObject {
       }
       if(this.isPlayingDyingAnimation){
         clearInterval(this.animationIntervals["dying"]);
-        AudioManager.sounds.forEach(sound => sound.stop());
       }
     }, 1000 / 30);
     
@@ -163,9 +162,10 @@ class Character extends MovableObject {
   handleRipanimation(){
     if(this.otherDirection) {this.otherDirection = false}
         this.stopAllAnimations("assets/img/2_character_pepe/5_dead/rip.png");
-        this.height = 120; // Höhe des RIP-Bildes
+        this.height = 120;
         this.width = 70;
-        this.y = 0; // Setze die Y-Position auf 0, damit es am oberen Bildschirmrand erscheint
+        this.y = 0; //Für Fallen-Simulation 
+       
         const fallInterval = setInterval(() => {
           if (this.y + this.height < 420) {
             this.y += 5;

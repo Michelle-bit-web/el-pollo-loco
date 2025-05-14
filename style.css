@@ -25,6 +25,9 @@ body{
     font-family: 'A Box For'; /*Schriftart wählen & im Impressum anpassen*/
     /* font-family: 'New Mexico Demo'; */ /*gut geeignet für ein story board*/
     font-family: 'Viva México cabrones';
+}
+
+.game-content{
     min-height: 100vh;
     display: flex;
     flex-direction: column;

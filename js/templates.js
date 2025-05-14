@@ -32,7 +32,7 @@ function mainMenuHtmlTemplate(){
     <div class="panel-menu">
         <button id="startButton" class="menu-btn" onclick="startGame()">Start Game</button>
         <button id="controls" class="menu-btn" onclick="renderControls()">Controls</button>
-        <button class="menu-btn"><a class="menu-btn" href="./impressum.html" target="_blank">Imprint</a></button>
+        <button class="menu-btn"><a class="menu-btn" href="./impressum.html">Imprint</a></button>
       </div>
        <div id="panel" class="panel" style="display: none">
          <div class="panel-wrapper">
@@ -61,15 +61,15 @@ function gamePlayHtmlTemplate(){
         </div>
         <div id="panel" class="panel" style="display: none">
           <div class="panel-wrapper">
-            <button id="LEFT">&larr;</button>
             <button id="SPACE">&uarr;</button>
-          </div>
-          <div class="panel-wrapper">
             <button id="THROW">
                <img class="throw-img" src="./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png" alt="" />
             </button>
-            <button id="RIGHT">&rarr;</button>
            </div>
+           <div class="panel-wrapper">
+            <button id="LEFT">&larr;</button>
+             <button id="RIGHT">&rarr;</button>
+          </div>
          </div>
       </div>
     `; 
@@ -78,7 +78,7 @@ function gamePlayHtmlTemplate(){
 function getEndScreenTemplate(endScreenImage){
  return `
     <div id="end-screen-div" class="end-screen-div">
-      <img id="end-screen-img" class="end-screen-img" src="${endScreenImage}" alt="mute-sound-option" />
+      <img id="end-screen-img" class="end-screen-img" src="${endScreenImage}" alt="mute-sound-option"/>
       <button id="play-again-btn" class="menu-btn endscreen" onclick="resetGame()">Play again</button>
       <button id="to-menu-btn" class="menu-btn endscreen" onclick="backToMenu()">To menu</button>
     </div>

@@ -12,11 +12,11 @@ class World {
     chickenSound: new AudioManager("assets/audio/background/mixkit-chickens-and-pigeons-1769.wav", 0.1, true, 1),
     onLandingSound: new AudioManager("assets/audio/jump-on-chicken/mixkit-falling-hit-on-gravel-756.wav", 0.1, true, 1),
     landingOnChickenSound: new AudioManager("assets/audio/jump/mixkit-body-punch-quick-hit-2153.wav", 0.1, true, 1),
-    //     jumpSound: null,
+    jumpSound: null,
     coinCollectedSound: new AudioManager("assets/audio/collect/mixkit-retro-game-notification-212.wav", 0.1, true, 1),
     endbossIntroSound: new AudioManager("assets/audio/endboss-intro/2019-05-09_-_Escape_Chase_-_David_Fesliyan.mp3",0.1,false,1),
     endbossHurtSound: new AudioManager("/assets/audio/endboss/mixkit-cock-cry-1761.wav", 0.5, false, 1),
-    //     throwingSound: null,
+    throwingSound: null,
     breakGlassSound: new AudioManager("assets/audio/throw/mixkit-glass-break-with-hammer-thud-759.wav", 0.08, false, 1),
     splashSound: new AudioManager("assets/audio/throw/mixkit-gore-video-game-blood-splash-263.wav", 0.08, false, 1),
     characterHurtSound: new AudioManager("assets/audio/hurt/mixkit-arcade-retro-game-over-213.wav", 0.08, false, 1),
@@ -38,7 +38,7 @@ class World {
     this.run();
 
     this.gameSounds.backgroundMusicGeneral.play();
-    this.gameSounds.chickenSound.play(); 
+    // this.gameSounds.chickenSound.play(); 
   }
 
   setWorld() {
@@ -46,12 +46,13 @@ class World {
   }
 
   run() {
-    setInterval(() => {
+    let checkingInterval = setInterval(() => {
       this.checkCollisions();
       this.checkIsThrowing();
       this.checkCharacterDistance();
       this.checkGameEnd();
     }, 10);
+    intervals.push(checkingInterval);
   }
 
   checkCollisions() {
@@ -281,6 +282,12 @@ class World {
     };
      overlay.innerHTML = getEndScreenTemplate(endScreenImage);
      overlay.style.display = "flex"; 
+     this.stopIntervals();
+  }
+
+  stopIntervals(){
+    intervals.forEach(interval => clearInterval(interval));
+    AudioManager.sounds.forEach(sound => sound.stop())
   }
 }
 

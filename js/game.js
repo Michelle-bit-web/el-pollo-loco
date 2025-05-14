@@ -25,14 +25,18 @@ function isTouchDevice() {
 
 function startGame() {
     soundStartScreen.stop();
-    const menuOverlay = document.getElementById("overlay");
-    menuOverlay.style.display = "none";
+    removeOverlay("overlay");
     getGameplayOverlay();
     loadLevel();
     setSoundImage();
     if(isTouchDevice()){
-         document.getElementById("panel").style.display = "flex";
+        document.getElementById("panel").style.display = "flex";
     };
+}
+
+function removeOverlay(currentOverlay){
+    const overlay = document.getElementById(currentOverlay);
+    overlay.style.display = "none";
 }
 
 function getGameplayOverlay(){
@@ -195,15 +199,14 @@ if(!gameIsRunning){
 }
 
 function backToMenu(){
-    location.reload();
-    // console.log('back to menue clicked')
-    // document.getElementById("overlay-gameplay").style.display = "none";
-    // init()
-    // document.getElementById("prompt-overlay").style.display = "none";
+    window.location.reload();
 }
 
 function resetGame(){
     console.log('play again clicked')
-    document.getElementById("overlay-gameplay").style.display = "none";
+    // document.getElementById("overlay").style.display = "none";
+    keyboard = new Keyboard();
+    intervals = [];
+    world = null;
     startGame();
 }
