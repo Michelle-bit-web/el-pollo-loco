@@ -1,6 +1,6 @@
 let canvas;
 let world;
-let gameIsRunning = true;
+let gameIsRunning = false;
 let controlEnabled = true;
 let soundStartScreen = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.2, true, 1)
 let keyboard = new Keyboard();
@@ -43,6 +43,7 @@ function getGameplayOverlay(){
 
 function loadLevel() {
     canvas = document.getElementById("canvas");
+    gameIsRunning = true;
     world = new World(canvas, keyboard, level1, controlEnabled); //gibt man level2 mit, würde das level 2 integriert werden
     if (isTouchDevice()) {
         touchEvents();
@@ -183,6 +184,14 @@ function showOrientationWarning() {
 function hideOrientationWarning() {
     const promptOverlay = document.getElementById("prompt-overlay");
     promptOverlay.style.display = "none"; // Verstecke den Overlay
+}
+
+function handleExitButton(){
+if(!gameIsRunning){
+    renderMainMenu();
+} else{
+    document.getElementById("overlay").style.display = "none";
+}
 }
 
 function backToMenu(){

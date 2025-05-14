@@ -3,7 +3,7 @@ function controlsHtmlTemplate(){
     <div class="controls-overlay">
         <div class="exit-btn-container">
             <p>Keyboard :</p>
-            <button class="exit-btn" onclick="renderMainMenu()">Back</button>
+            <button class="exit-btn" onclick="handleExitButton()">Back</button>
         </div>
         <div class="key-controls">
           <div>
