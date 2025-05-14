@@ -62,7 +62,11 @@ function handleOrientationChange(promptOverlay) {
         }
 }
 
-function renderControls(){
+function renderControls(initializer){
+    if(initializer == "inGame"){
+        console.log('controls in game')
+        document.getElementById("overlay").style.display = "flex";
+    }
     let controls = document.getElementById("menu-overlay");
     controls.style.backgroundColor = "rgba(0, 0, 0, 0.797)";
     controls.style.color = "white";

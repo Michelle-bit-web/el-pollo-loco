@@ -155,7 +155,6 @@ class Endboss extends MovableObject{
             this.isJumping = false;
         }, 3000); // Nach 1 Sekunde kann der Boss erneut springen
     };
-    
 }
 
     onLand() {

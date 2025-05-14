@@ -29,6 +29,7 @@ function startGame() {
     menuOverlay.style.display = "none";
     getGameplayOverlay();
     loadLevel();
+    setSoundImage();
     if(isTouchDevice()){
          document.getElementById("panel").style.display = "flex";
     };
@@ -185,12 +186,15 @@ function hideOrientationWarning() {
 }
 
 function backToMenu(){
-    document.getElementById("overlay-gameplay").style.display = "none";
-    init();
+    location.reload();
+    // console.log('back to menue clicked')
+    // document.getElementById("overlay-gameplay").style.display = "none";
+    // init()
     // document.getElementById("prompt-overlay").style.display = "none";
 }
 
 function resetGame(){
+    console.log('play again clicked')
     document.getElementById("overlay-gameplay").style.display = "none";
     startGame();
 }
