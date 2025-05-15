@@ -18,18 +18,21 @@ class MovableObject extends DrawableObject{
     this.x -= this.speed;
   }
 
-  automaticMovement(targetX, callback) {
-    const interval = setInterval(() => {
-        if (this.x < targetX) {
-            this.moveRight();
-        } else {
-            clearInterval(interval);
-            callback();
-        }
-    }, 800);
-  }
+  // automaticMovement(targetX, callback) {
+  //   const interval = setInterval(() => {
+  //       if (this.x < targetX) {
+  //           this.moveRight();
+  //       } else {
+  //           clearInterval(interval);
+  //           callback();
+  //       }
+  //   }, 800);
+  // }
 
-  stopMoving() {
+  //Vllt.für Intro zur Fight Scene:
+  // Character stoppen, dann Interval mit Kamera zu Endboss, dann wieder zurück zum Character
+  //Dann läuft User weiter bis zum Endboss, dort hält Kamera dann an bis zum Ende des Fights
+  stopMoving() { 
         this.speed = 0;     
         this.speedY = 0;
     }
@@ -41,6 +44,8 @@ class MovableObject extends DrawableObject{
     this.currentImage++;
   }
 
+  //Die Animationen-Stop_Methode nochmal genau anschauen
+  //Kann man ja dann selektiv nutzen z.B. nur für Character, nur für Endboss usw.
   stopAnimation(intervalType, path) {
     if (this.animationIntervals[intervalType]) {
         clearInterval(this.animationIntervals[intervalType]); 
@@ -149,7 +154,7 @@ stopAllAnimations(path) {
   isHurt(){
     let timepassed = new Date().getTime() - this.lastHit; //miliseconds
     timepassed = timepassed / 1000 //time in seconds
-    return timepassed < 2;
+    return timepassed < 1;
   }
 
   isDead(){
@@ -165,6 +170,9 @@ stopAllAnimations(path) {
       this.recoverEnergy(20); // Beispiel: 20 Energiepunkte zurückgewinnen
       this.coins = 0; // Coins zurücksetzen
       this.updateStatusbar("coin"); // Coins-Leiste zurücksetzen
+      audioList.energyRecovery.play();
+    } else{
+      audioList.coinCollected.play();
     }
   }
 
@@ -172,6 +180,7 @@ stopAllAnimations(path) {
   collectBottle() {
     this.bottles++;
     this.updateStatusbar("bottle"); // Statusbar für Flaschen aktualisieren
+    audioList.bottleCollected.play();
   }
 
   // Statusbar aktualisieren

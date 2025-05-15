@@ -2,7 +2,7 @@ let canvas;
 let world;
 let gameIsRunning = false;
 let controlEnabled = true;
-let soundStartScreen = new AudioManager("assets/audio/background/Faster_Version-2024-02-19_-_Mexican_Cowboys_-_www.FesliyanStudios.com.mp3", 0.2, true, 1)
+let switchedPromptImage = false;
 let keyboard = new Keyboard();
 let intervals = [];
 let fadingOut = true;
@@ -11,6 +11,7 @@ let alpha = 1;
 function init() {
     AudioManager.loadMuteStatus(); //Mute-Status des localStorage über AM
     setSoundImage();
+    audioList.mainTheme.shouldPlay = true;
     startPrompt();
     soundEvent();
 }
@@ -24,7 +25,12 @@ function isTouchDevice() {
 }
 
 function startGame() {
-    soundStartScreen.stop();
+    audioList.mainTheme.stop();
+    audioList.mainTheme.shouldPlay = false;
+
+    audioList.gamePlay.shouldPlay = true;
+    audioList.gamePlay.play();
+    
     removeOverlay("overlay");
     getGameplayOverlay();
     loadLevel();
@@ -49,31 +55,86 @@ function loadLevel() {
     canvas = document.getElementById("canvas");
     gameIsRunning = true;
     world = new World(canvas, keyboard, level1, controlEnabled); //gibt man level2 mit, würde das level 2 integriert werden
-    if (isTouchDevice()) {
+    if(isTouchDevice){
         touchEvents();
-    } else {
+    } else{
         keyboardEvents();
-    };
+    }
 }
 
 function startPrompt(){
-    const promptOverlay = document.getElementById("prompt-overlay");
+    const promptText = document.getElementById("prompt-overlay");
+    const touchPrompt = document.getElementById("prompt-touch");
+    const mobilePromptText = document.getElementById("prompt-mobile");
+    const mobilePortraitIcon = document.getElementById("mobile-prompt-img-portrait");
+    const mobileLandscapeIcon = document.getElementById("mobile-prompt-img-landscape");
+    let prompts = [promptText, touchPrompt,  mobilePromptText, mobilePortraitIcon, mobileLandscapeIcon];
     if (isTouchDevice()) {
-        monitorOrientation();
-        if (window.screen.orientation.type.startsWith("portrait")) {
-            promptOverlay.innerText = "Rotate device  \u21BB"; 
-            promptOverlay.style.textAlign = "center";
-            checkOrientation(promptOverlay); 
-        } else {
-            promptOverlay.innerHTML = "Touch screen";
-        }
+        setTouchSetting(touchPrompt);
+    } else{
+        setKeySetting(promptText);
     }
+    prompts.forEach(prompt => setPromptFadingInterval(prompt, mobilePortraitIcon, mobileLandscapeIcon));
+}
+
+function setTouchSetting(touchPrompt){
+    setPrompt("Touch screen", touchPrompt);
+    // touchEvents();
+    checkTouchResponse(touchPrompt);
+}
+
+function setKeySetting(promptText){
+    setPrompt("Press Any Key", promptText);
+    // keyboardEvents();
+    checkKeyResponse(promptText);
+}
+
+function setPrompt(text, overlay){
+    return overlay.innerText = `${text}`,
+    overlay.style.textAlign = "center";
+}
+
+function hidePrompt(prompt){
+     prompt.style.display = "none";
+}
+
+function showPrompt(prompt){
+    prompt.style.display = "flex";
+}
+
+function removePrompt(prompt, promptContainer) {
+    if (prompt) {hidePrompt(prompt)} 
+    if (promptContainer) {hidePrompt(promptContainer)} 
+    stopAllIntervals();
+    audioList.mainTheme.play();
+    AudioManager.loadMuteStatus();
+}
+
+function setPromptFadingInterval(prompt, mobilePortraitIcon, mobileLandscapeIcon){
+
     let showPromptInterval = setInterval(() => {
         alpha = fadeOutPrompt();
-        promptOverlay.style.opacity = alpha; //fading in and out prompt
-    }, 50); 
+        prompt.style.opacity = alpha; 
+        if(window.screen.orientation.type.startsWith("portrait")){
+            rotateMobileIcon(mobilePortraitIcon, mobileLandscapeIcon, alpha);
+        }
+    }, 150); 
     intervals.push(showPromptInterval);
-    checkUserResponse(promptOverlay);
+}
+
+function rotateMobileIcon(promptImagePortrait, promptImageLandscape, alpha){
+   
+    if(!switchedPromptImage && alpha <= 0.1){
+        hidePrompt(promptImagePortrait);
+        showPrompt(promptImageLandscape);
+        switchedPromptImage = true;
+        console.log("landscape")
+    }else if (switchedPromptImage && alpha >= 0.9){
+        showPrompt(promptImagePortrait);
+        hidePrompt(promptImageLandscape);
+        switchedPromptImage = false;
+        console.log("portrait")
+    }
 }
 
 function fadeOutPrompt(){
@@ -87,7 +148,7 @@ function fadeOutPrompt(){
 }
 
 function reduceTransparence(){
-     alpha -= 0.05; // Transparenz verringern
+     alpha -= 0.02; // Transparenz verringern
         if (alpha <= 0) {
             alpha = 0;
            fadingOut = false; // Richtung ändern, wenn vollständig transparent
@@ -95,36 +156,25 @@ function reduceTransparence(){
 }
 
 function increaseTransparence(){
-     alpha += 0.05; // Transparenz erhöhen
+     alpha += 0.02; // Transparenz erhöhen
         if (alpha >= 1) {
             alpha = 1;
             fadingOut = true; // Richtung ändern, wenn vollständig sichtbar
         };
 }
 
-function checkUserResponse(promptOverlay){
+function checkKeyResponse(prompt) {
     const promptContainer = document.getElementById("div_prompt");
     document.addEventListener("keydown", () => {
-        removePrompt(promptOverlay, promptContainer);
-    }, { once: true }); // Listener nur 1x ausgeführt
-    document.addEventListener("touchstart", () => {
-       if (window.screen.orientation.type.startsWith("landscape")) {
-            removePrompt(promptOverlay, promptContainer);
-        }
+        removePrompt(prompt, promptContainer); // Entferne Prompt bei Tastendruck
     }, { once: true });
 }
 
-function removePrompt(promptOverlay, promptContainer) {
-    if (promptOverlay) {
-        promptOverlay.style.display = "none";
-    } 
-
-    if (promptContainer) {
-        promptContainer.style.display = "none";
-    } 
-    AudioManager.sounds.push(soundStartScreen);
-    stopAllIntervals();
-    AudioManager.loadMuteStatus();
+function checkTouchResponse(prompt) {
+    const promptContainer = document.getElementById("div_prompt");
+    document.addEventListener("touchstart", () => {
+        removePrompt(prompt, promptContainer); // Entferne Prompt bei Touch
+    }, { once: true });
 }
 
 function stopAllIntervals(){
@@ -132,6 +182,22 @@ function stopAllIntervals(){
     intervals = [];
 }
 
+
+function pauseGame() {
+    console.log("Game paused due to incorrect orientation.");
+    gameIsRunning = true;
+    controlEnabled = false; // Deaktiviere Steuerung
+    AudioManager.pauseAll();
+}
+
+function resumeGame() {
+    console.log("Game resumed after orientation corrected.");
+    gameIsRunning = false;
+    controlEnabled = true; 
+    AudioManager.resumeAll();
+}
+
+//Sound handling
 function toggleSoundSetting() {
     AudioManager.toggleMute();
     setSoundImage();
@@ -146,50 +212,7 @@ function setSoundImage(){
     }
 }
 
-function monitorOrientation(){
-    let monitorOrientationInterval = setInterval(() => {
-        if (!window.screen.orientation.type.startsWith("landscape")) {
-            if (gameIsRunning) {
-                pauseGame();
-                showOrientationWarning();
-            }
-        } else {
-            if (gameIsRunning) {
-                 const promptOverlay = document.getElementById("prompt-overlay");
-                resumeGame();
-                checkOrientation(promptOverlay)
-            }else return;
-        }
-    }, 500);
-    intervals.push(monitorOrientationInterval);
-}
-
-function pauseGame() {
-    console.log("Game paused due to incorrect orientation.");
-    gameIsRunning = true;
-    controlEnabled = false; // Deaktiviere Steuerung
-    AudioManager.pauseAll();
-}
-
-function resumeGame() {
-    console.log("Game resumed after orientation corrected.");
-    gameIsRunning = false;
-    controlEnabled = true; // Aktiviere Steuerung
-    AudioManager.resumeAll();
-}
-
-function showOrientationWarning() {
-    const promptOverlay = document.getElementById("prompt-overlay");
-    promptOverlay.style.display = "flex"; // Zeige den Overlay
-    promptOverlay.innerText = "Rotate device  \u21BB"; // Nachricht zum Drehen
-    promptOverlay.style.textAlign = "center";
-}
-
-function hideOrientationWarning() {
-    const promptOverlay = document.getElementById("prompt-overlay");
-    promptOverlay.style.display = "none"; // Verstecke den Overlay
-}
-
+//handling Menu / Gameplay buttons
 function handleExitButton(){
 if(!gameIsRunning){
     renderMainMenu();

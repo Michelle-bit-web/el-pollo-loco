@@ -48,20 +48,6 @@ function soundEvent(){
      document.getElementById("sound_btn").addEventListener("click", toggleSoundSetting);
 }
 
-// Funktion zur Überprüfung auf Geräteausrichtung
-function checkOrientation(promptOverlay) {
-    // Eventlistener für Änderungen der Geräteausrichtung
-    window.addEventListener("orientationchange", handleOrientationChange(promptOverlay));
-}
-
-function handleOrientationChange(promptOverlay) {
-        if (window.screen.orientation.type.startsWith("landscape")) {
-            promptOverlay.innerText = "Touch screen"; 
-            // window.removeEventListener("orientationchange", handleOrientationChange); // Entferne den Listener
-            checkUserResponse(promptOverlay);
-        }
-}
-
 function renderControls(initializer){
     if(initializer == "inGame"){
         console.log('controls in game')

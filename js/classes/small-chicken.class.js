@@ -37,22 +37,25 @@ class SmallChicken extends MovableObject {
     }
 
     markAsDead() {
+        audioList.jumpOnChicken.play();
         this.isDead = true;
         this.stopAnimation("smallChickenMovesLeft"); // Stoppe die Animation
         this.stopAnimation("smallChickenPlayAnimation"); // Stoppe die Animation
         this.loadImage(this.IMAGE_DEAD);
         setTimeout(() => {
+            audioList.jumpOnChicken.stop();
             this.loadImage(this.IMAGE_GHOST);
             this.speedY = -0.1;
             this.acceleration = -1;
             this.applyGravity();
-    
+            audioList.ghost.play(); 
             this.removalCheckInterval = setInterval(() => {
                 if (this.y + this.height < 0) { // vollständig nach oben verschwunden
                     this.removeFromLevel();
-                    clearInterval(this.removalCheckInterval); // Sicherheitsmaßnahme
+                    clearInterval(this.removalCheckInterval);
+                     audioList.ghost.stop(); 
                 }
-            }, 1000 / 30); // 30 FPS-Check
+            }, 1000 / 30);
         }, 1000);
     }
     

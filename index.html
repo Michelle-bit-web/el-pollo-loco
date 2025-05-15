@@ -29,14 +29,25 @@
 
     <script src="./js/templates.js"></script>
     <script src="./js/event-listener.js"></script>
+    <script src="./js/audio.js"></script>
     <script src="./js/game.js"></script>
   </head>
   <body onload="init()">
     <section class="game-content">
       <h1>El pollo loco</h1>
     <div id="div_prompt">
-      <p id="prompt-overlay">Press any key</p>
+      <p id="prompt-overlay" class="prompt-overlay"></p>
+      <p id="prompt-touch" class="prompt-overlay"></p>
+      <div id="rotate-overlay" class="rotate-overlay">
+      <p id="prompt-mobile" class="prompt-overlay">Please rotate device &#8635;</p>
+      <div class="prompt-img-container">
+        <img id="mobile-prompt-img-portrait" class="mobile-prompt-img-portrait" src="./assets/img/icons/screen-orientation-portrait.png" alt="">
+        <img id="mobile-prompt-img-landscape" class="mobile-prompt-img-landscape" src="./assets/img/icons/screen-orientation-landscape.png" alt="">
+      </div>
     </div>
+
+    </div>
+    
     <div style="position: relative">
       <canvas id="canvas" width="720" height="480"></canvas>
       <div class="overlay-gameplay" id="overlay-gameplay"></div>

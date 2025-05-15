@@ -102,14 +102,14 @@ class Character extends MovableObject {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
         this.moveRight();
         this.otherDirection = false;
-        // this.walking_sound.play();
+        audioList.walking.play();
         this.lastTimeMoved = new Date().getTime(); 
       }
       //Move left
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
         this.otherDirection = true;
-        // this.walking_sound.play();
+        audioList.walking.play();
         this.lastTimeMoved = new Date().getTime(); 
       }
       //Jumping
@@ -128,20 +128,18 @@ class Character extends MovableObject {
     this.animationIntervals["animation"] = setInterval(() => {
       if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
-         // this.hurt_sound.play();
+        audioList.characterHurt.play();
 
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
 
       } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
           this.playAnimation(this.IMAGES_WALKING);
-          // this.world.gameSounds.walkingSound.audio.play();
 
         } else if (this.checkMovementStatus()){
          this.playIdleAnimation();
         }
         else {
-        // Kein Input → Default-Bild anzeigen
         this.loadImage("assets/img/2_character_pepe/2_walk/W-21.png");
       }
     }, 200);
@@ -149,10 +147,10 @@ class Character extends MovableObject {
     this.animationIntervals["dying"] = setInterval(() => {
       if (this.isDead()) {
         this.isPlayingDyingAnimation = true;
-        this.world.gameSounds.characterDead.audio.play();
         this.handleRipanimation();
       }
       if(this.isPlayingDyingAnimation){
+        audioList.characterDead.play();
         clearInterval(this.animationIntervals["dying"]);
       }
     }, 1000 / 30);
@@ -165,16 +163,16 @@ class Character extends MovableObject {
         this.height = 120;
         this.width = 70;
         this.y = 0; //Für Fallen-Simulation 
-       
+
         const fallInterval = setInterval(() => {
           if (this.y + this.height < 420) {
             this.y += 5;
           } else {
             clearInterval(fallInterval);
-            this.world.gameSounds.onLandingSound.audio.play();
+            
           }
         }, 1000 / 60);
-        this.world.gameSounds.onLandingSound.audio.stop();
+        audioList.onLanding.play();
     }
   
   checkMovementStatus(){

@@ -1,5 +1,4 @@
 class ThrowableObject extends MovableObject{
-
     IMAGES_ROTATION = [
         "assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
         "assets/img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
@@ -40,9 +39,17 @@ class ThrowableObject extends MovableObject{
                this.x -= 10; //throw to left
             } else {
                 this.x += 10; //throw to right
-            }
+            };
+            this.startFlyingAnimation();  
         }, 25);
-       this.startFlyingAnimation();  
+       this.playThrowingSound(); 
+       
+    }
+
+    playThrowingSound(){
+        if(!AudioManager.isMuted){ //??So funktionell?
+            audioList.throw.play();
+        }
     }
 
     startFlyingAnimation(){
@@ -62,7 +69,6 @@ class ThrowableObject extends MovableObject{
         clearInterval(this.rotationInterval);
         clearInterval(this.throwInterval);
         this.playAnimation(this.IMAGES_SPLASH);
-        this.world.gameSounds.breakGlassSound.audio.play();
         setTimeout(() => {
             this.remove = true;
         }, 500);

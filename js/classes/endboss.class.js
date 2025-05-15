@@ -11,6 +11,12 @@ class Endboss extends MovableObject{
     speed = 2; 
     speedLevel = 1;
     isJumping = false;
+    walkTowardsCharacter = false;
+
+    //z.B. 
+    // alert_sound = new Audio('audio/boss_intro_sound.mp3');
+    // hurt_sound = new Audio('audio/chicken_hurt.mp3');
+    // dead_sound = new Audio('audio/boss_dead.mp3');
 
     IMAGES_WALKING =[
         "assets/img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -52,6 +58,10 @@ class Endboss extends MovableObject{
         "assets/img/4_enemie_boss_chicken/5_dead/G26.png",
     ];
 
+    IMAGES_DIZY = [
+        "assets/img/4_enemie_boss_chicken/4_hurt/G23.png",
+    ];
+
     offset = {
         top: 80,
         left: 40,
@@ -71,14 +81,14 @@ class Endboss extends MovableObject{
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DIZY);
         this.loadImages(this.IMAGES_DEAD);
         // AudioManager.sounds.push(this.alert_sound, this.hurt_sound, this.dead_sound)
-        this.animationIntervals = [];
         this.animate();
     }
     
     animate() {
-        this.endbossInterval = setInterval(() => {
+        this.animationIntervals.endbossInterval = setInterval(() => {
             this.updateSpeedBasedOnEnergy();
     
             // if (this.isDead || this.energy <= 0) {
@@ -98,13 +108,19 @@ class Endboss extends MovableObject{
                 this.walkingAnimation();
             }
         }, 100);
+        //--müsste man doch dann so alles in intervals reinbekommen und mit this.stopAnimation o. stopAllanimations nutzen
+        //habe aber auch ein Objekt dem Intervalle hinzugefügt werden können
+
+        // this.animationIntervals[animationInterval]; 
+        // addInterval(animationInterval);
     }
 
     handleFirstContact() {
         // AudioManager.backgroundMusicGeneral.stop(); wirft noch Fehler
         // AudioManager.chickenSound.stop(); 
-        this.firstContactCharacter = true;
+        // this.firstContactCharacter = true; //is doch dann schon true??
         this.statusbar = new Statusbar("energyEndboss", 500, 5);
+        this.x = 2500;
         this.playAnimation(this.IMAGES_ALERT);
         
         // this.world.controlEnabled = true;
@@ -129,12 +145,12 @@ class Endboss extends MovableObject{
        this.speedLevel = 2;
        this.moveTowardCharacter();
     }
-    if (this.energy <= 40 && this.speedLevel == 2 && !this.hasJumped) {
+    if (this.energy <= 40 && this.speedLevel == 2 && !this.isJumping) {
         setInterval(() => {
         this.jump(); // Endboss jumps once
-        this.hasJumped = true;
+        this.isJumping = true;
+        }, 5000);
         this.moveTowardCharacter();
-        }, 5000)
     } 
     // else {
     //     this.moveTowardCharacter(); // Continue attacking
@@ -158,7 +174,7 @@ class Endboss extends MovableObject{
 }
 
     onLand() {
-         this.world.character.jump(45); 
+         this.world.character.jump(35); 
 
     // Character wird bei Landung in die Luft geworfen
     // if (this.world.character.isColliding(this)) {
@@ -167,8 +183,21 @@ class Endboss extends MovableObject{
     }
 
     hurtAnimation(){
-        this.playAnimation(this.IMAGES_HURT);
-        this.isBeingHit = false;
+        if(this.isJumping && this.world.character.isAboveGround()){
+            const dizyInterval = setInterval(() => {
+                audioList.endbossHurt.play();
+                this.playAnimation(this.IMAGES_DIZY);
+                frameCount++;
+                if (frameCount >= 6 ) { 
+                    clearInterval(dizyInterval);
+                }
+           }, 500);
+        }
+        else{
+            audioList.endbossHurt.play();
+            this.playAnimation(this.IMAGES_HURT);
+            this.isBeingHit = false;
+        }
     }
 
     attackAnimation(){
@@ -210,7 +239,6 @@ class Endboss extends MovableObject{
 
     deadAnimation() {
         clearInterval(this.endbossInterval);
-        this.world.gameSounds.endbossIntroSound.stop(); 
         this.stopAllAnimations();
 
         let frameCount = 0; // Anzahl der Abspielungen der Animation
@@ -235,25 +263,26 @@ class Endboss extends MovableObject{
             const percentage = (this.energy / 100) * 100;
             this.statusbar.setPercentage(percentage);
         }
-        // if (this.energy <= 0) {
-        //     this.playAnimation(this.IMAGES_DEAD);
-        //     this.gameSounds.endbossIntroSound.stop();
-        // } 
     }
 
     moveTowardCharacter() {
-         if (this.world.character.x >= this.x){
+         if(!this.walkTowardsCharacter){
+            if (this.world.character.x >= this.x){
             setTimeout(() => {
              this.moveRight();
              this.otherDirection = true;
-        }, 1000);
-           
+        }, 1000); 
         } else {
             setTimeout(() => {
               this.moveLeft();
               this.otherDirection = false;
         }, 1000);
-        }
+        };
+        this.walkTowardsCharacter = true
+         };
+         setTimeout(() => {
+            this.walkTowardsCharacter = false;
+         }, 4000)
     }
 
     hit() {

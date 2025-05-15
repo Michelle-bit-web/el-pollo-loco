@@ -32,6 +32,7 @@ class Chicken extends MovableObject {
     animate(){
         this.animationIntervals["ChickenMovesLeft"] = setInterval(() => {
            this.moveLeft();
+           if(!this.isDead){audioList.chicken.play();}
         }, 1000 / 60);
         this.animationIntervals["ChickenPlayAnimation"] = setInterval(() =>{
             this.playAnimation(this.IMAGES_WALKING);
@@ -39,21 +40,23 @@ class Chicken extends MovableObject {
     }
 
     markAsDead() {
+        audioList.jumpOnChicken.play();
         this.isDead = true;
         this.stopAnimation("ChickenMovesLeft");
         this.stopAnimation("ChickenPlayAnimation");
         this.loadImage(this.IMAGE_DEAD);
         setTimeout(() => {
-            // this.keyboard.SPACE = false;
+           audioList.jumpOnChicken.stop();
             this.loadImage(this.IMAGE_GHOST);
             this.speedY = -10;
             this.acceleration = -1;
             this.applyGravity();
-    
+            audioList.ghost.play(); 
             this.removalCheckInterval = setInterval(() => {
                 if (this.y + this.height < 0) { // vollständig nach oben verschwunden
                     this.removeFromLevel();
                     clearInterval(this.removalCheckInterval); // Sicherheitsmaßnahme
+                    audioList.ghost.stop(); 
                 }
             }, 1000 / 30); // 30 FPS-Check
         }, 1000);
