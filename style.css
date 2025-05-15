@@ -29,6 +29,7 @@ body{
 
 .game-content{
     min-height: 100vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -67,6 +68,13 @@ button:hover{
     border: 2px solid var(--text-color);
     scale: 0.95;
     cursor: pointer;
+}
+
+.canvas-container{
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    border-radius: 20px;
 }
 
 canvas {
@@ -192,15 +200,12 @@ h1{
     max-height: 480px;
     z-index: 1000; 
     border-radius: 20px;
-    /* pointer-events: none; Damit es nur sichtbar ist, aber keine Interaktionen blockiert */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.803);
     color: white;
-    /* background-image: url("assets/img/5_background/wood.png");
-    background-size: contain; */
 }
 
 #rotate-overlay {
@@ -366,6 +371,7 @@ h1{
 
 .endscreen{
     padding: 0;
+    
 }
 
 /*Imprint ----*/

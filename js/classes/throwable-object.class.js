@@ -48,7 +48,7 @@ class ThrowableObject extends MovableObject{
 
     playThrowingSound(){
         if(!AudioManager.isMuted){ //??So funktionell?
-            audioList.throw.play();
+            // audioList.throw.play(); //noch einen suchen
         }
     }
 

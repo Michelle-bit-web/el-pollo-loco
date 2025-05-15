@@ -184,7 +184,8 @@ class World {
           setTimeout(() => {
           clearInterval(cameraMovingInterval);
           startFightPrompt.style.display = "flex";
-          startFightPrompt.style.fontSize = "8vw";
+          startFightPrompt.style.fontSize = "6vw";
+          startFightPrompt.style.textAlign = "center";
           startFightPrompt.style.backgroundColor = "rgba(60, 24, 2, 0.43)";
           startFightPrompt.innerHTML = "Let´s salsa it!";
         }, 1000);
