@@ -124,33 +124,6 @@ class World {
     });
   }
 
-  // handleCharacterEnergy(enemy){
-  //   this.character.hit(enemy);
-  //   this.changeStatusbar(this.energyStatusbar, -10);
-  // }
-
-  // changeStatusbar(statusbar, value) {
-  //   if (statusbar.type === "coin") {
-  //     const increment = value * (100 / statusbar.maxCoins); // Jeder Coin trägt gleichmäßig bei
-  //     if (statusbar.percentage + increment >= 100) {
-  //       // Wenn Coins-Leiste gefüllt ist
-  //       if (this.energyStatusbar.percentage < 100) {
-  //         // Nur Energie auffüllen, wenn Energie < 100
-  //         const missingEnergy = 100 - this.energyStatusbar.percentage;
-  //         this.changeStatusbar(this.energyStatusbar, missingEnergy);
-  //       }
-  //       statusbar.setPercentage(0); // Coins-Leiste zurücksetzen
-  //     } else {
-  //       statusbar.setPercentage(statusbar.percentage + increment);
-  //     }
-  //   } else if (statusbar.type === "bottle") {
-  //       const increment = value * (100 / statusbar.maxBottles); // Berechnung des Prozentsatzes
-  //       if (statusbar.percentage + increment <= 100 && statusbar.percentage + increment >= 0) {
-  //           statusbar.setPercentage(statusbar.percentage + increment);
-  //       }
-  //   }
-  // }
-
   checkIsThrowing() {
     if (this.keyboard.THROW && !this.throwTimeout) {
       this.character.lastTimeMoved = new Date().getTime();

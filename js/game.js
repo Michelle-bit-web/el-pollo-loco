@@ -55,7 +55,7 @@ function loadLevel() {
     canvas = document.getElementById("canvas");
     gameIsRunning = true;
     world = new World(canvas, keyboard, level1, controlEnabled); //gibt man level2 mit, würde das level 2 integriert werden
-    if(isTouchDevice){
+    if(isTouchDevice()){
         touchEvents();
     } else{
         keyboardEvents();
