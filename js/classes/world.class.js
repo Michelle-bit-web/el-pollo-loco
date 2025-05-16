@@ -172,7 +172,6 @@ class World {
     this.controlEnabled = false;
     let cameraLocked = false;
     let startFightPrompt = document.getElementById("overlay");
-    let controls = document.getElementById("menu-overlay");
 
     const cameraMovingInterval = setInterval(() => {
       if (this.fightScene && this.camera_x >=  -endbossX && !cameraLocked) {

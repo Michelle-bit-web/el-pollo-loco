@@ -83,7 +83,6 @@ class Endboss extends MovableObject{
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DIZY);
         this.loadImages(this.IMAGES_DEAD);
-        // AudioManager.sounds.push(this.alert_sound, this.hurt_sound, this.dead_sound)
         this.animate();
     }
     
@@ -116,8 +115,9 @@ class Endboss extends MovableObject{
     }
 
     handleFirstContact() {
-        // AudioManager.backgroundMusicGeneral.stop(); wirft noch Fehler
-        // AudioManager.chickenSound.stop(); 
+        audioList.gamePlay.stop();
+        audioList.chicken.stop(); 
+        
         // this.firstContactCharacter = true; //is doch dann schon true??
         this.statusbar = new Statusbar("energyEndboss", 500, 5);
         this.x = 2500;
@@ -185,7 +185,7 @@ class Endboss extends MovableObject{
     hurtAnimation(){
         let frameCount = 0;
         const dizyInterval = setInterval(() => {
-                // audioList.endbossHurt.play();
+                audioList.endbossHurt.play(); //Vogelzwitschern einbauen
                 this.playAnimation(this.IMAGES_DIZY);
                 frameCount++;
                 if (frameCount >= 3 ) { 

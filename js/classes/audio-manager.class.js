@@ -15,6 +15,7 @@ class AudioManager {
         if(this.audio.readyState == 4 && !AudioManager.isMuted && this.shouldPlay){
             this.audio.currentTime = 0;
             this.audio.play(); 
+            this.shouldPlay = true
             } else {
                 console.log("sound not ready");
             }
@@ -26,10 +27,12 @@ class AudioManager {
 
     pause() {
         this.audio.pause();
+        this.shouldPlay = false;
     }
 
     stop() {
         this.audio.pause();
+        this.shouldPlay = false;
         this.audio.currentTime = 0; // Wiedergabe zurücksetzen
     }
 
