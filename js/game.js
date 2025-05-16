@@ -205,10 +205,17 @@ function toggleSoundSetting() {
 
 function setSoundImage(){
     const soundImage = document.getElementById("sound_btn_img");
+    const soundImageGameplay = document.getElementById("sound_btn_img_gameplay");
     if (AudioManager.isMuted) {
         soundImage.src = "assets/img/icons/sound-off.png"; 
+        if(soundImageGameplay){
+            soundImageGameplay.src = "assets/img/icons/sound-off.png"; 
+        }
     } else {
         soundImage.src = "assets/img/icons/sound-on-blk.png"; 
+        if(soundImageGameplay){
+            soundImageGameplay.src = "assets/img/icons/sound-on-blk.png"; 
+        }
     }
 }
 

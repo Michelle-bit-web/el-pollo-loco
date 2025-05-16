@@ -183,21 +183,36 @@ class Endboss extends MovableObject{
     }
 
     hurtAnimation(){
-        if(this.isJumping && this.world.character.isAboveGround()){
-            const dizyInterval = setInterval(() => {
-                audioList.endbossHurt.play();
+        let frameCount = 0;
+        const dizyInterval = setInterval(() => {
+                // audioList.endbossHurt.play();
                 this.playAnimation(this.IMAGES_DIZY);
                 frameCount++;
-                if (frameCount >= 6 ) { 
+                if (frameCount >= 3 ) { 
                     clearInterval(dizyInterval);
                 }
            }, 500);
-        }
-        else{
-            audioList.endbossHurt.play();
+           setTimeout(() =>{
+             audioList.endbossHurt.play();
             this.playAnimation(this.IMAGES_HURT);
             this.isBeingHit = false;
-        }
+           },200)
+
+        // if(this.isJumping && this.world.character.isAboveGround()){
+        //     const dizyInterval = setInterval(() => {
+        //         audioList.endbossHurt.play();
+        //         this.playAnimation(this.IMAGES_DIZY);
+        //         frameCount++;
+        //         if (frameCount >= 6 ) { 
+        //             clearInterval(dizyInterval);
+        //         }
+        //    }, 500);
+        // }
+        // else{
+        //     audioList.endbossHurt.play();
+        //     this.playAnimation(this.IMAGES_HURT);
+        //     this.isBeingHit = false;
+        // }
     }
 
     attackAnimation(){
@@ -216,12 +231,12 @@ class Endboss extends MovableObject{
         // Bewege den Boss basierend auf der Richtung
         if (!this.otherDirection) {
             this.moveLeft();
-            if (this.x <= 2100) { // Grenze links
+            if (this.x <= 2300) { // Grenze links
                 this.otherDirection = true; // Richtung wechseln
             }
         } else {
             this.moveRight();
-            if (this.x >= 2700) { // Grenze rechts
+            if (this.x >= 2900) { // Grenze rechts
                 this.otherDirection = false; // Richtung wechseln
             }
         }
@@ -262,6 +277,7 @@ class Endboss extends MovableObject{
         if (this.statusbar) {
             const percentage = (this.energy / 100) * 100;
             this.statusbar.setPercentage(percentage);
+            this.hurtAnimation();
         }
     }
 

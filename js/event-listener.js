@@ -49,11 +49,16 @@ function soundEvent(){
 }
 
 function renderControls(initializer){
+    let controls = document.getElementById("menu-overlay");
+    if (!controls) {
+        console.error("Element with ID 'menu-overlay' not found in the DOM.");
+        return; // Abbrechen, falls das Element nicht existiert
+    }
     if(initializer == "inGame"){
         console.log('controls in game')
         document.getElementById("overlay").style.display = "flex";
     }
-    let controls = document.getElementById("menu-overlay");
+    
     controls.style.backgroundColor = "rgba(0, 0, 0, 0.797)";
     controls.style.color = "white";
     controls.innerHTML = controlsHtmlTemplate();

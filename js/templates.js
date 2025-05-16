@@ -55,7 +55,7 @@ function gamePlayHtmlTemplate(){
       <div class="gameplay-div">
         <div class="gameplay-settings">
           <button id="sound_btn" class="sound-btn-gameplay" onclick="toggleSoundSetting()">
-            <img id="sound_btn_img" class="sound-btn-gameplay" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option" />
+            <img id="sound_btn_img_gameplay" class="sound-btn-gameplay" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option" />
           </button>
           <button id="controls" class="controls-btn-gameplay" onclick="renderControls('inGame')">&#x2699;</button>
         </div>

@@ -172,6 +172,7 @@ class World {
     this.controlEnabled = false;
     let cameraLocked = false;
     let startFightPrompt = document.getElementById("overlay");
+    let controls = document.getElementById("menu-overlay");
 
     const cameraMovingInterval = setInterval(() => {
       if (this.fightScene && this.camera_x >=  -endbossX && !cameraLocked) {
@@ -197,7 +198,7 @@ class World {
           this.controlEnabled = true;
         }, 4000)};
     }, 10);
-       
+        
         this.level.endboss.handleFirstContact(); 
         this.level.endboss.firstContactCharacter = true;
   }

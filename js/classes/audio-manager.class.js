@@ -12,16 +12,12 @@ class AudioManager {
     }
 
     play() {
-        return
-         this.waitLoadingInterval = setInterval(() => {
-            if(this.audio.readyState == 4 && !AudioManager.isMuted && this.shouldPlay){
-                this.audio.currentTime = 0;
-                this.audio.play();
-                clearInterval(this.waitLoadingInterval)
+        if(this.audio.readyState == 4 && !AudioManager.isMuted && this.shouldPlay){
+            this.audio.currentTime = 0;
+            this.audio.play(); 
             } else {
                 console.log("sound not ready");
             }
-         }, 200);
     }
 
     isPlaying() {
