@@ -18,20 +18,6 @@ class MovableObject extends DrawableObject{
     this.x -= this.speed;
   }
 
-  // automaticMovement(targetX, callback) {
-  //   const interval = setInterval(() => {
-  //       if (this.x < targetX) {
-  //           this.moveRight();
-  //       } else {
-  //           clearInterval(interval);
-  //           callback();
-  //       }
-  //   }, 800);
-  // }
-
-  //Vllt.für Intro zur Fight Scene:
-  // Character stoppen, dann Interval mit Kamera zu Endboss, dann wieder zurück zum Character
-  //Dann läuft User weiter bis zum Endboss, dort hält Kamera dann an bis zum Ende des Fights
   stopMoving() { 
         this.speed = 0;     
         this.speedY = 0;

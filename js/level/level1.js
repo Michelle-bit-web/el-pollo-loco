@@ -24,7 +24,7 @@ function generateObject(objectType, numberOfObject, maxX, maxY, minY, maxSpeed, 
 function setCollectableObjects(){
     let collectableObjects = [];
     let distanceX = 0;
-     for (let i = 0; i < 3; i++) {
+     for (let i = 0; i < 4; i++) {
      distanceX += 800 * i;  
      
     collectableObjects.push(

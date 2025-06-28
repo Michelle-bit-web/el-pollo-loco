@@ -1,3 +1,4 @@
+
 class Keyboard{
     LEFT = false;
     RIGHT = false;
@@ -5,5 +6,4 @@ class Keyboard{
     DOWN = false;
     SPACE = false;
     THROW = false; // Key D
-
 }

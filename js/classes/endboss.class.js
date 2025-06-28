@@ -167,9 +167,9 @@ class Endboss extends MovableObject{
         // if (this.world.character.isColliding(this)) {
         //     this.world.character.speedY = 20;
         // }
-        setTimeout(() => {
-            this.isJumping = false;
-        }, 3000); // Nach 1 Sekunde kann der Boss erneut springen
+        // setTimeout(() => {
+        //     this.isJumping = false;
+        // }, 3000); // Nach 1 Sekunde kann der Boss erneut springen
     };
 }
 
@@ -277,6 +277,7 @@ class Endboss extends MovableObject{
         if (this.statusbar) {
             const percentage = (this.energy / 100) * 100;
             this.statusbar.setPercentage(percentage);
+            audioList.endbossHurt.play();
             this.hurtAnimation();
         }
     }

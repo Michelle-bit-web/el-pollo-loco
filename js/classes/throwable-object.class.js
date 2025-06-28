@@ -20,8 +20,8 @@ class ThrowableObject extends MovableObject{
         this.loadImage("assets/img/7_statusbars/3_icons/icon_salsa_bottle.png");
         this.loadImages(this.IMAGES_ROTATION);
         this.loadImages(this.IMAGES_SPLASH);
-        this.x = x;
-        this.y = y;
+        this.x = x + 60;
+        this.y = y + 40;
         this.otherDirection = otherDirection;
         this.throw();
         this.height = 70;
@@ -32,7 +32,7 @@ class ThrowableObject extends MovableObject{
     }
 
     throw(){
-        this.speedY = 10;
+        this.speedY = 20;
         this.applyGravity();
         this.throwInterval = setInterval(() => {
             if(this.otherDirection){
@@ -66,6 +66,8 @@ class ThrowableObject extends MovableObject{
 
     splash(){
         this.isSplashing = true;
+        audioList.bottleBreaks.play();
+        audioList.bottleSplash.play();
         clearInterval(this.rotationInterval);
         clearInterval(this.throwInterval);
         this.playAnimation(this.IMAGES_SPLASH);

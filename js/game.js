@@ -26,9 +26,7 @@ function isTouchDevice() {
 
 function startGame() {
     audioList.mainTheme.stop();
-    audioList.mainTheme.shouldPlay = false;
-
-    audioList.gamePlay.shouldPlay = true;
+    AudioManager.sounds.forEach(audio => audio.shouldPlay = true)
     audioList.gamePlay.play();
     
     removeOverlay("overlay");
@@ -234,6 +232,14 @@ function backToMenu(){
 
 function resetGame(){
     console.log('play again clicked')
+    Object.values(audioList).forEach(audio => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
+  if (world.character) {
+    world.character.stopAllAnimations();
+    clearInterval(world.character.gravityInterval);
+  }
     // document.getElementById("overlay").style.display = "none";
     keyboard = new Keyboard();
     intervals = [];

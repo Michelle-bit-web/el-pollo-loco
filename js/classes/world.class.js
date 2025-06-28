@@ -8,6 +8,7 @@ class World {
   coinStatusbar = new Statusbar("coin", 10, 45, this);
   bottleStatusbar = new Statusbar("bottle", 10, 85, this);
   throwableObjects = [];
+  
 
   constructor(canvas, keyboard, level, controlEnabled) {
     this.ctx = canvas.getContext("2d");
@@ -18,7 +19,6 @@ class World {
     this.setWorld();
     this.draw();
     this.run();
-
     audioList.gamePlay.play();
   }
 
@@ -75,8 +75,7 @@ class World {
         // this.level.endboss.hit(); //braucht man hit & takeDamage dann noch?
         // this.changeStatusbar(this.level.endboss.statusbar, -10);
         this.level.endboss.takeDamage(2);
-        audioList.bottleBreaks.play();
-        audioList.bottleSplash.play();
+        
       }
     });
   }
@@ -94,7 +93,6 @@ class World {
         this.removeDeadEnemy(enemy, enemyIndex);
       });
     });
-    // this.throwableObjects = this.throwableObjects.filter((obj) => !obj.remove);
   }
 
   handleBottleCollision(bottle, enemyIndex) {
@@ -106,6 +104,7 @@ class World {
     setTimeout(() => {
       if (enemy.isDead) {
         this.level.enemies.splice(enemyIndex, 1);
+        audioList.ghost.play();
       }
     }, 100);
   }

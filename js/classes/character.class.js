@@ -102,6 +102,7 @@ class Character extends MovableObject {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
         this.moveRight();
         this.otherDirection = false;
+        audioList.snoring.stop();
         audioList.walking.play();
         this.lastTimeMoved = new Date().getTime(); 
       }
@@ -109,13 +110,16 @@ class Character extends MovableObject {
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
         this.otherDirection = true;
+        audioList.snoring.stop();
         audioList.walking.play();
         this.lastTimeMoved = new Date().getTime(); 
       }
       //Jumping
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
-        // this.jumping_sound.play();
+        audioList.snoring.stop();
+        audioList.walking.stop();
+        audioList.jump.play();
         this.lastTimeMoved = new Date().getTime(); 
       }
       //Camera focus on character
@@ -187,10 +191,9 @@ class Character extends MovableObject {
     pastTime = pastTime / 1000; 
     if (pastTime < 9) {
       this.playAnimation(this.IMAGES_IDLE);
-      //here a sound
     } else if( pastTime >= 9){
       this.playAnimation(this.IMAGES_IDLE_LONG);
-      //here a sound
+      audioList.snoring.play();
     }
   }
 
@@ -201,10 +204,4 @@ class Character extends MovableObject {
       this.ctx.drawImage(img, x, y, width, height);
     };
   }
-
-  // hit(hittenObject) {
-  //   if (hittenObject instanceof Chicken || hittenObject instanceof SmallChicken || hittenObject instanceof Endboss) {
-  //     this.changeEnergy();
-  //   }
-  // }
 }
