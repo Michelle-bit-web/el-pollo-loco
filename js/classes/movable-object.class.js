@@ -67,7 +67,10 @@ stopAllAnimations(path) {
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration; 
-      }
+      } else if (this instanceof ThrowableObject && !this.isSplashing) {
+          this.y = 350; // Stelle sicher, dass sie genau auf dem Boden ist
+          this.splash();
+       }
       if(this instanceof Chicken || this instanceof SmallChicken){
         this.y -= this.speedY;
         this.speedY -= this.acceleration; 
@@ -83,7 +86,7 @@ stopAllAnimations(path) {
 
   isAboveGround() {
     if((this instanceof ThrowableObject)){
-      return true
+      return this.y < 350;
     } 
     if (this instanceof Endboss) {
         return this.y < 120; // Endboss landet 30px höher

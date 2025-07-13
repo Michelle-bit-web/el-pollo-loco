@@ -4,8 +4,8 @@ class Statusbar extends DrawableObject{
     coins= 0;
     type;
     images;
-    maxCoins = 16; //10?
-    maxBottles = 8; //5?
+    maxCoins = 8; //10?
+    maxBottles = 6; //5?
 
     IMAGES_ENERGY = [
         "assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",

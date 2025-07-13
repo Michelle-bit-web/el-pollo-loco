@@ -93,7 +93,7 @@ class Character extends MovableObject {
     this.animate();
     this.applyGravity();
     this.lastTimeMoved = new Date().getTime();
-  }
+  } 
 
   animate() {
     this.animationIntervals["movement"] = setInterval(() => {
@@ -103,6 +103,7 @@ class Character extends MovableObject {
         this.moveRight();
         this.otherDirection = false;
         audioList.snoring.stop();
+        audioList.walking.shouldPlay = true;
         audioList.walking.play();
         this.lastTimeMoved = new Date().getTime(); 
       }
@@ -151,7 +152,7 @@ class Character extends MovableObject {
     this.animationIntervals["dying"] = setInterval(() => {
       if (this.isDead()) {
         this.isPlayingDyingAnimation = true;
-        this.handleRipanimation();
+        this.handleRipAnimation();
       }
       if(this.isPlayingDyingAnimation){
         audioList.characterDead.play();
@@ -161,7 +162,7 @@ class Character extends MovableObject {
     
   }
 
-  handleRipanimation(){
+  handleRipAnimation(){
     if(this.otherDirection) {this.otherDirection = false}
         this.stopAllAnimations("assets/img/2_character_pepe/5_dead/rip.png");
         this.height = 120;

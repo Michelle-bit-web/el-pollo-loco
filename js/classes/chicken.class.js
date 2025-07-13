@@ -32,7 +32,9 @@ class Chicken extends MovableObject {
     animate(){
         this.animationIntervals["ChickenMovesLeft"] = setInterval(() => {
            this.moveLeft();
-           if(!this.isDead){audioList.chicken.play();}
+           if(!this.isDead){
+            // audioList.chicken.shouldPlay = true;
+            audioList.chicken.play();}
         }, 1000 / 60);
         this.animationIntervals["ChickenPlayAnimation"] = setInterval(() =>{
             this.playAnimation(this.IMAGES_WALKING);
@@ -40,6 +42,7 @@ class Chicken extends MovableObject {
     }
 
     markAsDead() {
+        audioList.jumpOnChicken.shouldPlay = true;
         audioList.jumpOnChicken.play();
         this.isDead = true;
         this.stopAnimation("ChickenMovesLeft");
@@ -47,10 +50,12 @@ class Chicken extends MovableObject {
         this.loadImage(this.IMAGE_DEAD);
         setTimeout(() => {
            audioList.jumpOnChicken.stop();
+           audioList.chicken.stop();
             this.loadImage(this.IMAGE_GHOST);
             this.speedY = -10;
             this.acceleration = -1;
             this.applyGravity();
+            audioList.ghost.shouldPlay = true;
             audioList.ghost.play(); 
             this.removalCheckInterval = setInterval(() => {
                 if (this.y + this.height < 0) { // vollständig nach oben verschwunden

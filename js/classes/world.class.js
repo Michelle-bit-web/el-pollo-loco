@@ -74,7 +74,7 @@ class World {
         bottle.splash();
         // this.level.endboss.hit(); //braucht man hit & takeDamage dann noch?
         // this.changeStatusbar(this.level.endboss.statusbar, -10);
-        this.level.endboss.takeDamage(2);
+        this.level.endboss.takeDamage(20);
         
       }
     });
@@ -281,17 +281,23 @@ class World {
     // this.fadeToBlack();
     if (this.character.isDead()) {
       endScreenImage = "assets/img/You won, you lost/Game Over.png";
+      audioList.gameOver.shouldPlay = true;
       audioList.gameOver.play();
     } else if (this.level.endboss.isDead()) {
       endScreenImage = "assets/img/You won, you lost/You Win A.png";
+      audioList.gameWin.shouldPlay = true;
       audioList.gameWin.play();
     }
-    overlay.innerHTML = getEndScreenTemplate(endScreenImage);
-    overlay.style.display = "flex";
+    
     this.stopIntervals();
     setTimeout(() => {
+      audioList.gameOver.stop();
+      audioList.gameWin.stop();
+      audioList.mainTheme.shouldPlay = true;
       audioList.mainTheme.play();
-    }, 2000);
+      overlay.innerHTML = getEndScreenTemplate(endScreenImage);
+      overlay.style.display = "flex";
+    }, 1000);
     this.character.bottles = 0;
     this.character.coins = 0;
     this.throwableObjects = [];

@@ -17,6 +17,7 @@ class AudioManager {
             this.audio.play(); 
             this.shouldPlay = true
             } else {
+                return;
                 console.log("sound not ready");
             }
     }
@@ -44,7 +45,7 @@ class AudioManager {
         if (AudioManager.isMuted) {
             this.audio.pause();
         } else {
-            if(this.shouldPlay)
+            if(this.shouldPlay && this.audio.loop)
             this.play();
         }
     }

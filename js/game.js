@@ -25,8 +25,10 @@ function isTouchDevice() {
 }
 
 function startGame() {
-    audioList.mainTheme.stop();
+    
     AudioManager.sounds.forEach(audio => audio.shouldPlay = true)
+    audioList.mainTheme.stop();
+    audioList.mainTheme.shouldPlay = false;
     audioList.gamePlay.play();
     
     removeOverlay("overlay");
