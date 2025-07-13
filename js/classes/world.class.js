@@ -281,27 +281,31 @@ class World {
     // this.fadeToBlack();
     if (this.character.isDead()) {
       endScreenImage = "assets/img/You won, you lost/Game Over.png";
-      audioList.gameOver.shouldPlay = true;
-      audioList.gameOver.play();
     } else if (this.level.endboss.isDead()) {
       endScreenImage = "assets/img/You won, you lost/You Win A.png";
-      audioList.gameWin.shouldPlay = true;
-      audioList.gameWin.play();
     }
     
     this.stopIntervals();
     setTimeout(() => {
-      audioList.gameOver.stop();
-      audioList.gameWin.stop();
-      audioList.mainTheme.shouldPlay = true;
-      audioList.mainTheme.play();
+      if (this.character.isDead()) {
+        audioList.gameOver.shouldPlay = true;
+        audioList.gameOver.play();
+      } else if (this.level.endboss.isDead()) {
+      audioList.gameWin.shouldPlay = true;
+      audioList.gameWin.play();
+    }
       overlay.innerHTML = getEndScreenTemplate(endScreenImage);
       overlay.style.display = "flex";
     }, 1000);
     this.character.bottles = 0;
     this.character.coins = 0;
     this.throwableObjects = [];
+    setTimeout(() => {
+    audioList.mainTheme.shouldPlay = true;
+    audioList.mainTheme.play();
+  }, 5000)
   }
+  
 
   stopIntervals() {
     intervals.forEach((interval) => clearInterval(interval));
