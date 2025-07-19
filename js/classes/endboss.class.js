@@ -266,7 +266,7 @@ class Endboss extends MovableObject{
             this.loadImage("assets/img/4_enemie_boss_chicken/5_dead/G26.png");
             this.world.fightScene = false;
         }
-    }, 1000); // Animation alle 500ms
+    }, 500); // Animation alle 500ms
    
 }
     takeDamage(amount) {

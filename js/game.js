@@ -177,11 +177,16 @@ function checkTouchResponse(prompt) {
     }, { once: true });
 }
 
+
+function addInterval(interval) {
+    intervals.push(interval);
+}
+
 function stopAllIntervals(){
+    
     intervals.forEach(interval => clearInterval(interval));
     intervals = [];
 }
-
 
 function pauseGame() {
     console.log("Game paused due to incorrect orientation.");
@@ -203,19 +208,35 @@ function toggleSoundSetting() {
     setSoundImage();
 }
 
+// function setSoundImage(){
+//     const soundImage = document.getElementById("sound_btn_img");
+//     const soundImageGameplay = document.getElementById("sound_btn_img_gameplay");
+//     if (AudioManager.isMuted) {
+//         soundImage.src = "assets/img/icons/sound-off.png"; 
+//         if(soundImageGameplay){
+//             soundImageGameplay.src = "assets/img/icons/sound-off.png"; 
+//         }
+//     } else {
+//         soundImage.src = "assets/img/icons/sound-on-blk.png"; 
+//         if(soundImageGameplay){
+//             soundImageGameplay.src = "assets/img/icons/sound-on-blk.png"; 
+//         }
+//     }
+// }
+
 function setSoundImage(){
     const soundImage = document.getElementById("sound_btn_img");
     const soundImageGameplay = document.getElementById("sound_btn_img_gameplay");
-    if (AudioManager.isMuted) {
-        soundImage.src = "assets/img/icons/sound-off.png"; 
-        if(soundImageGameplay){
-            soundImageGameplay.src = "assets/img/icons/sound-off.png"; 
-        }
-    } else {
-        soundImage.src = "assets/img/icons/sound-on-blk.png"; 
-        if(soundImageGameplay){
-            soundImageGameplay.src = "assets/img/icons/sound-on-blk.png"; 
-        }
+
+    const srcMuted = "assets/img/icons/sound-off.png";
+    const srcUnmuted = "assets/img/icons/sound-on-blk.png";
+    const currentSrc = AudioManager.isMuted ? srcMuted : srcUnmuted;
+
+    if (soundImage) {
+        soundImage.src = currentSrc;
+    }
+    if (soundImageGameplay) {
+        soundImageGameplay.src = currentSrc;
     }
 }
 
@@ -233,18 +254,40 @@ function backToMenu(){
 }
 
 function resetGame(){
-    console.log('play again clicked')
+    console.log('Play again clicked');
+
+    // Audios stoppen
     Object.values(audioList).forEach(audio => {
-    audio.pause();
-    audio.currentTime = 0;
-  });
-  if (world.character) {
-    world.character.stopAllAnimations();
-    clearInterval(world.character.gravityInterval);
-  }
-    // document.getElementById("overlay").style.display = "none";
-    keyboard = new Keyboard();
+        audio.pause();
+        audio.currentTime = 0;
+        audio.shouldPlay = false;
+    });
+
+    // Intervals beenden
+    intervals.forEach(clearInterval);
     intervals = [];
+
+    // World auflösen
+    if (world?.character?.gravityInterval) {
+        clearInterval(world.character.gravityInterval);
+    }
     world = null;
+
+    // DOM-Elemente zurücksetzen
+    // document.getElementById("overlay").style.display = 'none';
+    // document.getElementById("panel")?.style.display = "none";
+
+    // Tastatur zurücksetzen
+    world?.stopIntervals();
+    keyboard = new Keyboard();
+
+    // Spiel neu starten
     startGame();
+    setTimeout(() => {
+        document.getElementById("overlay").style.display = 'none';
+        AudioManager.loadMuteStatus();
+        setSoundImage();
+        audioList.mainTheme.shouldPlay = false;
+    }, 100); 
+    loadLevel();
 }

@@ -168,7 +168,7 @@ stopAllAnimations(path) {
   // Flaschen sammeln
   collectBottle() {
     this.bottles++;
-    this.updateStatusbar("bottle"); // Statusbar für Flaschen aktualisieren
+    this.updateStatusbar("bottle");
     audioList.bottleCollected.play();
   }
 

@@ -49,8 +49,8 @@ class CollectableObject extends MovableObject{
         this.width = width;
     }
     animate(){
-        setInterval(() => {
+        this.animationIntervals["collectableAnimation"] = setInterval(() => {
             this.playAnimation(this.IMAGES_COIN)
-        }, 400)
+        }, 400);
     }
 }

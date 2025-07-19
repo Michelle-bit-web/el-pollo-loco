@@ -36,7 +36,7 @@ class ThrowableObject extends MovableObject{
         this.speedY = 20;
         this.applyGravity();
         this.startFlyingAnimation();   
-        this.throwInterval = setInterval(() => {
+        this.animationIntervals['throwInterval'] = setInterval(() => {
             if (this.isSplashing) return; 
             if(this.otherDirection){
                this.x -= 10;
@@ -55,7 +55,7 @@ class ThrowableObject extends MovableObject{
     }
 
     startFlyingAnimation(){
-         this.rotationInterval = setInterval(() => {
+         this.animationIntervals['rotationBottleInterval'] = setInterval(() => {
             if (this.isSplashing) return;
             this.playAnimation(this.IMAGES_ROTATION);
             this.rotationIndex = (this.rotationIndex + 1) % this.IMAGES_ROTATION.length;
@@ -67,8 +67,8 @@ class ThrowableObject extends MovableObject{
         this.isSplashing = true;
         audioList.bottleBreaks.play();
         audioList.bottleSplash.play();
-        clearInterval(this.rotationInterval);
-        clearInterval(this.throwInterval);
+        clearInterval(this.animationIntervals['rotationBottleInterval']);
+        clearInterval(this.animationIntervals['throwInterval']);
         this.playAnimation(this.IMAGES_SPLASH);
         setTimeout(() => {
             // this.remove = true;
@@ -79,11 +79,11 @@ class ThrowableObject extends MovableObject{
     }
 
     startFadeOut() {
-        this.fadeOutInterval = setInterval(() => {
+        this.animationIntervals['fadeoutInterval'] = setInterval(() => {
             this.fadeOutOpacity -= 0.05;
             if (this.fadeOutOpacity <= 0) {
                 this.remove = true;
-                clearInterval(this.fadeOutInterval);
+                clearInterval(this.animationIntervals['fadeoutInterval']);
             }
         }, 50);
         this.world.throwableObjects.splice(0,1);

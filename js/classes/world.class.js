@@ -8,7 +8,6 @@ class World {
   coinStatusbar = new Statusbar("coin", 10, 45, this);
   bottleStatusbar = new Statusbar("bottle", 10, 85, this);
   throwableObjects = [];
-  
 
   constructor(canvas, keyboard, level, controlEnabled) {
     this.ctx = canvas.getContext("2d");
@@ -72,10 +71,7 @@ class World {
     this.throwableObjects.forEach((bottle) => {
       if (!bottle.isSplashing && bottle.isColliding(this.level.endboss)) {
         bottle.splash();
-        // this.level.endboss.hit(); //braucht man hit & takeDamage dann noch?
-        // this.changeStatusbar(this.level.endboss.statusbar, -10);
         this.level.endboss.takeDamage(20);
-        
       }
     });
   }
@@ -117,7 +113,6 @@ class World {
         } else if (item.imageType === "bottle" || item.imageType === "bottleGround") {
           this.character.collectBottle();
         }
-        // Collectable entfernen
         this.level.collectableObjects.splice(index, 1);
       }
     });
@@ -126,13 +121,12 @@ class World {
   checkIsThrowing() {
     if (this.keyboard.THROW && !this.throwTimeout) {
       this.character.lastTimeMoved = new Date().getTime();
-      let percentageSingleBottle = 100 / this.bottleStatusbar.maxBottles;
-      if (this.character.bottles >= 1 && this.bottleStatusbar.percentage >= percentageSingleBottle) {
+      if (this.character.bottles >= 1 ) {
         let bottle = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection, this);
         this.throwableObjects.push(bottle);
         this.character.bottles--;
         bottle.throw();
-        this.character.updateStatusbar("bottle");
+         this.character.updateStatusbar("bottle");
         this.throwTimeout = true;
         setTimeout(() => {
           this.throwTimeout = false;
@@ -310,8 +304,14 @@ class World {
   stopIntervals() {
     intervals.forEach((interval) => clearInterval(interval));
     AudioManager.sounds.forEach((sound) => sound.stop());
+    this.character.stopAllAnimations();
+    this.level.enemies.forEach(enemy => enemy.stopAllAnimations);
+    this.level.endboss.stopAllAnimations();
+    // this.level.clouds.stopAllAnimations();
+    // this.level.collectableObjects.stopAllAnimations();
+    this.throwableObjects.forEach(bottle => bottle.stopAllAnimations());
   }
-}
+} 
 
 /*---später vielleicht nutzen als Übergang zum Endscreen--*/
 

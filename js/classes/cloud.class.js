@@ -11,7 +11,7 @@ class Cloud  extends MovableObject {
     }
 
     animate(){
-        setInterval(() => {
+        this.animationIntervals["cloudMoves"] = setInterval(() => {
             if(this.x + this.width < 0){
                 this.x = this.levelEndX;
             }

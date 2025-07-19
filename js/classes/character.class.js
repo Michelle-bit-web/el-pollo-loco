@@ -153,6 +153,8 @@ class Character extends MovableObject {
       if (this.isDead()) {
         this.isPlayingDyingAnimation = true;
         this.handleRipAnimation();
+        clearInterval(this.animationIntervals["animation"]);
+        clearInterval(this.animationIntervals["movement"]);
       }
       if(this.isPlayingDyingAnimation){
         audioList.characterDead.play();
