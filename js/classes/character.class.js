@@ -96,12 +96,12 @@ class Character extends MovableObject {
 
   animate() {
     this.animationIntervals["movement"] = setInterval(() => {
-
+      // audioList.idle.stop();
+      // audioList.snoring.stop();
       //Move right
       if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
         this.moveRight();
         this.otherDirection = false;
-        audioList.snoring.stop();
         audioList.walking.shouldPlay = true;
         audioList.walking.play();
         this.lastTimeMoved = new Date().getTime(); 
@@ -110,14 +110,13 @@ class Character extends MovableObject {
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
         this.otherDirection = true;
-        audioList.snoring.stop();
+        audioList.walking.shouldPlay = true;
         audioList.walking.play();
         this.lastTimeMoved = new Date().getTime(); 
       }
       //Jumping
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
-        audioList.snoring.stop();
         audioList.walking.stop();
         audioList.jump.play();
         this.lastTimeMoved = new Date().getTime(); 
@@ -160,6 +159,32 @@ class Character extends MovableObject {
         clearInterval(this.animationIntervals["dying"]);
       }
     }, 1000 / 30); 
+
+    this.animationIntervals["idleSoundLogic"] = setInterval(() => {
+      const pastTime = (new Date().getTime() - this.lastTimeMoved) / 1000;
+
+      if (this.checkMovementStatus()) {
+        if (pastTime > 7) {
+          // Idle Long → Snoring
+          if (!audioList.snoring.isPlaying()) {
+            audioList.idle.stop();
+            audioList.snoring.shouldPlay = true;
+            audioList.snoring.play();
+          }
+        } else if (pastTime > 2) {
+          // Idle → regular idle sound
+          if (!audioList.idle.isPlaying()) {
+            audioList.snoring.stop();
+            audioList.idle.shouldPlay = true;
+            audioList.idle.play();
+          }
+        }
+      } else {
+        // Bewegung → alles stoppen
+        audioList.idle.stop();
+        audioList.snoring.stop();
+      }
+    }, 300); // alle 300ms prüfen
   }
 
   handleRipAnimation(){
@@ -187,12 +212,11 @@ class Character extends MovableObject {
 
   playIdleAnimation() {
     let pastTime = new Date().getTime() - this.lastTimeMoved;
-    pastTime = pastTime / 1000; 
-    if (pastTime < 9) {
-      this.playAnimation(this.IMAGES_IDLE);
-    } else if( pastTime >= 9){
+    pastTime = pastTime / 1000;
+    if (pastTime > 7) {
       this.playAnimation(this.IMAGES_IDLE_LONG);
-      audioList.snoring.play();
+    } else {
+      this.playAnimation(this.IMAGES_IDLE);
     }
   }
 
