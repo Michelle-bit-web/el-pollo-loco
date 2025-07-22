@@ -280,7 +280,7 @@ function resetGame(){
     // Tastatur zurücksetzen
     world?.stopIntervals();
     keyboard = new Keyboard();
-
+    level1 =createLevelOne();
     // Spiel neu starten
     startGame();
     setTimeout(() => {
@@ -289,5 +289,5 @@ function resetGame(){
         setSoundImage();
         audioList.mainTheme.shouldPlay = false;
     }, 100); 
-    loadLevel();
+    // loadLevel();
 }
