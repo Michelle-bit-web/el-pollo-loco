@@ -73,11 +73,6 @@ class Endboss extends MovableObject{
     
     animate() {
         this.animationIntervals.endbossInterval = setInterval(() => {
-            this.updateSpeedBasedOnEnergy();
-    
-            // if (this.isDead || this.energy <= 0) {
-            //     this.deadAnimation();
-            // } 
             if (this.isBeingHit) {
                 this.hurtAnimation();
             }
@@ -87,6 +82,7 @@ class Endboss extends MovableObject{
             else if (this.firstContactCharacter) {
                 this.handleFirstContact();
                 this.totalContacts++;
+                this.updateSpeedBasedOnEnergy();
             } 
             else{
                 this.walkingAnimation();

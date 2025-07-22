@@ -122,12 +122,10 @@ function rotateMobileIcon(promptImagePortrait, promptImageLandscape, alpha){
         hidePrompt(promptImagePortrait);
         showPrompt(promptImageLandscape);
         switchedPromptImage = true;
-        console.log("landscape")
     } else if (switchedPromptImage && alpha >= 0.9){
         showPrompt(promptImagePortrait);
         hidePrompt(promptImageLandscape);
         switchedPromptImage = false;
-        console.log("portrait")
     }
 }
 
