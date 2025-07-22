@@ -340,7 +340,8 @@ h1 {
 
 .panel-wrapper {
   display: flex;
-  gap: 5vw;
+  gap: 4.5vw;
+  padding: 8px 16px;
 }
 
 .panel-wrapper button {
