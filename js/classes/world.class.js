@@ -1,7 +1,6 @@
 class World {
   camera_x = 0;
   fightScene = false;
-  // isFading = false;
   throwTimeout = false;
   character = new Character(this);
   energyStatusbar = new Statusbar("energy", 10, 5, this);
@@ -173,8 +172,7 @@ class World {
       } else {
         this.camera_x = -endbossX;
         cameraLocked = true;
-
-          setTimeout(() => {
+        setTimeout(() => {
           clearInterval(cameraMovingInterval);
           startFightPrompt.style.display = "flex";
           startFightPrompt.style.fontSize = "6vw";
@@ -182,17 +180,16 @@ class World {
           startFightPrompt.style.backgroundColor = "rgba(60, 24, 2, 0.43)";
           startFightPrompt.innerHTML = "Let´s salsa it!";
         }, 1000);
-      
         setTimeout(() => {
           clearInterval(cameraMovingInterval);
           this.returnCameraToCharacter();
           startFightPrompt.style.display = "none";
           this.controlEnabled = true;
-        }, 4000)};
+        }, 4000)
+      };
     }, 10);
-        
-        this.level.endboss.handleFirstContact(); 
-        this.level.endboss.firstContactCharacter = true;
+    this.level.endboss.handleFirstContact(); 
+    this.level.endboss.firstContactCharacter = true;
   }
 
   returnCameraToCharacter() {
@@ -200,7 +197,7 @@ class World {
       if (this.camera_x < -(this.character.x - 100)) {
         this.camera_x += 20; 
       } else {
-         this.camera_x = -(this.character.x - 100)
+        this.camera_x = -(this.character.x - 100)
         clearInterval(cameraMovingToCharacter);
       }
     }, 300);
@@ -237,7 +234,6 @@ class World {
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
     this.addObjectsToMap(this.level.collectableObjects);
-
     this.addToMap(this.character);
   }
 
@@ -250,7 +246,6 @@ class World {
       this.flipImage(mo);
     }
     mo.draw(this.ctx);
-    // mo.drawOffsetFrame(this.ctx); /*---später entfernen---*/
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }
@@ -272,7 +267,6 @@ class World {
     let overlay = document.getElementById("overlay");
     let endScreenImage;
     if (!this.character.isDead() && !this.level.endboss.isDead()) return;
-    // this.fadeToBlack();
     if (this.character.isDead()) {
       endScreenImage = "assets/img/You won, you lost/Game Over.png";
     } else if (this.level.endboss.isDead()) {
@@ -285,9 +279,9 @@ class World {
         audioList.gameOver.shouldPlay = true;
         audioList.gameOver.play();
       } else if (this.level.endboss.isDead()) {
-      audioList.gameWin.shouldPlay = true;
-      audioList.gameWin.play();
-    }
+        audioList.gameWin.shouldPlay = true;
+        audioList.gameWin.play();
+      }
       overlay.innerHTML = getEndScreenTemplate(endScreenImage);
       overlay.style.display = "flex";
     }, 1000);
@@ -295,11 +289,10 @@ class World {
     this.character.coins = 0;
     this.throwableObjects = [];
     setTimeout(() => {
-    audioList.mainTheme.shouldPlay = true;
-    audioList.mainTheme.play();
-  }, 5000)
+      audioList.mainTheme.shouldPlay = true;
+      audioList.mainTheme.play();
+    }, 5000);
   }
-  
 
   stopIntervals() {
     intervals.forEach((interval) => clearInterval(interval));
@@ -307,44 +300,6 @@ class World {
     this.character.stopAllAnimations();
     this.level.enemies.forEach(enemy => enemy.stopAllAnimations);
     this.level.endboss.stopAllAnimations();
-    // this.level.clouds.stopAllAnimations();
-    // this.level.collectableObjects.stopAllAnimations();
     this.throwableObjects.forEach(bottle => bottle.stopAllAnimations());
   }
-} 
-
-/*---später vielleicht nutzen als Übergang zum Endscreen--*/
-
-// fadeToBlack(callback) {
-//   this.isFading = true; // Setze den Fade-Zustand auf true
-//   let alpha = 0; // Transparenz-Wert (0 = vollständig transparent, 1 = vollständig schwarz)
-//   const fadeInterval = setInterval(() => {
-//     this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`; // Schwarzer Overlay
-//     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-//     alpha += 0.02; // Transparenz erhöhen
-//     if (alpha >= 1) {
-//       // Wenn das Canvas vollständig schwarz ist
-//       clearInterval(fadeInterval);
-//       callback(); // Rufe die angegebene Funktion auf (z. B. Levelwechsel)
-//       this.isFading = false; // Setze den Fade-Zustand zurück
-//     }
-//   }, 50);
-//   if (this.level.endboss.energy === 0) {
-//     this.displayEndScreen("endbossIsDead");
-//   } else if (this.character.energy === 0) {
-//     this.displayEndScreen("characterIsDead");
-//   }
-// }
-
-/*---Vllt für Level-Wechsel hierüber eine new world mit der Übergabe von level2--*/
-
-// changeLevel(newLevel) {
-//   this.level = newLevel; // Hier wird das Level gewechselt
-//   this.character.x = 0;
-//   this.camera_x = 0;
-//   console.log("Level gewechselt", this.level);
-//   this.fadeIn();
-// }
-
-//------Vllt außerhalb der Klasse noch:
-//let requestAnimationFrameId = 0;
+}

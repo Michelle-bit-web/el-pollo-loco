@@ -1,384 +1,380 @@
 @font-face {
-    font-family: 'A Box For';
-    src: url(./assets/font/a_box_for/A\ Box\ For.ttf) format('truetype');
+  font-family: "A Box For";
+  src: url(./assets/font/a_box_for/A\ Box\ For.ttf) format("truetype");
 }
+
 @font-face {
-    font-family: 'New Mexico Demo';
-    src: url(./assets/font/new_mexico/New\ Mexico\ Demo.ttf) format('truetype');
+  font-family: "New Mexico Demo";
+  src: url(./assets/font/new_mexico/New\ Mexico\ Demo.ttf) format("truetype");
 }
+
 @font-face {
-    font-family: 'Viva México cabrones';
-    src: url(./assets/font/viva_mexico_cabrones/Viva\ México\ cabrones.ttf) format('truetype');
+  font-family: "Viva México cabrones";
+  src: url(./assets/font/viva_mexico_cabrones/Viva\ México\ cabrones.ttf) format("truetype");
 }
 
 :root {
-    --text-color:rgb(72, 29, 2);
+  --text-color: rgb(72, 29, 2);
 }
 
-*{
-    margin: 0;
-    text-decoration: none;
-    font-size: 10px; 
+* {
+  margin: 0;
+  text-decoration: none;
+  font-size: 10px;
 }
 
-body{
-    font-family: 'A Box For'; /*Schriftart wählen & im Impressum anpassen*/
-    /* font-family: 'New Mexico Demo'; */ /*gut geeignet für ein story board*/
-    font-family: 'Viva México cabrones';
+body {
+  font-family: "A Box For"; 
+  font-family: "Viva México cabrones";
 }
 
-.game-content{
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-image: url(./assets/img/background/desert.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+.game-content {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url(./assets/img/background/desert.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
-a{
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text-color);
-    font-size: clamp(1rem, 3vw, 3rem);
+a {
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  font-size: clamp(1rem, 3vw, 3rem);
 }
 
-button{
-    border-radius: 20px;
-    border: 2px solid rgba(72, 29, 2, 0.672);
-    width: 7vw;
-    height: 9vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.579);
-    color: rgb(72, 29, 2);
-    font-family: 'Viva México cabrones'; /*Schriftart wählen & im Impressum anpassen*/
-
+button {
+  border-radius: 20px;
+  border: 2px solid rgba(72, 29, 2, 0.672);
+  width: 7vw;
+  height: 9vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.579);
+  color: rgb(72, 29, 2);
+  font-family: "Viva México cabrones";
 }
 
-button:hover{
-    border: 2px solid var(--text-color);
-    scale: 0.95;
-    cursor: pointer;
+button:hover {
+  border: 2px solid var(--text-color);
+  scale: 0.95;
+  cursor: pointer;
 }
 
-.canvas-container{
-    display: flex;
-    justify-content: center;
-    overflow-x: hidden;
-    border-radius: 20px;
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+  border-radius: 20px;
 }
 
 canvas {
-    position: relative;
-    background-color: black;
-    display: block;
-    max-width: 720px;
-    max-height: 420px;
-    background-image: url(./assets/img/9_intro_outro_screens/start/startscreen_1.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 20px;
-    border: 2px solid black;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+  position: relative;
+  background-color: black;
+  display: block;
+  max-width: 720px;
+  max-height: 420px;
+  background-image: url(./assets/img/9_intro_outro_screens/start/startscreen_1.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 20px;
+  border: 2px solid black;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
 }
 
-h1{
-    color: rgb(255, 255, 255);
-    font-size: 8vw;
-    margin: 2vh 0;
-    text-align: center;
-    font-family: 'Viva México cabrones'; /*Schriftart wählen & im Impressum anpassen*/
+h1 {
+  color: rgb(255, 255, 255);
+  font-size: 8vw;
+  margin: 2vh 0;
+  text-align: center;
+  font-family: "Viva México cabrones";
 }
 
-.menu-btn{
-    padding: 10px 20px;
-    border-radius: 10px;
-    width: 32vw;
-    height: 30%;
-    max-width: 350px;
-    font-size: clamp(1rem, 3vw, 3rem);
+.menu-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  width: 32vw;
+  height: 30%;
+  max-width: 350px;
+  font-size: clamp(1rem, 3vw, 3rem);
 }
 
-.menu-btn:hover{
-    background-color: rgb(169, 79, 24);
-    cursor: pointer;
+.menu-btn:hover {
+  background-color: rgb(169, 79, 24);
+  cursor: pointer;
 }
 
-.container-sound-btn{
-    width: 90%;
-    display: flex;
-    justify-content: flex-end;
+.container-sound-btn {
+  width: 90%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .sound_btn_img,
-.throw-img{
-    width: 7vw;
-    max-width: 50px;
-    height: auto;
+.throw-img {
+  width: 7vw;
+  max-width: 50px;
+  height: auto;
 }
 
-.sound_btn{
-    border-radius: 100%;
-    border: none;
-    height: 7vw;
-    width: 7vw;
-    max-width: 50px;
-    max-height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+.sound_btn {
+  border-radius: 100%;
+  border: none;
+  height: 7vw;
+  width: 7vw;
+  max-width: 50px;
+  max-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 #div_prompt,
 .rotate-overlay {
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0, 0, 0, 0.783);
-    display: flex; 
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center; 
-    z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.783);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
 
 .rotate-overlay {
-    background-color: rgb(0, 0, 0);
+  background-color: rgb(0, 0, 0);
 }
 
-.prompt-overlay{
-    width: 90%; 
-    /* height: 50%; */
-    color: white; 
-    font-size: 8vw;
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    text-align: center;
+.prompt-overlay {
+  width: 90%;
+  color: white;
+  font-size: 8vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.mobile-prompt-img-portrait{
-    height: 180px;
-    width: 150px;
-    filter: invert(1);
+.mobile-prompt-img-portrait {
+  height: 180px;
+  width: 150px;
+  filter: invert(1);
 }
 
-.mobile-prompt-img-landscape{
-    height: 150px;
-    width: 180px;
-    filter: invert(1);
+.mobile-prompt-img-landscape {
+  height: 150px;
+  width: 180px;
+  filter: invert(1);
 }
 
-.prompt-img-container{
-    height: 100vw;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.prompt-img-container {
+  height: 100vw;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.overlay{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; 
-    height: 100%;
-    max-width: 720px;
-    max-height: 480px;
-    z-index: 1000; 
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.803);
-    color: white;
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 720px;
+  max-height: 480px;
+  z-index: 1000;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.803);
+  color: white;
 }
 
 #rotate-overlay {
   display: none;
 }
 
-.menu-overlay{
-    width: 80%; 
-    height: 80%;
-    max-width: 720px;
-    max-height: 420px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.menu-overlay {
+  width: 80%;
+  height: 80%;
+  max-width: 720px;
+  max-height: 420px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .menu-overlay .panel {
-    pointer-events: auto; /* Aktiviert Interaktionen nur für die Buttons */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.panel-menu{
-    height: 50%;
-    gap: 20%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+.panel-menu {
+  height: 50%;
+  gap: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 /*controls menu*/
-
-.controls-overlay{
-    padding: 3vw;
-    height: 50vw;
-    gap: 20%;
+.controls-overlay {
+  padding: 3vw;
+  height: 50vw;
+  gap: 20%;
 }
 
-.controls-overlay p{
-   font-size: clamp(1rem, 3vw, 3rem);
+.controls-overlay p {
+  font-size: clamp(1rem, 3vw, 3rem);
 }
 
-
-.exit-btn-container{
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.exit-btn-container {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.exit-btn{
-    font-size: clamp(0.5rem, 2vw, 2rem);
-    height: 5vw;
-    width: 12vw;
-    max-height: 40px;
-    max-width: 80px;
+.exit-btn {
+  font-size: clamp(0.5rem, 2vw, 2rem);
+  height: 5vw;
+  width: 12vw;
+  max-height: 40px;
+  max-width: 80px;
 }
 
-.key-controls{
-    gap:5%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+.key-controls {
+  gap: 5%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.key-controls p{
-    text-align: center;
+.key-controls p {
+  text-align: center;
 }
 
-.key-controls img{
-    height: 20vw;
-    width: 15vw;
-    max-height: 150px;
-    max-width: 100px;
+.key-controls img {
+  height: 20vw;
+  width: 15vw;
+  max-height: 150px;
+  max-width: 100px;
 }
 
-.img-throw-bottle{
-    width: 150px;
+.img-throw-bottle {
+  width: 150px;
 }
 
 /*game play html template*/
 .overlay-gameplay {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; 
-    height: 100%;
-    max-width: 720px;
-    max-height: 480px;
-    z-index: 1000; 
-    border-radius: 20px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 720px;
+  max-height: 480px;
+  z-index: 1000;
+  border-radius: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.gameplay-div{
-    height: 100vh;
-    padding: 2vh 0;
-    display: flex;
-    flex-direction: column;
-    align-items: space-between;
+.gameplay-div {
+  height: 100vh;
+  padding: 2vh 0;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
 }
 
-.gameplay-settings{
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 5%;
+.gameplay-settings {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5%;
 }
 
 .sound-btn-gameplay,
-.controls-btn-gameplay{
-    height: 5vw;
-    width: 5vw;
-    max-width: 30px;
-    max-height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    border: unset;
-    border-radius: 100%;
+.controls-btn-gameplay {
+  height: 5vw;
+  width: 5vw;
+  max-width: 30px;
+  max-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border: unset;
+  border-radius: 100%;
 }
 
-.panel{
-    width: 90vw;
-    max-width: 600px;
-    justify-content: space-between;
+.panel {
+  width: 90vw;
+  max-width: 600px;
+  justify-content: space-between;
 }
 
-.panel-wrapper{
-    display: flex;
-    gap: 5vw;
+.panel-wrapper {
+  display: flex;
+  gap: 5vw;
 }
 
-.panel-wrapper button{
-    width: 12vw;
-    height: 8vw;
-    max-width: 100px;
-    max-height: 50px;
+.panel-wrapper button {
+  width: 12vw;
+  height: 8vw;
+  max-width: 100px;
+  max-height: 50px;
 }
 
 /*end screen template*/
-.end-screen-div{
-    padding: 5%;
-    gap: 5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.end-screen-div {
+  padding: 5%;
+  gap: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.end-screen-img{
-    width: 40vw;
-    height: 40vw;
-    max-height: 250px;
-    max-width: 300px;
+.end-screen-img {
+  width: 40vw;
+  height: 40vw;
+  max-height: 250px;
+  max-width: 300px;
 }
 
-.endscreen{
-    padding: 0;
-    
+.endscreen {
+  padding: 0;
 }
 
 /*Imprint ----*/
-.content-impressum{
-    color: var(--text-color);
-    background-color: rgba(255, 255, 255, 0.371);
-    padding: 5%;
+.content-impressum {
+  color: var(--text-color);
+  background-color: rgba(255, 255, 255, 0.371);
+  padding: 5%;
 }
 
 .content-impressum p,
@@ -386,103 +382,97 @@ h1{
 .content-impressum li,
 .content-impressum b,
 .content-impressum span,
-footer a{
-    font-size: clamp(1rem, 2vw, 2rem);
-    text-align: start;
-    display: flex;
+footer a {
+  font-size: clamp(1rem, 2vw, 2rem);
+  text-align: start;
+  display: flex;
 }
 
-.content-impressum i{
-    display: flex;
-    gap: 2vw;
+.content-impressum i {
+  display: flex;
+  gap: 2vw;
 }
 
 .content-impressum a:hover,
-footer a:hover{
-    color: white;
+footer a:hover {
+  color: white;
 }
 
-h2{
-    margin: 2% 0;
-    font-size: clamp(1.5rem, 3vw, 3rem);
+h2 {
+  margin: 2% 0;
+  font-size: clamp(1.5rem, 3vw, 3rem);
 }
 
-.imprint-btn{
-    font-size: clamp(1rem, 2vw, 2rem);
-    height: 5vw;
-    width: 32vw;
-    max-height: 40px;
-    max-width: 250px;
-    border-radius: 20px;
+.imprint-btn {
+  font-size: clamp(1rem, 2vw, 2rem);
+  height: 5vw;
+  width: 32vw;
+  max-height: 40px;
+  max-width: 250px;
+  border-radius: 20px;
 }
 
-.imprint-btn:hover{
-  background-color:rgb(72, 29, 2);
-
+.imprint-btn:hover {
+  background-color: rgb(72, 29, 2);
 }
 
-
-.credits-container{
-    background-color: rgba(0, 0, 0, 0.313);
-    border-radius: 20px;
-    padding: 2vw;
-    display: flex;
-    flex-direction: column;
-
+.credits-container {
+  background-color: rgba(0, 0, 0, 0.313);
+  border-radius: 20px;
+  padding: 2vw;
+  display: flex;
+  flex-direction: column;
 }
 
-.credtis-catergory{
-    margin-top: 2vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.credtis-catergory {
+  margin-top: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-footer{
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+footer {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 /* Smartphone */
-@media screen and (max-width: 1300px) and (orientation: portrait) and (hover: none) and (pointer: coarse){
+@media screen and (max-width: 1300px) and (orientation: portrait) and (hover: none) and (pointer: coarse) {
   #rotate-overlay {
     display: flex;
   }
-  #prompt-overlay{
+  #prompt-overlay {
     display: none;
   }
 }
 
-/*Smartphones ----*/
-@media only screen and (max-width: 720px){
-    canvas{
-        width: 100%;
-    }
+@media only screen and (max-width: 720px) {
+  canvas {
+    width: 100%;
+  }
 }
 
-/*Smartphones ----*/
-@media only screen and (max-height: 480px){
-    canvas{
-        height: 100vh;
-    }
-    h1{
-        display: none;
-    }
-    .sound_btn_img{
-        width: 12vh;
-        height: auto;
-    }
-
-    .sound_btn{
-        border-radius: 100%;
-        border: none;
-        height: 12vh;
-        width: 12vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+@media only screen and (max-height: 480px) {
+  canvas {
+    height: 100vh;
+  }
+  h1 {
+    display: none;
+  }
+  .sound_btn_img {
+    width: 12vh;
+    height: auto;
+  }
+  .sound_btn {
+    border-radius: 100%;
+    border: none;
+    height: 12vh;
+    width: 12vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

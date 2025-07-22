@@ -19,9 +19,9 @@ class MovableObject extends DrawableObject{
   }
 
   stopMoving() { 
-        this.speed = 0;     
-        this.speedY = 0;
-    }
+    this.speed = 0;     
+    this.speedY = 0;
+  }
   
   playAnimation(images) {
     let i = this.currentImage % images.length;
@@ -34,53 +34,52 @@ class MovableObject extends DrawableObject{
   //Kann man ja dann selektiv nutzen z.B. nur für Character, nur für Endboss usw.
   stopAnimation(intervalType, path) {
     if (this.animationIntervals[intervalType]) {
-        clearInterval(this.animationIntervals[intervalType]); 
-        delete this.animationIntervals[intervalType]; // Entferne den Eintrag
+      clearInterval(this.animationIntervals[intervalType]); 
+      delete this.animationIntervals[intervalType];
     }
     if (path) {
-        this.loadImage(path);
+      this.loadImage(path);
     }
-}
+  }
 
-stopAllAnimations(path) {
+  stopAllAnimations(path) {
     for (let key in this.animationIntervals) {
-        clearInterval(this.animationIntervals[key]);
-        delete this.animationIntervals[key];
+      clearInterval(this.animationIntervals[key]);
+      delete this.animationIntervals[key];
     };
     clearInterval(this.endbossInterval); 
     if (path) {
       this.loadImage(path); 
+    }
   }
-}
 
   jump(higherJump) {
-   if(higherJump == undefined){
+    if(higherJump == undefined){
      this.speedY = 30;
-   }else{
-    this.speedY = higherJump;
-   }
+    } else{
+      this.speedY = higherJump;
+    }
   }
 
   applyGravity() {
-   this.gravityInterval = setInterval(() => {
+    this.gravityInterval = setInterval(() => {
       if(this.isSplashing) return;
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration; 
       } else if (this instanceof ThrowableObject && !this.isSplashing) {
-          this.y = 350; // Stelle sicher, dass sie genau auf dem Boden ist
-          this.splash();
-       }
+        this.y = 350;
+        this.splash();
+      }
       if(this instanceof Chicken || this instanceof SmallChicken){
         this.y -= this.speedY;
         this.speedY -= this.acceleration; 
       }
-      // Endboss landet 30px höher als der Boden
-        if (this instanceof Endboss && this.y > 120) { 
-            this.y = 120; // Setze Endboss auf höhere Bodenposition
-            this.speedY = 0; // Beende Gravitation
-            this.onLand(); // Trigger für Landung
-        }
+      if (this instanceof Endboss && this.y > 120) { 
+        this.y = 120;
+        this.speedY = 0;
+        this.onLand();
+      }
     }, 1000 / 25);
   }
 
@@ -89,7 +88,7 @@ stopAllAnimations(path) {
       return this.y < 350;
     } 
     if (this instanceof Endboss) {
-        return this.y < 120; // Endboss landet 30px höher
+      return this.y < 120;
     } else{
       return this.y < 150;
     }
@@ -107,42 +106,31 @@ stopAllAnimations(path) {
     const moOffsetHeight = mo.height - mo.offset.top - mo.offset.bottom;
   
     return offsetX + offsetWidth > moOffsetX &&
-           offsetY + offsetHeight > moOffsetY &&
-           offsetX < moOffsetX + moOffsetWidth &&
-           offsetY < moOffsetY + moOffsetHeight;
+    offsetY + offsetHeight > moOffsetY &&
+    offsetX < moOffsetX + moOffsetWidth &&
+    offsetY < moOffsetY + moOffsetHeight;
   }
 
-   // Energie abziehen
   takeDamage(damage) {
     if(this.isHurt()){
       return;
     }
-    this.energy = Math.max(0, this.energy - damage); // Verhindert negative Werte
-    this.updateStatusbar("energy"); // Statusbar aktualisieren
+    this.energy = Math.max(0, this.energy - damage); 
+    this.updateStatusbar("energy");
     this.lastHit = new Date().getTime();
     if (this.energy == 0) {
-       this.isDead();
+      this.isDead();
     }
   }
 
-  // Energie zurückgewinnen
   recoverEnergy(amount) {
-    this.energy = Math.min(100, this.energy + amount); // Verhindert Werte über 100
-    this.updateStatusbar("energy"); // Statusbar aktualisieren
+    this.energy = Math.min(100, this.energy + amount);
+    this.updateStatusbar("energy");
   }
 
-  // changeEnergy(){
-  //     if(this.energy == 0){
-  //       this.isDead();
-  //      }else{
-  //        this.energy -= 5;
-  //        this.lastHit = new Date().getTime();
-  //      }
-  // }
-
   isHurt(){
-    let timepassed = new Date().getTime() - this.lastHit; //miliseconds
-    timepassed = timepassed / 1000 //time in seconds
+    let timepassed = new Date().getTime() - this.lastHit;
+    timepassed = timepassed / 1000;
     return timepassed < 1;
   }
 
@@ -150,29 +138,25 @@ stopAllAnimations(path) {
     return this.energy <= 0;
   }
 
-   // Coins sammeln und Energie wiederherstellen, wenn Coins voll sind
   collectCoin() {
     this.coins++;
-    this.updateStatusbar("coin"); // Statusbar für Coins aktualisieren
-
+    this.updateStatusbar("coin");
     if (this.coins >= this.world.coinStatusbar.maxCoins) {
-      this.recoverEnergy(20); // Beispiel: 20 Energiepunkte zurückgewinnen
-      this.coins = 0; // Coins zurücksetzen
-      this.updateStatusbar("coin"); // Coins-Leiste zurücksetzen
+      this.recoverEnergy(20);
+      this.coins = 0;
+      this.updateStatusbar("coin");
       audioList.energyRecovery.play();
     } else{
       audioList.coinCollected.play();
     }
   }
 
-  // Flaschen sammeln
   collectBottle() {
     this.bottles++;
     this.updateStatusbar("bottle");
     audioList.bottleCollected.play();
   }
 
-  // Statusbar aktualisieren
   updateStatusbar(type) {
     if (type === "energy") {
       this.world.energyStatusbar.setPercentage(this.energy);
@@ -184,5 +168,4 @@ stopAllAnimations(path) {
       this.world.bottleStatusbar.setPercentage(bottlePercentage);
     }
   }
-
 }

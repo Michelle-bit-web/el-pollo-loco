@@ -3,8 +3,7 @@ class Character extends MovableObject {
   speed = 15;
   y = -80;
   state = "alive"; // 'alive', 'dying', 'ripFall', 'done'
-  isPlayingDyingAnimation = false; // Status für die Todesanimation
-  ripY = 0;
+  isPlayingDyingAnimation = false;
   sombreroY = 0;
   sombreroX = 0;
   sombreroDirection = 1;
@@ -160,27 +159,24 @@ class Character extends MovableObject {
         audioList.characterDead.play();
         clearInterval(this.animationIntervals["dying"]);
       }
-    }, 1000 / 30);
-    
+    }, 1000 / 30); 
   }
 
   handleRipAnimation(){
-    if(this.otherDirection) {this.otherDirection = false}
-        this.stopAllAnimations("assets/img/2_character_pepe/5_dead/rip.png");
-        this.height = 120;
-        this.width = 70;
-        this.y = 0; //Für Fallen-Simulation 
-
-        const fallInterval = setInterval(() => {
-          if (this.y + this.height < 420) {
-            this.y += 5;
-          } else {
-            clearInterval(fallInterval);
-            
-          }
-        }, 1000 / 60);
-        audioList.onLanding.play();
-    }
+    if(this.otherDirection) {this.otherDirection = false};
+    this.stopAllAnimations("assets/img/2_character_pepe/5_dead/rip.png");
+    this.height = 120;
+    this.width = 70;
+    this.y = 0;
+    const fallInterval = setInterval(() => {
+      if (this.y + this.height < 420) {
+        this.y += 5;
+      } else {
+        clearInterval(fallInterval);
+      }
+    }, 1000 / 60);
+    audioList.onLanding.play();
+  }
   
   checkMovementStatus(){
     return !this.world.keyboard.RIGHT && 

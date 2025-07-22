@@ -7,18 +7,16 @@ class SmallChicken extends MovableObject {
         "assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
         "assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
     ];
-    IMAGE_DEAD =
-        "assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png";
-    
+    IMAGE_DEAD = "assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png";
     IMAGE_GHOST = "assets/img/3_enemies_chicken/chicken_ghost.png";
-   
     offset = {
         top: 0,
         left: 0,
         right: 0,
         bottom: 0
-      }
-      constructor(x, y, speed){
+    }
+    
+    constructor(x, y, speed){
         super().loadImage("assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png");
         this.x = x;
         this.y = y;
@@ -31,10 +29,10 @@ class SmallChicken extends MovableObject {
         this.animationIntervals["smallChickenMovesLeft"] = setInterval(() => {
            this.moveLeft();
            if(!this.isDead){
-            // audioList.chicken.shouldPlay = true;
-            audioList.chicken.play();}
+             audioList.chicken.play();
+            }
         }, 1000 / 60);
-       this.animationIntervals["smallChickenPlayAnimation"] = setInterval(() =>{
+        this.animationIntervals["smallChickenPlayAnimation"] = setInterval(() =>{
             this.playAnimation(this.IMAGES_WALKING);
         }, 1000/ 6);
     }
@@ -43,8 +41,8 @@ class SmallChicken extends MovableObject {
         audioList.jumpOnChicken.shouldPlay = true;
         audioList.jumpOnChicken.play();
         this.isDead = true;
-        this.stopAnimation("smallChickenMovesLeft"); // Stoppe die Animation
-        this.stopAnimation("smallChickenPlayAnimation"); // Stoppe die Animation
+        this.stopAnimation("smallChickenMovesLeft"); 
+        this.stopAnimation("smallChickenPlayAnimation");
         this.loadImage(this.IMAGE_DEAD);
         setTimeout(() => {
             audioList.jumpOnChicken.stop();
@@ -56,10 +54,10 @@ class SmallChicken extends MovableObject {
             audioList.ghost.shouldPlay = true;
             audioList.ghost.play(); 
             this.removalCheckInterval = setInterval(() => {
-                if (this.y + this.height < 0) { // vollständig nach oben verschwunden
+                if (this.y + this.height < 0) {
                     this.removeFromLevel();
                     clearInterval(this.removalCheckInterval);
-                     audioList.ghost.stop(); 
+                    audioList.ghost.stop(); 
                 }
             }, 1000 / 30);
         }, 1000);
@@ -73,4 +71,4 @@ class SmallChicken extends MovableObject {
             }
         }
     }
-    }
+}

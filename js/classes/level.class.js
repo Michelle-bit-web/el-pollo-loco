@@ -24,10 +24,10 @@ class Level{
     collectBgImages(pathTemplate){
         let collectedImages = [];
         let position;
-         for (let i = -1; i <= 4; i++) {
+        for (let i = -1; i <= 4; i++) {
             position = 719 * i;
-             let number = i % 2 === -1 ? 2 : i % 2 === 1 ? 2 : 1;
-             if(i === 1){
+            let number = i % 2 === -1 ? 2 : i % 2 === 1 ? 2 : 1;
+            if(i === 1){
                 collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-start.png`, position - 750, 220, 120, 200));
             } 
             collectedImages.push(

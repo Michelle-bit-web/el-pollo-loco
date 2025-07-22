@@ -20,45 +20,43 @@ function keyboardEvents(){
             keyboard[keyMap[event.keyCode]] = true;
         }
     });
-
     window.addEventListener("keyup", event => {
-        if (world.controlEnabled &&keyMap[event.keyCode]) 
-            {keyboard[keyMap[event.keyCode]] = false;
-            } 
+        if (world.controlEnabled &&keyMap[event.keyCode]) {
+            keyboard[keyMap[event.keyCode]] = false;
+        } 
     });
 }
 
 function touchEvents(){
     Object.values(buttonMap).forEach(buttonId => {
-    const button = document.getElementById(`${buttonId}`);
-    button.addEventListener("touchstart", event => {
-        event.preventDefault(); //to prevent other standard actions for this event-type by browser
-        button.classList.add("active"); // Füge eine CSS-Klasse hinzu
-        keyboard[buttonId]= true;
-    });
-    button.addEventListener("touchend", event => {
-        event.preventDefault();
-        button.classList.remove("active"); // Entferne die CSS-Klasse
-        keyboard[buttonId] = false;
-    });
-});  
+        const button = document.getElementById(`${buttonId}`);
+        button.addEventListener("touchstart", event => {
+            event.preventDefault();
+            button.classList.add("active");
+            keyboard[buttonId]= true;
+        });
+        button.addEventListener("touchend", event => {
+            event.preventDefault();
+            button.classList.remove("active");
+            keyboard[buttonId] = false;
+        });
+    });  
 }
 
 function soundEvent(){
-     document.getElementById("sound_btn").addEventListener("click", toggleSoundSetting);
+    document.getElementById("sound_btn").addEventListener("click", toggleSoundSetting);
 }
 
 function renderControls(initializer){
     let controls = document.getElementById("menu-overlay");
     if (!controls) {
         console.error("Element with ID 'menu-overlay' not found in the DOM.");
-        return; // Abbrechen, falls das Element nicht existiert
-    }
+        return;
+    };
     if(initializer == "inGame"){
         console.log('controls in game')
         document.getElementById("overlay").style.display = "flex";
-    }
-    
+    };
     controls.style.backgroundColor = "rgba(0, 0, 0, 0.797)";
     controls.style.color = "white";
     controls.innerHTML = controlsHtmlTemplate();

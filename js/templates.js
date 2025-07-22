@@ -82,6 +82,5 @@ function getEndScreenTemplate(endScreenImage){
       <button id="play-again-btn" class="menu-btn endscreen" onclick="resetGame()">Play again</button>
       <button id="to-menu-btn" class="menu-btn endscreen" onclick="backToMenu()">To menu</button>
     </div>
-          
-    `;
+  `;
 }

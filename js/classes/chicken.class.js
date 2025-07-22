@@ -58,12 +58,12 @@ class Chicken extends MovableObject {
             audioList.ghost.shouldPlay = true;
             audioList.ghost.play(); 
             this.removalCheckInterval = setInterval(() => {
-                if (this.y + this.height < 0) { // vollständig nach oben verschwunden
+                if (this.y + this.height < 0) {
                     this.removeFromLevel();
-                    clearInterval(this.removalCheckInterval); // Sicherheitsmaßnahme
+                    clearInterval(this.removalCheckInterval);
                     audioList.ghost.stop(); 
                 }
-            }, 1000 / 30); // 30 FPS-Check
+            }, 1000 / 30);
         }, 1000);
     }
 
@@ -75,4 +75,4 @@ class Chicken extends MovableObject {
             }
         }
     }
- }
+}

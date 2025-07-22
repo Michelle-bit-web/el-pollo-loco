@@ -9,7 +9,7 @@ let fadingOut = true;
 let alpha = 1;
 
 function init() {
-    AudioManager.loadMuteStatus(); //Mute-Status des localStorage über AM
+    AudioManager.loadMuteStatus();
     setSoundImage();
     audioList.mainTheme.shouldPlay = true;
     startPrompt();
@@ -18,19 +18,17 @@ function init() {
 
 function isTouchDevice() {
     return (
-        "ontouchstart" in window || // Prüft, ob das Gerät Touch-Events unterstützt
-        navigator.maxTouchPoints > 0 || // Für neuere Geräte mit mehreren Touchpunkten
-        navigator.msMaxTouchPoints > 0 // Für ältere Microsoft-Geräte
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        navigator.msMaxTouchPoints > 0
     );
 }
 
 function startGame() {
-    
     AudioManager.sounds.forEach(audio => audio.shouldPlay = true)
     audioList.mainTheme.stop();
     audioList.mainTheme.shouldPlay = false;
     audioList.gamePlay.play();
-    
     removeOverlay("overlay");
     getGameplayOverlay();
     loadLevel();
@@ -54,12 +52,12 @@ function getGameplayOverlay(){
 function loadLevel() {
     canvas = document.getElementById("canvas");
     gameIsRunning = true;
-    world = new World(canvas, keyboard, level1, controlEnabled); //gibt man level2 mit, würde das level 2 integriert werden
+    world = new World(canvas, keyboard, level1, controlEnabled);
     if(isTouchDevice()){
         touchEvents();
     } else{
         keyboardEvents();
-    }
+    };
 }
 
 function startPrompt(){
@@ -79,13 +77,11 @@ function startPrompt(){
 
 function setTouchSetting(touchPrompt){
     setPrompt("Touch screen", touchPrompt);
-    // touchEvents();
     checkTouchResponse(touchPrompt);
 }
 
 function setKeySetting(promptText){
     setPrompt("Press Any Key", promptText);
-    // keyboardEvents();
     checkKeyResponse(promptText);
 }
 
@@ -95,7 +91,7 @@ function setPrompt(text, overlay){
 }
 
 function hidePrompt(prompt){
-     prompt.style.display = "none";
+    prompt.style.display = "none";
 }
 
 function showPrompt(prompt){
@@ -111,7 +107,6 @@ function removePrompt(prompt, promptContainer) {
 }
 
 function setPromptFadingInterval(prompt, mobilePortraitIcon, mobileLandscapeIcon){
-
     let showPromptInterval = setInterval(() => {
         alpha = fadeOutPrompt();
         prompt.style.opacity = alpha; 
@@ -123,13 +118,12 @@ function setPromptFadingInterval(prompt, mobilePortraitIcon, mobileLandscapeIcon
 }
 
 function rotateMobileIcon(promptImagePortrait, promptImageLandscape, alpha){
-   
     if(!switchedPromptImage && alpha <= 0.1){
         hidePrompt(promptImagePortrait);
         showPrompt(promptImageLandscape);
         switchedPromptImage = true;
         console.log("landscape")
-    }else if (switchedPromptImage && alpha >= 0.9){
+    } else if (switchedPromptImage && alpha >= 0.9){
         showPrompt(promptImagePortrait);
         hidePrompt(promptImageLandscape);
         switchedPromptImage = false;
@@ -148,42 +142,40 @@ function fadeOutPrompt(){
 }
 
 function reduceTransparence(){
-     alpha -= 0.02; // Transparenz verringern
-        if (alpha <= 0) {
-            alpha = 0;
-           fadingOut = false; // Richtung ändern, wenn vollständig transparent
-        };
+    alpha -= 0.02;
+    if (alpha <= 0) {
+        alpha = 0;
+        fadingOut = false;
+    };
 }
 
 function increaseTransparence(){
-     alpha += 0.02; // Transparenz erhöhen
-        if (alpha >= 1) {
-            alpha = 1;
-            fadingOut = true; // Richtung ändern, wenn vollständig sichtbar
-        };
+     alpha += 0.02;
+    if (alpha >= 1) {
+        alpha = 1;
+        fadingOut = true;
+    };
 }
 
 function checkKeyResponse(prompt) {
     const promptContainer = document.getElementById("div_prompt");
     document.addEventListener("keydown", () => {
-        removePrompt(prompt, promptContainer); // Entferne Prompt bei Tastendruck
+        removePrompt(prompt, promptContainer);
     }, { once: true });
 }
 
 function checkTouchResponse(prompt) {
     const promptContainer = document.getElementById("div_prompt");
     document.addEventListener("touchstart", () => {
-        removePrompt(prompt, promptContainer); // Entferne Prompt bei Touch
+        removePrompt(prompt, promptContainer);
     }, { once: true });
 }
-
 
 function addInterval(interval) {
     intervals.push(interval);
 }
 
 function stopAllIntervals(){
-    
     intervals.forEach(interval => clearInterval(interval));
     intervals = [];
 }
@@ -191,7 +183,7 @@ function stopAllIntervals(){
 function pauseGame() {
     console.log("Game paused due to incorrect orientation.");
     gameIsRunning = true;
-    controlEnabled = false; // Deaktiviere Steuerung
+    controlEnabled = false;
     AudioManager.pauseAll();
 }
 
@@ -202,36 +194,17 @@ function resumeGame() {
     AudioManager.resumeAll();
 }
 
-//Sound handling
 function toggleSoundSetting() {
     AudioManager.toggleMute();
     setSoundImage();
 }
 
-// function setSoundImage(){
-//     const soundImage = document.getElementById("sound_btn_img");
-//     const soundImageGameplay = document.getElementById("sound_btn_img_gameplay");
-//     if (AudioManager.isMuted) {
-//         soundImage.src = "assets/img/icons/sound-off.png"; 
-//         if(soundImageGameplay){
-//             soundImageGameplay.src = "assets/img/icons/sound-off.png"; 
-//         }
-//     } else {
-//         soundImage.src = "assets/img/icons/sound-on-blk.png"; 
-//         if(soundImageGameplay){
-//             soundImageGameplay.src = "assets/img/icons/sound-on-blk.png"; 
-//         }
-//     }
-// }
-
 function setSoundImage(){
     const soundImage = document.getElementById("sound_btn_img");
     const soundImageGameplay = document.getElementById("sound_btn_img_gameplay");
-
     const srcMuted = "assets/img/icons/sound-off.png";
     const srcUnmuted = "assets/img/icons/sound-on-blk.png";
     const currentSrc = AudioManager.isMuted ? srcMuted : srcUnmuted;
-
     if (soundImage) {
         soundImage.src = currentSrc;
     }
@@ -240,13 +213,12 @@ function setSoundImage(){
     }
 }
 
-//handling Menu / Gameplay buttons
 function handleExitButton(){
-if(!gameIsRunning){
-    renderMainMenu();
-} else{
-    document.getElementById("overlay").style.display = "none";
-}
+    if(!gameIsRunning){
+        renderMainMenu();
+    } else{
+        document.getElementById("overlay").style.display = "none";
+    }
 }
 
 function backToMenu(){
@@ -254,33 +226,24 @@ function backToMenu(){
 }
 
 function resetGame(){
-    console.log('Play again clicked');
-
     // Audios stoppen
     Object.values(audioList).forEach(audio => {
         audio.pause();
         audio.currentTime = 0;
         audio.shouldPlay = false;
     });
-
     // Intervals beenden
     intervals.forEach(clearInterval);
     intervals = [];
-
     // World auflösen
     if (world?.character?.gravityInterval) {
         clearInterval(world.character.gravityInterval);
     }
     world = null;
-
-    // DOM-Elemente zurücksetzen
-    // document.getElementById("overlay").style.display = 'none';
-    // document.getElementById("panel")?.style.display = "none";
-
     // Tastatur zurücksetzen
     world?.stopIntervals();
     keyboard = new Keyboard();
-    level1 =createLevelOne();
+    level1 = createLevelOne();
     // Spiel neu starten
     startGame();
     setTimeout(() => {
@@ -288,6 +251,5 @@ function resetGame(){
         AudioManager.loadMuteStatus();
         setSoundImage();
         audioList.mainTheme.shouldPlay = false;
-    }, 100); 
-    // loadLevel();
+    }, 100);
 }
