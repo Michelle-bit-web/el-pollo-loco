@@ -122,33 +122,39 @@ class World {
     if (this.keyboard.THROW && !this.throwTimeout) {
       this.character.lastTimeMoved = new Date().getTime();
       if (this.character.bottles >= 1 ) {
-        let bottle = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection, this);
-        this.throwableObjects.push(bottle);
-        this.character.bottles--;
+        this.createThrowableObject();
         bottle.throw();
-         this.character.updateStatusbar("bottle");
+        this.character.updateStatusbar("bottle");
         this.throwTimeout = true;
-        setTimeout(() => {
-          this.throwTimeout = false;
-        }, 300);
+        this.delayToThrowAgain();
       }
     }
   }
 
+  createThrowableObject() {
+    let bottle = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection, this);
+    this.throwableObjects.push(bottle);
+    this.character.bottles--;
+  }
+
+  delayToThrowAgain() {
+    setTimeout(() => {
+      this.throwTimeout = false;
+    }, 300);
+  }
+
   checkCharacterDistance() {
-    const treshold = [0, 800, 1600, 2800, this.level.endArrowPosition];
-    treshold.forEach((treshold, index) => {
-      if (this.character.x > treshold && !this[`collectableObjectsGenerated${index}`]) {
-        this[`collectableObjectsGenerated${index}`] = true;
-      }
-    });
+    // const treshold = [0, 800, 1600, 2800, this.level.endArrowPosition];
+    // treshold.forEach((treshold, index) => {
+    //   if (this.character.x > treshold && !this[`collectableObjectsGenerated${index}`]) {
+    //     this[`collectableObjectsGenerated${index}`] = true;
+    //   }
+    // });
     if (
       this.character.x  > this.level.endArrowPosition + 100 &&
       !this.fightScene &&
       !this.level.endboss.firstContactCharacter
-    ) {
-      this.startFightScene();
-    }
+    ) this.startFightScene();
   }
 
   startFightScene() {
@@ -160,37 +166,82 @@ class World {
     this.level.endboss.handleFirstContact();
   }
 
+  // focusCameraOnEndboss(endbossX) {
+  //   this.fightScene = true;
+  //   this.controlEnabled = false;
+  //   let cameraLocked = false;
+  //   let startFightPrompt = document.getElementById("overlay");
+
+  //   const cameraMovingInterval = setInterval(() => {
+  //     if (this.fightScene && this.camera_x >=  -endbossX && !cameraLocked) {
+  //       this.keyboard.RIGHT = false;
+  //       this.camera_x -= 10;
+  //     } else {
+  //       this.camera_x = -endbossX;
+  //       cameraLocked = true;
+  //       setTimeout(() => {
+  //         clearInterval(cameraMovingInterval);
+  //         startFightPrompt.style.display = "flex";
+  //         startFightPrompt.style.fontSize = "6vw";
+  //         startFightPrompt.style.textAlign = "center";
+  //         startFightPrompt.style.backgroundColor = "rgba(60, 24, 2, 0.43)";
+  //         startFightPrompt.innerHTML = "Let´s salsa it!";
+  //       }, 1000);
+  //       setTimeout(() => {
+  //         clearInterval(cameraMovingInterval);
+  //         this.returnCameraToCharacter();
+  //         startFightPrompt.style.display = "none";
+  //         this.controlEnabled = true;
+  //       }, 4000)
+  //     };
+  //   }, 10);
+  //   this.level.endboss.handleFirstContact(); 
+  //   this.level.endboss.firstContactCharacter = true;
+  // }
+
   focusCameraOnEndboss(endbossX) {
     this.fightScene = true;
     this.controlEnabled = false;
-    let cameraLocked = false;
-    let startFightPrompt = document.getElementById("overlay");
+    const overlay = document.getElementById("overlay");
+    this.moveCameraToEndboss(endbossX, overlay);
+    this.level.endboss.handleFirstContact();
+    this.level.endboss.firstContactCharacter = true;
+  }
 
-    const cameraMovingInterval = setInterval(() => {
-      if (this.fightScene && this.camera_x >=  -endbossX && !cameraLocked) {
+  moveCameraToEndboss(endbossX, overlay) {
+    let cameraLocked = false;
+    const interval = setInterval(() => {
+      if (this.fightScene && this.camera_x >= -endbossX && !cameraLocked) {
         this.keyboard.RIGHT = false;
         this.camera_x -= 10;
       } else {
-        this.camera_x = -endbossX;
+        this.lockCamera(interval, overlay, endbossX);
         cameraLocked = true;
-        setTimeout(() => {
-          clearInterval(cameraMovingInterval);
-          startFightPrompt.style.display = "flex";
-          startFightPrompt.style.fontSize = "6vw";
-          startFightPrompt.style.textAlign = "center";
-          startFightPrompt.style.backgroundColor = "rgba(60, 24, 2, 0.43)";
-          startFightPrompt.innerHTML = "Let´s salsa it!";
-        }, 1000);
-        setTimeout(() => {
-          clearInterval(cameraMovingInterval);
-          this.returnCameraToCharacter();
-          startFightPrompt.style.display = "none";
-          this.controlEnabled = true;
-        }, 4000)
-      };
+      }
     }, 10);
-    this.level.endboss.handleFirstContact(); 
-    this.level.endboss.firstContactCharacter = true;
+  }
+
+  lockCamera(interval, overlay, endbossX) {
+    this.camera_x = -endbossX;
+    setTimeout(() => this.showFightPrompt(interval, overlay), 1000);
+    setTimeout(() => this.resumeGameFromPrompt(overlay), 4000);
+  }
+
+  showFightPrompt(interval, overlay) {
+    clearInterval(interval);
+    Object.assign(overlay.style, {
+      display: "flex",
+      fontSize: "6vw",
+      textAlign: "center",
+      backgroundColor: "rgba(60, 24, 2, 0.43)",
+    });
+    overlay.innerHTML = "Let´s salsa it!";
+  }
+
+  resumeGameFromPrompt(overlay) {
+    this.returnCameraToCharacter();
+    overlay.style.display = "none";
+    this.controlEnabled = true;
   }
 
   returnCameraToCharacter() {
@@ -264,40 +315,100 @@ class World {
     this.ctx.restore();
   }
 
+  // checkGameEnd() {
+  //   if(this.intervalsStoped) {
+  //     this.intervalsStoped = true;
+  //     this.stopIntervals();
+  //   }
+  //   let overlay = document.getElementById("overlay");
+  //   let endScreenImage;
+  //   if (!this.character.isDead() && !this.level.endboss.isDead()) return;
+  //   if (this.character.isDead()) {
+  //     endScreenImage = "assets/img/You won, you lost/Game Over.png";
+  //   } else if (this.level.endboss.isDead()) {
+  //     endScreenImage = "assets/img/You won, you lost/You Win A.png";
+  //   }
+    
+  //   setTimeout(() => {
+  //     if (this.character.isDead()) {
+  //       audioList.gameOver.shouldPlay = true;
+  //       audioList.gameOver.play();
+  //       setTimeout(() => {
+  //         this.stopIntervals();
+  //       },1000)
+  //     } else if (this.level.endboss.isDead()) {
+  //       audioList.gameWin.shouldPlay = true;
+  //       audioList.gameWin.play();
+  //        setTimeout(() => {
+  //         this.stopIntervals();
+  //       },1000)
+  //     }
+  //     overlay.innerHTML = getEndScreenTemplate(endScreenImage);
+  //     overlay.style.display = "flex";
+  //   }, 2000);
+  //   this.character.bottles = 0;
+  //   this.character.coins = 0;
+  //   this.throwableObjects = [];
+  //   setTimeout(() => {
+  //     audioList.gameWin.stop();
+  //     audioList.gameOver.stop();
+  //     audioList.mainTheme.shouldPlay = true;
+  //     audioList.mainTheme.play();
+  //   }, 5000);
+  // }
+
   checkGameEnd() {
-    if(this.intervalsStoped) {
+    if (this.intervalsStoped) {
       this.intervalsStoped = true;
       this.stopIntervals();
     }
-    let overlay = document.getElementById("overlay");
-    let endScreenImage;
     if (!this.character.isDead() && !this.level.endboss.isDead()) return;
+    const endScreenImage = this.getEndScreenImage();
+    this.prepareEndSequence(endScreenImage);
+    this.resetCharacterState();
+    this.scheduleAudioReset();
+  }
+
+  getEndScreenImage() {
     if (this.character.isDead()) {
-      endScreenImage = "assets/img/You won, you lost/Game Over.png";
-    } else if (this.level.endboss.isDead()) {
-      endScreenImage = "assets/img/You won, you lost/You Win A.png";
+      return "assets/img/You won, you lost/Game Over.png";
     }
-    
+    if (this.level.endboss.isDead()) {
+      return "assets/img/You won, you lost/You Win A.png";
+    }
+    return "";
+  }
+
+  prepareEndSequence(endScreenImage) {
+    const overlay = document.getElementById("overlay");
     setTimeout(() => {
-      if (this.character.isDead()) {
-        audioList.gameOver.shouldPlay = true;
-        audioList.gameOver.play();
-        setTimeout(() => {
-          this.stopIntervals();
-        },1000)
-      } else if (this.level.endboss.isDead()) {
-        audioList.gameWin.shouldPlay = true;
-        audioList.gameWin.play();
-         setTimeout(() => {
-          this.stopIntervals();
-        },1000)
-      }
-      overlay.innerHTML = getEndScreenTemplate(endScreenImage);
-      overlay.style.display = "flex";
+        this.handleEndAudio();
+        overlay.innerHTML = getEndScreenTemplate(endScreenImage);
+        overlay.style.display = "flex";
     }, 2000);
+  }
+
+  handleEndAudio() {
+    if (this.character.isDead()) {
+      this.playAudioWithStop(audioList.gameOver);
+    } else if (this.level.endboss.isDead()) {
+      this.playAudioWithStop(audioList.gameWin);
+    }
+  }
+
+  playAudioWithStop(audio) {
+    audio.shouldPlay = true;
+    audio.play();
+    setTimeout(() => this.stopIntervals(), 1000);
+  }
+
+  resetCharacterState() {
     this.character.bottles = 0;
     this.character.coins = 0;
     this.throwableObjects = [];
+  }
+
+  scheduleAudioReset() {
     setTimeout(() => {
       audioList.gameWin.stop();
       audioList.gameOver.stop();

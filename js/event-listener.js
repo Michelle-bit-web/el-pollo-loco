@@ -4,7 +4,7 @@ const keyMap = {
     39: "RIGHT",
     40: "DOWN",
     32: "SPACE",
-    68: "THROW" // Key D
+    68: "THROW"
 };
 
 const buttonMap = {
