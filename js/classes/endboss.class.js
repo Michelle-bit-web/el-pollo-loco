@@ -181,7 +181,6 @@ class Endboss extends MovableObject{
                 this.world.fightScene = false;
             }
         }, 500);
-    
     }
 
     takeDamage(amount) {

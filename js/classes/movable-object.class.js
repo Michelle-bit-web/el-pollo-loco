@@ -36,12 +36,12 @@ class MovableObject extends DrawableObject{
   //Die Animationen-Stop_Methode nochmal genau anschauen
   //Kann man ja dann selektiv nutzen z.B. nur für Character, nur für Endboss usw.
   stopAnimation(intervalType, path) {
+    if (path) {
+      this.loadImage(path);
+    }
     if (this.animationIntervals[intervalType]) {
       clearInterval(this.animationIntervals[intervalType]); 
       delete this.animationIntervals[intervalType];
-    }
-    if (path) {
-      this.loadImage(path);
     }
   }
 

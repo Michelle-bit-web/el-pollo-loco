@@ -96,65 +96,7 @@ class Character extends MovableObject {
 
   animate() {
     this.setMovingInterval();
-
-    //Imgage for different animation types
-    this.animationIntervals["animation"] = setInterval(() => {
-      if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-        audioList.characterHurt.play();
-
-      } else if (this.isAboveGround()) {
-        this.playAnimation(this.IMAGES_JUMPING);
-
-      } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          this.playAnimation(this.IMAGES_WALKING);
-
-        } else if (this.checkMovementStatus()){
-         this.playIdleAnimation();
-        }
-        else {
-        this.loadImage("assets/img/2_character_pepe/2_walk/W-21.png");
-      }
-    }, 200);
-
-    this.animationIntervals["dying"] = setInterval(() => {
-      if (this.isDead()) {
-        this.isPlayingDyingAnimation = true;
-        this.handleRipAnimation();
-        clearInterval(this.animationIntervals["animation"]);
-        clearInterval(this.animationIntervals["movement"]);
-      }
-      if(this.isPlayingDyingAnimation){
-        audioList.characterDead.play();
-        clearInterval(this.animationIntervals["dying"]);
-      }
-    }, 1000 / 30); 
-
-    this.animationIntervals["idleSoundLogic"] = setInterval(() => {
-      const pastTime = (new Date().getTime() - this.lastTimeMoved) / 1000;
-
-      if (this.checkMovementStatus()) {
-        if (pastTime > 9) {
-          // Idle Long → Snoring
-          if (!audioList.snoring.isPlaying()) {
-            audioList.idle.stop();
-            audioList.snoring.shouldPlay = true;
-            audioList.snoring.play();
-          }
-        } else if (pastTime > 4) {
-          // Idle → regular idle sound
-          if (!audioList.idle.isPlaying()) {
-            audioList.snoring.stop();
-            audioList.idle.shouldPlay = true;
-            audioList.idle.play();
-          }
-        }
-      } else {
-        // Bewegung → alles stoppen
-        audioList.idle.stop();
-        audioList.snoring.stop();
-      }
-    }, 300); // alle 300ms prüfen
+    this.setAnimationInterval();
   }
 
   setMovingInterval() {
@@ -201,19 +143,82 @@ class Character extends MovableObject {
     }
   }
 
+  setAnimationInterval() {
+    this.animationIntervals["animation"] = setInterval(() => {
+      this.checkCharacterStatus();
+    }, 200);
+    this.animationIntervals["dying"] = setInterval(() => {
+      this.checkDeadStatus();
+    }, 1000 / 30); 
+    this.animationIntervals["idleSoundLogic"] = setInterval(() => {
+      if (this.checkMovementStatus()) {
+        this.checkIdleStatus();
+      } else {
+        this.stopIdleSoundLogic();
+      }
+    }, 300);
+  }
+
+  checkCharacterStatus() {
+    if (this.isHurt()) {
+      this.playAnimation(this.IMAGES_HURT);
+      audioList.characterHurt.play();
+    } else if (this.isAboveGround()) {
+      this.playAnimation(this.IMAGES_JUMPING);
+    } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+      this.playAnimation(this.IMAGES_WALKING);
+    } else if (this.checkMovementStatus()){
+      this.playIdleAnimation();
+    }
+    else {
+      this.loadImage("assets/img/2_character_pepe/2_walk/W-21.png");
+    }
+  }
+
+  checkDeadStatus() {
+    if (this.isDead() && !this.isPlayingDyingAnimation && !this.dyingAnimationPlayed) {
+      this.isPlayingDyingAnimation = true;
+      // this.handleRipAnimation();
+
+      // audioList.characterDead.play();
+      this.playDyingAnimationThenRip();
+      // clearInterval(this.animationIntervals["animation"]);
+      // clearInterval(this.animationIntervals["movement"]);
+    }
+    // if(this.isPlayingDyingAnimation && !this.dyingAnimationPlayed){
+    //   audioList.characterDead.play();
+    //   // clearInterval(this.animationIntervals["dying"]);
+    //   this.dyingAnimationPlayed = true;
+    // }
+  }
+
+  playDyingAnimationThenRip() {
+    let i = 0;
+    const dyingImages = this.IMAGES_DYING;
+    this.animationIntervals["dyingAnimation"] = setInterval(() => {
+      if (i < dyingImages.length) {
+        this.img = this.imageCache[dyingImages[i]];
+        i++;
+      } else {
+        clearInterval(this.animationIntervals["dyingAnimation"]);
+        this.dyingAnimationPlayed = true;
+        clearInterval(this.animationIntervals["animation"]);
+        audioList.characterDead.play();
+        this.handleRipAnimation();
+      }
+    }, 100);
+  }
+
   handleRipAnimation(){
-    if(this.otherDirection) {this.otherDirection = false};
-    this.stopAllAnimations("assets/img/2_character_pepe/5_dead/rip.png");
+    if(this.otherDirection) {
+      this.otherDirection = false
+    };
+    this.loadImage("assets/img/2_character_pepe/5_dead/rip.png");
+    // this.stopAllAnimations("assets/img/2_character_pepe/5_dead/rip.png");
     this.height = 120;
     this.width = 70;
     this.y = 0;
-    const fallInterval = setInterval(() => {
-      if (this.y + this.height < 420) {
-        this.y += 5;
-      } else {
-        clearInterval(fallInterval);
-      }
-    }, 1000 / 60);
+    this.setRipFallingInterval();
     audioList.onLanding.play();
   }
   
@@ -224,10 +229,50 @@ class Character extends MovableObject {
     !this.world.keyboard.THROW;
   }
 
+  checkIdleStatus() {
+    const pastTime = (new Date().getTime() - this.lastTimeMoved) / 1000;
+    if (pastTime > 10) {
+      if (!audioList.snoring.isPlaying()) {
+       this.playSnoringSound();
+      }
+    } else if (pastTime > 5) {
+      if (!audioList.idle.isPlaying()) {
+        this.playIdleSound();
+      }
+    }
+  }
+
+  playSnoringSound() {
+    audioList.idle.stop();
+    audioList.snoring.shouldPlay = true;
+    audioList.snoring.play();
+  }
+
+  playIdleSound() {
+    audioList.snoring.stop();
+    audioList.idle.shouldPlay = true;
+    audioList.idle.play();
+  }
+
+  stopIdleSoundLogic() {
+    audioList.idle.stop();
+    audioList.snoring.stop();
+  }
+
+  setRipFallingInterval() {
+    this.animationIntervals["fallInterval"] = setInterval(() => {
+      if (this.y + this.height < 420) {
+        this.y += 5;
+      } else {
+        clearInterval(this.animationIntervals["fallInterval"]);
+      }
+    }, 1000 / 60);
+  }
+
   playIdleAnimation() {
     let pastTime = new Date().getTime() - this.lastTimeMoved;
     pastTime = pastTime / 1000;
-    if (pastTime > 9) {
+    if (pastTime > 10) {
       this.playAnimation(this.IMAGES_IDLE_LONG);
     } else {
       this.playAnimation(this.IMAGES_IDLE);

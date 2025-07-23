@@ -7,6 +7,7 @@ class World {
   coinStatusbar = new Statusbar("coin", 10, 45, this);
   bottleStatusbar = new Statusbar("bottle", 10, 85, this);
   throwableObjects = [];
+  intervalsStoped = false;
 
   constructor(canvas, keyboard, level, controlEnabled) {
     this.ctx = canvas.getContext("2d");
@@ -264,6 +265,10 @@ class World {
   }
 
   checkGameEnd() {
+    if(this.intervalsStoped) {
+      this.intervalsStoped = true;
+      this.stopIntervals();
+    }
     let overlay = document.getElementById("overlay");
     let endScreenImage;
     if (!this.character.isDead() && !this.level.endboss.isDead()) return;
@@ -273,22 +278,29 @@ class World {
       endScreenImage = "assets/img/You won, you lost/You Win A.png";
     }
     
-    this.stopIntervals();
     setTimeout(() => {
       if (this.character.isDead()) {
         audioList.gameOver.shouldPlay = true;
         audioList.gameOver.play();
+        setTimeout(() => {
+          this.stopIntervals();
+        },1000)
       } else if (this.level.endboss.isDead()) {
         audioList.gameWin.shouldPlay = true;
         audioList.gameWin.play();
+         setTimeout(() => {
+          this.stopIntervals();
+        },1000)
       }
       overlay.innerHTML = getEndScreenTemplate(endScreenImage);
       overlay.style.display = "flex";
-    }, 1000);
+    }, 2000);
     this.character.bottles = 0;
     this.character.coins = 0;
     this.throwableObjects = [];
     setTimeout(() => {
+      audioList.gameWin.stop();
+      audioList.gameOver.stop();
       audioList.mainTheme.shouldPlay = true;
       audioList.mainTheme.play();
     }, 5000);
