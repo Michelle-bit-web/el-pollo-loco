@@ -226,7 +226,6 @@ function handleExitButton(){
     } else{
         document.getElementById("overlay").style.display = "none";
         continueGame();
-
     }
 }
 
@@ -234,31 +233,75 @@ function backToMenu(){
     window.location.reload();
 }
 
-function resetGame(){
-    // Audios stoppen
+// function resetGame(){
+//     // Audios stoppen
+//     Object.values(audioList).forEach(audio => {
+//         audio.pause();
+//         audio.currentTime = 0;
+//         audio.shouldPlay = false;
+//     });
+//     // Intervals beenden
+//     intervals.forEach(clearInterval);
+//     intervals = [];
+//     // World auflösen
+//     if (world?.character?.gravityInterval) {
+//         clearInterval(world.character.gravityInterval);
+//     }
+//     world = null;
+//     // Tastatur zurücksetzen
+//     world?.stopIntervals();
+//     keyboard = new Keyboard();
+//     level1 = createLevelOne();
+//     // Spiel neu starten
+//     startGame();
+//     setTimeout(() => {
+//         document.getElementById("overlay").style.display = 'none';
+//         AudioManager.loadMuteStatus();
+//         setSoundImage();
+//         audioList.mainTheme.shouldPlay = false;
+//     }, 100);
+// }
+
+function resetGame() {
+    resetAudio();
+    clearAllIntervals();
+    destroyWorld();
+    resetControls();
+    restartLevel();
+    startGame();
+    setTimeout(() => finalizeReset(), 100);
+}
+
+function resetAudio() {
     Object.values(audioList).forEach(audio => {
         audio.pause();
         audio.currentTime = 0;
         audio.shouldPlay = false;
     });
-    // Intervals beenden
+}
+
+function clearAllIntervals() {
     intervals.forEach(clearInterval);
     intervals = [];
-    // World auflösen
-    if (world?.character?.gravityInterval) {
-        clearInterval(world.character.gravityInterval);
-    }
+}
+
+function destroyWorld() {
+    if (world?.character?.gravityInterval) clearInterval(world.character.gravityInterval);
+    world?.stopIntervals?.();
     world = null;
-    // Tastatur zurücksetzen
-    world?.stopIntervals();
+}
+
+function resetControls() {
     keyboard = new Keyboard();
+}
+
+function restartLevel() {
     level1 = createLevelOne();
-    // Spiel neu starten
-    startGame();
-    setTimeout(() => {
-        document.getElementById("overlay").style.display = 'none';
-        AudioManager.loadMuteStatus();
-        setSoundImage();
-        audioList.mainTheme.shouldPlay = false;
-    }, 100);
+}
+
+function finalizeReset() {
+    document.getElementById("overlay").style.display = 'none';
+    AudioManager.loadMuteStatus();
+    setSoundImage();
+    audioList.mainTheme.shouldPlay = false;
 }

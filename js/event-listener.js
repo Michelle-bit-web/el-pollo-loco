@@ -79,7 +79,6 @@ function styleMenuOverlay(el) {
     el.style.color = "white";
 }
 
-
 function renderMainMenu(){
     let controls = document.getElementById("menu-overlay");
     controls.style.backgroundColor = "unset";
