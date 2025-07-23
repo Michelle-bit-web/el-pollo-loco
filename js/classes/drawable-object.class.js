@@ -28,11 +28,9 @@ class DrawableObject {
 
   draw(ctx) {
     if (this.fadeOutOpacity !== undefined) {
-        ctx.globalAlpha = this.fadeOutOpacity;
-    }
-
+      ctx.globalAlpha = this.fadeOutOpacity;
+    };
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-
     ctx.globalAlpha = 1.0;
   }
 }

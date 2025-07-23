@@ -33,8 +33,6 @@ class MovableObject extends DrawableObject{
     this.currentImage++;
   }
 
-  //Die Animationen-Stop_Methode nochmal genau anschauen
-  //Kann man ja dann selektiv nutzen z.B. nur für Character, nur für Endboss usw.
   stopAnimation(intervalType, path) {
     if (path) {
       this.loadImage(path);
@@ -67,35 +65,36 @@ class MovableObject extends DrawableObject{
 
   applyGravity() {
     this.gravityInterval = setInterval(() => {
-      if(this.isSplashing) return;
-      if (this.isAboveGround() || this.speedY > 0) {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration; 
-      } else if (this instanceof ThrowableObject && !this.isSplashing) {
-        this.y = 350;
-        this.splash();
-      }
-      if(this instanceof Chicken || this instanceof SmallChicken){
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration; 
-      }
-      if (this instanceof Endboss && this.y > 120) { 
-        this.y = 120;
-        this.speedY = 0;
-        this.onLand();
-      }
+        if (this.isSplashing) return;
+        if (this.isAboveGround() || this.speedY > 0) this.applyVerticalMotion();
+        else if (this instanceof ThrowableObject) this.handleThrowable();
+        if (this instanceof Chicken || this instanceof SmallChicken) this.applyVerticalMotion();
+        if (this instanceof Endboss) this.limitEndbossHeight();
     }, 1000 / 25);
+  }   
+
+  applyVerticalMotion() {
+    this.y -= this.speedY;
+    this.speedY -= this.acceleration;
+  }
+
+  handleThrowable() {
+    this.y = 350;
+    this.splash();
+  }
+
+  limitEndbossHeight() {
+    if (this.y > 120) {
+      this.y = 120;
+      this.speedY = 0;
+      this.onLand();
+    }
   }
 
   isAboveGround() {
-    if((this instanceof ThrowableObject)){
-      return this.y < 350;
-    } 
-    if (this instanceof Endboss) {
-      return this.y < 120;
-    } else{
-      return this.y < 150;
-    }
+    if((this instanceof ThrowableObject)) return this.y < 350;
+    if (this instanceof Endboss) return this.y < 120;
+    else return this.y < 150;
   }
   
   isColliding(mo) {
@@ -103,12 +102,10 @@ class MovableObject extends DrawableObject{
     const offsetY = this.y + this.offset.top;
     const offsetWidth = this.width - this.offset.left - this.offset.right;
     const offsetHeight = this.height - this.offset.top - this.offset.bottom;
-  
     const moOffsetX = mo.x + mo.offset.left;
     const moOffsetY = mo.y + mo.offset.top;
     const moOffsetWidth = mo.width - mo.offset.left - mo.offset.right;
     const moOffsetHeight = mo.height - mo.offset.top - mo.offset.bottom;
-  
     return offsetX + offsetWidth > moOffsetX &&
     offsetY + offsetHeight > moOffsetY &&
     offsetX < moOffsetX + moOffsetWidth &&
@@ -117,9 +114,7 @@ class MovableObject extends DrawableObject{
 
   takeDamage(damage) {
     if (!controlEnabled) return;
-    if(this.isHurt()){
-      return;
-    }
+    if(this.isHurt()) return;
     this.energy = Math.max(0, this.energy - damage); 
     this.updateStatusbar("energy");
     this.lastHit = new Date().getTime();

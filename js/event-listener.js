@@ -29,7 +29,12 @@ function keyboardEvents(){
 
 function touchEvents(){
     Object.values(buttonMap).forEach(buttonId => {
-        const button = document.getElementById(`${buttonId}`);
+        setButtonEvent(buttonId);
+    });  
+}
+
+function setButtonEvent(buttonId) {
+    const button = document.getElementById(`${buttonId}`);
         button.addEventListener("touchstart", event => {
             event.preventDefault();
             button.classList.add("active");
@@ -40,28 +45,40 @@ function touchEvents(){
             button.classList.remove("active");
             keyboard[buttonId] = false;
         });
-    });  
 }
 
 function soundEvent(){
     document.getElementById("sound_btn").addEventListener("click", toggleSoundSetting);
 }
 
-function renderControls(initializer){
-    let controls = document.getElementById("menu-overlay");
-    if (!controls) {
-        console.error("Element with ID 'menu-overlay' not found in the DOM.");
-        return;
-    };
-    if(initializer == "inGame"){
-        console.log('controls in game')
-        document.getElementById("overlay").style.display = "flex";
-    };
-    controls.style.backgroundColor = "rgba(0, 0, 0, 0.797)";
-    controls.style.color = "white";
+function renderControls(initializer) {
+    const controls = getMenuOverlayElement();
+    if (!controls) return;
+    if (initializer === "inGame") showOverlay();
+    styleMenuOverlay(controls);
     controls.innerHTML = controlsHtmlTemplate();
     pauseGame();
 }
+
+function getMenuOverlayElement() {
+    const el = document.getElementById("menu-overlay");
+    if (!el) {
+        console.error("Element with ID 'menu-overlay' not found in the DOM.");
+        return null;
+    }
+    return el;
+}
+
+function showOverlay() {
+    const overlay = document.getElementById("overlay");
+    if (overlay) overlay.style.display = "flex";
+}
+
+function styleMenuOverlay(el) {
+    el.style.backgroundColor = "rgba(0, 0, 0, 0.797)";
+    el.style.color = "white";
+}
+
 
 function renderMainMenu(){
     let controls = document.getElementById("menu-overlay");

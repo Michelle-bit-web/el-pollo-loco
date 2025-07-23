@@ -3,7 +3,9 @@ function controlsHtmlTemplate(){
     <div class="controls-overlay">
         <div class="exit-btn-container">
             <p>Keyboard :</p>
-            <button class="exit-btn" onclick="handleExitButton()">Back</button>
+            <button class="exit-btn" onclick="handleExitButton()">
+              Back
+            </button>
         </div>
         <div class="key-controls">
           <div>
@@ -30,49 +32,68 @@ function controlsHtmlTemplate(){
 function mainMenuHtmlTemplate(){
   return `
     <div class="panel-menu">
-        <button id="startButton" class="menu-btn" onclick="startGame()">Start Game</button>
-        <button id="controls" class="menu-btn" onclick="renderControls()">Controls</button>
-        <button class="menu-btn"><a class="menu-btn" href="./impressum.html">Imprint</a></button>
+        <button id="startButton" class="menu-btn" onclick="startGame()">
+          Start Game
+        </button>
+        <button id="controls" class="menu-btn" onclick="renderControls()">
+          Controls
+        </button>
+        <button class="menu-btn">
+          <a class="menu-btn" href="./impressum.html">Imprint</a>
+        </button>
+    </div>
+    <div id="panel" class="panel" style="display: none">
+      <div class="panel-wrapper">
+        <button id="LEFT">
+          &larr;
+        </button>
+        <button id="SPACE">
+          &uarr;
+        </button>
       </div>
-       <div id="panel" class="panel" style="display: none">
-         <div class="panel-wrapper">
-           <button id="LEFT">&larr;</button>
-          <button id="SPACE">&uarr;</button>
-        </div>
-        <div class="panel-wrapper">
-           <button id="THROW">
-            <img class="throw-img" src="./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png" alt="" />
-           </button>
-           <button id="RIGHT">&rarr;</button>
-         </div>
-       </div>
+      <div class="panel-wrapper">
+        <button id="THROW">
+          <img class="throw-img" src="./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png" alt="" />
+        </button>
+        <button id="RIGHT">
+          &rarr;
+        </button>
+      </div>
     </div>
   `;
 }
 
 function gamePlayHtmlTemplate(){
-   return `
-      <div class="gameplay-div">
-        <div class="gameplay-settings">
-          <button id="sound_btn" class="sound-btn-gameplay" onclick="toggleSoundSetting()">
-            <img id="sound_btn_img_gameplay" class="sound-btn-gameplay" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option" />
-          </button>
-          <button id="controls" class="controls-btn-gameplay" onclick="renderControls('inGame')">&#x2699;</button>
-        </div>
-        <div id="panel" class="panel" style="display: none">
-          <div class="panel-wrapper">
-            <button id="SPACE">&uarr;</button>
-            <button id="THROW">
-               <img class="throw-img" src="./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png" alt="" />
-            </button>
-           </div>
-           <div class="panel-wrapper">
-            <button id="LEFT">&larr;</button>
-             <button id="RIGHT">&rarr;</button>
-          </div>
-         </div>
+  return `
+    <div class="gameplay-div">
+      <div class="gameplay-settings">
+        <button id="sound_btn" class="sound-btn-gameplay" onclick="toggleSoundSetting()">
+          <img id="sound_btn_img_gameplay" class="sound-btn-gameplay" src="./assets/img/icons/sound-on-blk.png" alt="mute-sound-option" />
+        </button>
+        <button id="controls" class="controls-btn-gameplay" onclick="renderControls('inGame')">
+          &#x2699;
+        </button>
       </div>
-    `; 
+      <div id="panel" class="panel" style="display: none">
+        <div class="panel-wrapper">
+          <button id="SPACE">
+            &uarr;
+          </button>
+          <button id="THROW">
+            <img class="throw-img" src="./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png" alt="" />
+          </button>
+        </div>
+        <div class="panel-wrapper">
+          <button id="LEFT">
+            &larr;
+            </button>
+          <button id="RIGHT">
+            &rarr;
+            </button>
+        </div>
+       </div>
+     </div>
+  `; 
 }
 
 function getEndScreenTemplate(endScreenImage){

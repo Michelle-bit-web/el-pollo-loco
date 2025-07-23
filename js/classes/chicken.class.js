@@ -3,6 +3,7 @@ class Chicken extends MovableObject {
     width = 50;
     isDead = false;
     isFading = false;
+    
     IMAGES_WALKING =[
         "assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
         "assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
@@ -10,15 +11,14 @@ class Chicken extends MovableObject {
     ];
 
     IMAGE_DEAD = "assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png";
-
     IMAGE_GHOST = "assets/img/3_enemies_chicken/chicken_ghost.png";
-   
+
     offset = {
         top: 8,
         left: 5,
         right: 10,
         bottom: 10
-      }
+    }
 
     constructor(x, y, speed){
         super().loadImage("assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
@@ -33,7 +33,6 @@ class Chicken extends MovableObject {
         this.animationIntervals["ChickenMovesLeft"] = setInterval(() => {
            this.moveLeft();
            if(!this.isDead){
-            // audioList.chicken.shouldPlay = true;
             audioList.chicken.play();}
         }, 1000 / 60);
         this.animationIntervals["ChickenPlayAnimation"] = setInterval(() =>{
@@ -51,20 +50,28 @@ class Chicken extends MovableObject {
         setTimeout(() => {
            audioList.jumpOnChicken.stop();
            audioList.chicken.stop();
-            this.loadImage(this.IMAGE_GHOST);
-            this.speedY = -10;
-            this.acceleration = -1;
-            this.applyGravity();
-            audioList.ghost.shouldPlay = true;
-            audioList.ghost.play(); 
-            this.removalCheckInterval = setInterval(() => {
-                if (this.y + this.height < 0) {
-                    this.removeFromLevel();
-                    clearInterval(this.removalCheckInterval);
-                    audioList.ghost.stop(); 
-                }
-            }, 1000 / 30);
+            this.startGhostAnimation();
+            this.checkGhostPosition();
         }, 1000);
+    }
+
+    startGhostAnimation() {
+        this.loadImage(this.IMAGE_GHOST);
+        this.speedY = -10;
+        this.acceleration = -1;
+        this.applyGravity();
+        audioList.ghost.shouldPlay = true;
+        audioList.ghost.play(); 
+    }
+
+    checkGhostPosition() {
+        this.removalCheckInterval = setInterval(() => {
+            if (this.y + this.height < 0) {
+                this.removeFromLevel();
+                clearInterval(this.removalCheckInterval);
+                audioList.ghost.stop(); 
+            }
+        }, 1000 / 30);
     }
 
     removeFromLevel() {

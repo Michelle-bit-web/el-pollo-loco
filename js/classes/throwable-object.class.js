@@ -5,6 +5,7 @@ class ThrowableObject extends MovableObject{
         "assets/img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
         "assets/img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png"
     ];
+
     IMAGES_SPLASH =[
         "assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
         "assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
@@ -35,16 +36,19 @@ class ThrowableObject extends MovableObject{
         this.speedY = 20;
         this.applyGravity();
         this.startFlyingAnimation();   
+        this.setThrowingInterval();
+        this.playThrowingSound(); 
+    }
+
+    setThrowingInterval() {
         this.animationIntervals['throwInterval'] = setInterval(() => {
             if (this.isSplashing) return; 
-            if(this.otherDirection){
+            if (this.otherDirection){
                this.x -= 10;
             } else {
                 this.x += 10;
             };
-            
         }, 25);
-       this.playThrowingSound(); 
     }
 
     playThrowingSound(){
@@ -64,11 +68,19 @@ class ThrowableObject extends MovableObject{
     splash(){
         if (this.isSplashing) return;
         this.isSplashing = true;
-        audioList.bottleBreaks.play();
-        audioList.bottleSplash.play();
+        this.playSplashSound();
         clearInterval(this.animationIntervals['rotationBottleInterval']);
         clearInterval(this.animationIntervals['throwInterval']);
         this.playAnimation(this.IMAGES_SPLASH);
+        this.setFadeOutDelay();
+    }
+
+    playSplashSound() {
+        audioList.bottleBreaks.play();
+        audioList.bottleSplash.play();
+    }
+
+    setFadeOutDelay() {
         setTimeout(() => {
             this.fadeOutOpacity = 1;
             this.startFadeOut();  
@@ -76,6 +88,11 @@ class ThrowableObject extends MovableObject{
     }
 
     startFadeOut() {
+        this.setFadeOutInterval();
+        this.world.throwableObjects.splice(0,1);
+    }
+
+    setFadeOutInterval() {
         this.animationIntervals['fadeoutInterval'] = setInterval(() => {
             this.fadeOutOpacity -= 0.05;
             if (this.fadeOutOpacity <= 0) {
@@ -83,6 +100,5 @@ class ThrowableObject extends MovableObject{
                 clearInterval(this.animationIntervals['fadeoutInterval']);
             }
         }, 50);
-        this.world.throwableObjects.splice(0,1);
     }
 }

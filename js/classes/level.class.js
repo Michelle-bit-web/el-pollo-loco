@@ -7,9 +7,9 @@ class Level{
     levelEndX = 3800;
     difficulty = "easy";
     endArrowPosition;
+    collectedImages = [];
 
     constructor(levelSettings){
-        
         this.enemies = levelSettings.enemies;
         this.endboss = levelSettings.endboss;
         this.clouds = levelSettings.clouds;
@@ -22,26 +22,37 @@ class Level{
     }
 
     collectBgImages(pathTemplate){
-        let collectedImages = [];
         let position;
         for (let i = -1; i <= 4; i++) {
             position = 719 * i;
             let number = i % 2 === -1 ? 2 : i % 2 === 1 ? 2 : 1;
-            if(i === 1){
-                collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-start.png`, position - 750, 220, 120, 200));
-            } 
-            collectedImages.push(
-                new BackgroundObject(`${pathTemplate}/air.png`, position),
-                new BackgroundObject(`${pathTemplate}/3_third_layer/${number}.png`, position),
-                new BackgroundObject(`${pathTemplate}/2_second_layer/${number}.png`, position),
-                new BackgroundObject(`${pathTemplate}/1_first_layer/${number}.png`, position),
-            )
-            if(i === 3){
-                collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-end-arrow.png`, position - 200, 295, 120, 120));
+            this.setStartArrowImage(position, i); 
+            this.setBackgroundLayerImages(pathTemplate, number, position);
+            if(i === 3) {
+                this.setEndArrowImage(position);
                 this.endArrowPosition = position - 200;
             }
         };  
-        collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-end-zone.png`, 3000, 220, 120, 200));
-        return collectedImages;
+        this.collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-end-zone.png`, 3000, 220, 120, 200));
+        return this.collectedImages;
     };
+
+    setStartArrowImage(position, i) {
+        if(i === 1) {
+            this.collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-start.png`, position - 750, 220, 120, 200));
+        }
+    }
+
+    setBackgroundLayerImages(pathTemplate, number, position) {
+        this.collectedImages.push(
+            new BackgroundObject(`${pathTemplate}/air.png`, position),
+            new BackgroundObject(`${pathTemplate}/3_third_layer/${number}.png`, position),
+            new BackgroundObject(`${pathTemplate}/2_second_layer/${number}.png`, position),
+            new BackgroundObject(`${pathTemplate}/1_first_layer/${number}.png`, position),
+        )
+    }
+
+    setEndArrowImage(position) {
+        this.collectedImages.push(new BackgroundObject(`assets/img/5_background/level-end/level-end-arrow.png`, position - 200, 295, 120, 120));
+    }
 }

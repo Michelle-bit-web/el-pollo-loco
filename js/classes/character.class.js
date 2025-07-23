@@ -35,7 +35,6 @@ class Character extends MovableObject {
     "assets/img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
 
-
   IMAGES_WALKING = [
     "assets/img/2_character_pepe/2_walk/W-21.png",
     "assets/img/2_character_pepe/2_walk/W-22.png",
@@ -56,11 +55,13 @@ class Character extends MovableObject {
     "assets/img/2_character_pepe/3_jump/J-38.png",
     "assets/img/2_character_pepe/3_jump/J-39.png",
   ];
+
   IMAGES_HURT = [
     "assets/img/2_character_pepe/4_hurt/H-41.png",
     "assets/img/2_character_pepe/4_hurt/H-42.png",
     "assets/img/2_character_pepe/4_hurt/H-43.png",
   ];
+
   IMAGES_DYING = [
     "assets/img/2_character_pepe/5_dead/D-51.png",
     "assets/img/2_character_pepe/5_dead/D-52.png",
@@ -70,6 +71,7 @@ class Character extends MovableObject {
     "assets/img/2_character_pepe/5_dead/D-56.png",
     "assets/img/2_character_pepe/5_dead/D-57.png",
   ];
+
   IMAGES_RIP = ["assets/img/2_character_pepe/5_dead/rip.png", "assets/img/2_character_pepe/5_dead/sombrero.png"];
 
   offset = {
@@ -178,18 +180,8 @@ class Character extends MovableObject {
   checkDeadStatus() {
     if (this.isDead() && !this.isPlayingDyingAnimation && !this.dyingAnimationPlayed) {
       this.isPlayingDyingAnimation = true;
-      // this.handleRipAnimation();
-
-      // audioList.characterDead.play();
       this.playDyingAnimationThenRip();
-      // clearInterval(this.animationIntervals["animation"]);
-      // clearInterval(this.animationIntervals["movement"]);
     }
-    // if(this.isPlayingDyingAnimation && !this.dyingAnimationPlayed){
-    //   audioList.characterDead.play();
-    //   // clearInterval(this.animationIntervals["dying"]);
-    //   this.dyingAnimationPlayed = true;
-    // }
   }
 
   playDyingAnimationThenRip() {
@@ -200,13 +192,17 @@ class Character extends MovableObject {
         this.img = this.imageCache[dyingImages[i]];
         i++;
       } else {
-        clearInterval(this.animationIntervals["dyingAnimation"]);
-        this.dyingAnimationPlayed = true;
-        clearInterval(this.animationIntervals["animation"]);
-        audioList.characterDead.play();
-        this.handleRipAnimation();
+        this-prepareForRipAnimation();
       }
     }, 100);
+  }
+
+  prepareForRipAnimation() {
+    this.dyingAnimationPlayed = true;
+    clearInterval(this.animationIntervals["dyingAnimation"]);
+    clearInterval(this.animationIntervals["animation"]);
+    audioList.characterDead.play();
+    this.handleRipAnimation();
   }
 
   handleRipAnimation(){
@@ -214,7 +210,6 @@ class Character extends MovableObject {
       this.otherDirection = false
     };
     this.loadImage("assets/img/2_character_pepe/5_dead/rip.png");
-    // this.stopAllAnimations("assets/img/2_character_pepe/5_dead/rip.png");
     this.height = 120;
     this.width = 70;
     this.y = 0;

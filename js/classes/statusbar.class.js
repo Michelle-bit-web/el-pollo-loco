@@ -54,15 +54,15 @@ class Statusbar extends DrawableObject{
     }
 
     loadTypeImages(){
-        if(this.type == "energy"){
+        if(this.type == "energy") {
             this.images = this.IMAGES_ENERGY;
-        }else if(this.type == "coin"){
+        } else if(this.type == "coin") {
             this.images = this.IMAGES_COIN;
-        }else if(this.type == "bottle"){
+        } else if(this.type == "bottle") {
             this.images = this.IMAGES_BOTTLE;
-        }else if(this.type == "energyEndboss"){
+        } else if(this.type == "energyEndboss") {
             this.images = this.IMAGES_ENERGY_ENDBOSS;
-        }
+        };
         this.loadImages(this.images);
     }
 

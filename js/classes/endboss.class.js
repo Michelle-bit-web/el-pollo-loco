@@ -52,6 +52,7 @@ class Endboss extends MovableObject{
     IMAGES_DIZY = [
         "assets/img/4_enemie_boss_chicken/4_hurt/G23.png",
     ];
+
     offset = {
         top: 80,
         left: 40,
@@ -73,21 +74,22 @@ class Endboss extends MovableObject{
     
     animate() {
         this.animationIntervals.endbossInterval = setInterval(() => {
-            if (this.isBeingHit) {
-                this.hurtAnimation();
-            }
-            else if (this.firstContactCharacter && this.totalContacts > 30) {
-                this.attackAnimation();
-            }
-            else if (this.firstContactCharacter) {
-                this.handleFirstContact();
-                this.totalContacts++;
-                this.updateSpeedBasedOnEnergy();
-            } 
-            else{
-                this.walkingAnimation();
-            }
+            this.chooseRightAnimation();
         }, 100);
+    }
+
+    chooseRightAnimation() {
+        if (this.isBeingHit) {
+            this.hurtAnimation();
+        } else if (this.firstContactCharacter && this.totalContacts > 30) {
+            this.attackAnimation();
+        } else if (this.firstContactCharacter) {
+            this.handleFirstContact();
+            this.totalContacts++;
+            this.updateSpeedBasedOnEnergy();
+        } else {
+            this.walkingAnimation();
+        }
     }
 
     handleFirstContact() {
@@ -99,26 +101,32 @@ class Endboss extends MovableObject{
     }
 
     updateSpeedBasedOnEnergy() {
-        if (this.energy <= 40 && this.speedLevel == 2 && !this.isJumping) {
-            this.speed += 0.2;
-            this.jump();
-            this.isJumping = true;
-            this.moveTowardCharacter();
-        } 
-        if(this.energy <= 80){
-            this.speed += 0.2;
+        if (this.energy >= 10 && this.energy <= 40 && this.speedLevel == 2 && !this.isJumping) {
+           this.letEndbossJump();
+        } else if(this.energy <= 80){
             this.speedLevel = 2;
+            this.speedUpEndboss();
+            this.moveTowardCharacter();
+        } else {
             this.moveTowardCharacter();
         }
-        else {
-            this.moveTowardCharacter();
-        }
+    }
+
+    letEndbossJump() {
+        this.speedUpEndboss();
+        this.jump();
+        this.isJumping = true;
+        this.moveTowardCharacter();
+    }
+
+    speedUpEndboss() {
+        this.speed += 0.2;
     }
 
     jump() {
         if (!this.isJumping) {
             this.isJumping = true;
-            this.speedY = 30; // Sprunghöhe
+            this.speedY = 30;
             this.applyGravity();
         };
     }
@@ -128,6 +136,11 @@ class Endboss extends MovableObject{
     }
 
     hurtAnimation(){
+        this.setDizyInterval();
+        this.resetHurtStatus();
+    }
+
+    setDizyInterval() {
         let frameCount = 0;
         const dizyInterval = setInterval(() => {
             audioList.endbossHurt.play(); //Vogelzwitschern einbauen
@@ -137,6 +150,9 @@ class Endboss extends MovableObject{
                 clearInterval(dizyInterval);
             }
         }, 500);
+    }
+
+    resetHurtStatus() {
         setTimeout(() =>{
         audioList.endbossHurt.play();
         this.playAnimation(this.IMAGES_HURT);
@@ -157,13 +173,13 @@ class Endboss extends MovableObject{
         this.playAnimation(this.IMAGES_WALKING);
         if (!this.otherDirection) {
             this.moveLeft();
-            if (this.x <= 2400) { // Grenze links
-                this.otherDirection = true; // Richtung wechseln
+            if (this.x <= 2400) {
+                this.otherDirection = true; 
             }
         } else {
             this.moveRight();
-            if (this.x >= 2700) { // Grenze rechts
-                this.otherDirection = false; // Richtung wechseln
+            if (this.x >= 2700) {
+                this.otherDirection = false;
             }
         }
     }
@@ -171,6 +187,10 @@ class Endboss extends MovableObject{
     deadAnimation() {
         clearInterval(this.endbossInterval);
         this.stopAllAnimations();
+        this.setDeadInterval();
+    }
+
+    setDeadInterval() {
         let frameCount = 0;
         const deadInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_DEAD);
@@ -197,27 +217,32 @@ class Endboss extends MovableObject{
     }
 
     moveTowardCharacter() {
-        if(!this.walkTowardsCharacter){
-            if (this.world.character.x >= this.x){
-                setTimeout(() => {
-                    this.moveRight();
-                    this.otherDirection = true;
-                }, 1000); 
-            } else {
-                setTimeout(() => {
-                    this.moveLeft();
-                    this.otherDirection = false;
-                }, 1000);
-            };
-            this.walkTowardsCharacter = true
+        if(!this.walkTowardsCharacter && this.world.character.x >= this.x){
+           this.setDelayOnMovingRight(); 
+        } else if (!this.walkTowardsCharacter) {
+           this.setDelayOnMovingLeft();
         };
+        this.walkTowardsCharacter = true
         setTimeout(() => {
             this.walkTowardsCharacter = false;
         }, 4000)
     }
 
+    setDelayOnMovingRight() {
+        setTimeout(() => {
+            this.moveRight();
+            this.otherDirection = true;
+        }, 1000);
+    }
+
+    setDelayOnMovingLeft() {
+        setTimeout(() => {
+            this.moveLeft();
+            this.otherDirection = false;
+        }, 1000);
+    }
+
     hit() {
-        // if (this.isDead) return;
         this.isBeingHit = true;
     }
 }

@@ -27,16 +27,20 @@ function setCollectableObjects() {
     let distanceX = 0;
     for (let i = 0; i < 4; i++) {
         distanceX += 800 * i;  
-        collectableObjects.push(
-            new CollectableObject("coin", distanceX + 140, 150),
-            new CollectableObject("coin", distanceX + 200, 100),
-            new CollectableObject("coin", distanceX + 260, 100),
-            new CollectableObject("coin", distanceX + 320, 150),
-            new CollectableObject("bottle", distanceX + 260, 200),
-            new CollectableObject("bottleGround", distanceX + 240 , 350),
-        )
+        setCollactablesPosition(distanceX, collectableObjects);
     };
     return collectableObjects;
+}
+
+function setCollactablesPosition(distanceX, collectableObjects) {
+    return collectableObjects.push(
+        new CollectableObject("coin", distanceX + 140, 150),
+        new CollectableObject("coin", distanceX + 200, 100),
+        new CollectableObject("coin", distanceX + 260, 100),
+        new CollectableObject("coin", distanceX + 320, 150),
+        new CollectableObject("bottle", distanceX + 260, 200),
+        new CollectableObject("bottleGround", distanceX + 240 , 350),
+    )
 }
 
 function createLevelOne() {

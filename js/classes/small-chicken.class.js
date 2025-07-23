@@ -2,11 +2,13 @@ class SmallChicken extends MovableObject {
     height = 40;
     width = 30;
     isDead = false;
+
     IMAGES_WALKING =[
         "assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
         "assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
         "assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
     ];
+
     IMAGE_DEAD = "assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png";
     IMAGE_GHOST = "assets/img/3_enemies_chicken/chicken_ghost.png";
     offset = {
@@ -28,9 +30,7 @@ class SmallChicken extends MovableObject {
     animate(){
         this.animationIntervals["smallChickenMovesLeft"] = setInterval(() => {
            this.moveLeft();
-           if(!this.isDead){
-             audioList.chicken.play();
-            }
+           if(!this.isDead) audioList.chicken.play();
         }, 1000 / 60);
         this.animationIntervals["smallChickenPlayAnimation"] = setInterval(() =>{
             this.playAnimation(this.IMAGES_WALKING);
@@ -45,30 +45,36 @@ class SmallChicken extends MovableObject {
         this.stopAnimation("smallChickenPlayAnimation");
         this.loadImage(this.IMAGE_DEAD);
         setTimeout(() => {
-            audioList.jumpOnChicken.stop();
-            audioList.chicken.stop();
-            this.loadImage(this.IMAGE_GHOST);
-            this.speedY = -0.1;
-            this.acceleration = -1;
-            this.applyGravity();
-            audioList.ghost.shouldPlay = true;
-            audioList.ghost.play(); 
-            this.removalCheckInterval = setInterval(() => {
-                if (this.y + this.height < 0) {
-                    this.removeFromLevel();
-                    clearInterval(this.removalCheckInterval);
-                    audioList.ghost.stop(); 
-                }
-            }, 1000 / 30);
+            this.setGhostAnimation();
+            this.checkGhostPosition();
         }, 1000);
+    }
+
+    setGhostAnimation() {
+        audioList.jumpOnChicken.stop();
+        audioList.chicken.stop();
+        this.loadImage(this.IMAGE_GHOST);
+        this.speedY = -0.1;
+        this.acceleration = -1;
+        this.applyGravity();
+        audioList.ghost.shouldPlay = true;
+        audioList.ghost.play(); 
+    }
+
+    checkGhostPosition() {
+        this.removalCheckInterval = setInterval(() => {
+            if (this.y + this.height < 0) {
+                this.removeFromLevel();
+                clearInterval(this.removalCheckInterval);
+                audioList.ghost.stop(); 
+            }
+        }, 1000 / 30);
     }
     
     removeFromLevel() {
         if (world && world.level && Array.isArray(world.level.enemies)) {
             let index = world.level.enemies.indexOf(this);
-            if (index !== -1) {
-                world.level.enemies.splice(index, 1);
-            }
+            if (index !== -1) world.level.enemies.splice(index, 1);
         }
     }
 }
