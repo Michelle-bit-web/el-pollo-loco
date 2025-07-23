@@ -7,6 +7,9 @@ let keyboard = new Keyboard();
 let intervals = [];
 let fadingOut = true;
 let alpha = 1;
+let srcMuted;
+let srcUnmuted;
+let currentSrc;
 
 function init() {
     AudioManager.loadMuteStatus();
@@ -178,32 +181,23 @@ function stopAllIntervals(){
     intervals = [];
 }
 
-// function pauseGame() {
-//     console.log("Game paused due to incorrect orientation.");
-//     gameIsRunning = true;
-//     controlEnabled = false;
-//     AudioManager.pauseAll();
-// }
-
-// function resumeGame() {
-//     console.log("Game resumed after orientation corrected.");
-//     gameIsRunning = false;
-//     controlEnabled = true; 
-//     AudioManager.resumeAll();
-// }
-
 function pauseGame() {
     if(gameIsRunning) {
         controlEnabled = false;
-        AudioManager.toggleMute();;
+        if(!AudioManager.isMuted) {
+            AudioManager.toggleMute();
+        }
     }
 }
 
 function continueGame() {
     if(gameIsRunning) {
         controlEnabled = true;
-        AudioManager.toggleMute();
-       
+        if(AudioManager.isMuted && currentSrc == srcMuted) {
+           return
+        } else {
+            AudioManager.toggleMute();
+        }
     }
 }
 
@@ -215,9 +209,9 @@ function toggleSoundSetting() {
 function setSoundImage(){
     const soundImage = document.getElementById("sound_btn_img");
     const soundImageGameplay = document.getElementById("sound_btn_img_gameplay");
-    const srcMuted = "assets/img/icons/sound-off.png";
-    const srcUnmuted = "assets/img/icons/sound-on-blk.png";
-    const currentSrc = AudioManager.isMuted ? srcMuted : srcUnmuted;
+    srcMuted = "assets/img/icons/sound-off.png";
+    srcUnmuted = "assets/img/icons/sound-on-blk.png";
+    currentSrc = AudioManager.isMuted ? srcMuted : srcUnmuted;
     if (soundImage) {
         soundImage.src = currentSrc;
     }

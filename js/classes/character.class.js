@@ -95,37 +95,7 @@ class Character extends MovableObject {
   } 
 
   animate() {
-    this.animationIntervals["movement"] = setInterval(() => {
-      // audioList.idle.stop();
-      // audioList.snoring.stop();
-      //Move right
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
-        this.moveRight();
-        this.otherDirection = false;
-        audioList.walking.shouldPlay = true;
-        audioList.walking.play();
-        this.lastTimeMoved = new Date().getTime(); 
-      }
-      //Move left
-      if (this.world.keyboard.LEFT && this.x > 0) {
-        this.moveLeft();
-        this.otherDirection = true;
-        audioList.walking.shouldPlay = true;
-        audioList.walking.play();
-        this.lastTimeMoved = new Date().getTime(); 
-      }
-      //Jumping
-      if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-        this.jump();
-        audioList.walking.stop();
-        audioList.jump.play();
-        this.lastTimeMoved = new Date().getTime(); 
-      }
-      //Camera focus on character
-      if(!this.world.fightScene){
-        this.world.camera_x = -this.x + 100;
-      }
-    }, 1000 / 30);
+    this.setMovingInterval();
 
     //Imgage for different animation types
     this.animationIntervals["animation"] = setInterval(() => {
@@ -164,14 +134,14 @@ class Character extends MovableObject {
       const pastTime = (new Date().getTime() - this.lastTimeMoved) / 1000;
 
       if (this.checkMovementStatus()) {
-        if (pastTime > 7) {
+        if (pastTime > 9) {
           // Idle Long → Snoring
           if (!audioList.snoring.isPlaying()) {
             audioList.idle.stop();
             audioList.snoring.shouldPlay = true;
             audioList.snoring.play();
           }
-        } else if (pastTime > 2) {
+        } else if (pastTime > 4) {
           // Idle → regular idle sound
           if (!audioList.idle.isPlaying()) {
             audioList.snoring.stop();
@@ -185,6 +155,50 @@ class Character extends MovableObject {
         audioList.snoring.stop();
       }
     }, 300); // alle 300ms prüfen
+  }
+
+  setMovingInterval() {
+    this.animationIntervals["movement"] = setInterval(() => {
+      this.moveCharacterRight();
+      this.moveCharacterLeft();
+      this.letCharacterJump();
+      this.cameraFocusOncharacter();
+    }, 1000 / 30);
+  }
+
+  moveCharacterRight() {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
+      this.moveRight();
+      this.otherDirection = false;
+      audioList.walking.shouldPlay = true;
+      audioList.walking.play();
+      this.lastTimeMoved = new Date().getTime(); 
+    }
+  }
+
+  moveCharacterLeft() {
+    if (this.world.keyboard.LEFT && this.x > 0) {
+      this.moveLeft();
+      this.otherDirection = true;
+      audioList.walking.shouldPlay = true;
+      audioList.walking.play();
+      this.lastTimeMoved = new Date().getTime(); 
+    }
+  }
+
+  letCharacterJump() {
+    if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+      this.jump();
+      audioList.walking.stop();
+      audioList.jump.play();
+      this.lastTimeMoved = new Date().getTime(); 
+    }
+  }
+
+  cameraFocusOncharacter() {
+    if(!this.world.fightScene){
+      this.world.camera_x = -this.x + 100;
+    }
   }
 
   handleRipAnimation(){
@@ -213,7 +227,7 @@ class Character extends MovableObject {
   playIdleAnimation() {
     let pastTime = new Date().getTime() - this.lastTimeMoved;
     pastTime = pastTime / 1000;
-    if (pastTime > 7) {
+    if (pastTime > 9) {
       this.playAnimation(this.IMAGES_IDLE_LONG);
     } else {
       this.playAnimation(this.IMAGES_IDLE);
