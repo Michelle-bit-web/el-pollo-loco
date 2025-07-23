@@ -13,13 +13,12 @@ class AudioManager {
 
     play() {
         if(this.audio.readyState == 4 && !AudioManager.isMuted && this.shouldPlay){
-            this.audio.currentTime = 0;
+            // this.audio.currentTime = 0;
+            this.shouldPlay = true;
             this.audio.play(); 
-            this.shouldPlay = true
-            } else {
-                return;
-                console.log("sound not ready");
-            }
+        } else {
+            return;
+        }
     }
 
     isPlaying() {
@@ -58,6 +57,7 @@ class AudioManager {
         if (!AudioManager.isMuted) {
             AudioManager.sounds.forEach(sound => {
                 if (sound.audio.currentTime > 1 && sound.audio.paused) {
+                    sound.audio.currentTime = 0;
                     sound.audio.play().catch(() => {});
                 }
             });

@@ -99,18 +99,17 @@ class Endboss extends MovableObject{
     }
 
     updateSpeedBasedOnEnergy() {
-        if(this.energy <= 80){
-        this.speed += 0.2;
-        this.speedLevel = 2;
-        this.moveTowardCharacter();
-        }
         if (this.energy <= 40 && this.speedLevel == 2 && !this.isJumping) {
-            setInterval(() => {
+            this.speed += 0.2;
             this.jump();
             this.isJumping = true;
-            }, 5000);
             this.moveTowardCharacter();
         } 
+        if(this.energy <= 80){
+            this.speed += 0.2;
+            this.speedLevel = 2;
+            this.moveTowardCharacter();
+        }
         else {
             this.moveTowardCharacter();
         }
@@ -158,12 +157,12 @@ class Endboss extends MovableObject{
         this.playAnimation(this.IMAGES_WALKING);
         if (!this.otherDirection) {
             this.moveLeft();
-            if (this.x <= 2300) { // Grenze links
+            if (this.x <= 2400) { // Grenze links
                 this.otherDirection = true; // Richtung wechseln
             }
         } else {
             this.moveRight();
-            if (this.x >= 2900) { // Grenze rechts
+            if (this.x >= 2700) { // Grenze rechts
                 this.otherDirection = false; // Richtung wechseln
             }
         }

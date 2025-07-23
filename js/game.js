@@ -178,18 +178,33 @@ function stopAllIntervals(){
     intervals = [];
 }
 
+// function pauseGame() {
+//     console.log("Game paused due to incorrect orientation.");
+//     gameIsRunning = true;
+//     controlEnabled = false;
+//     AudioManager.pauseAll();
+// }
+
+// function resumeGame() {
+//     console.log("Game resumed after orientation corrected.");
+//     gameIsRunning = false;
+//     controlEnabled = true; 
+//     AudioManager.resumeAll();
+// }
+
 function pauseGame() {
-    console.log("Game paused due to incorrect orientation.");
-    gameIsRunning = true;
-    controlEnabled = false;
-    AudioManager.pauseAll();
+    if(gameIsRunning) {
+        controlEnabled = false;
+        AudioManager.toggleMute();;
+    }
 }
 
-function resumeGame() {
-    console.log("Game resumed after orientation corrected.");
-    gameIsRunning = false;
-    controlEnabled = true; 
-    AudioManager.resumeAll();
+function continueGame() {
+    if(gameIsRunning) {
+        controlEnabled = true;
+        AudioManager.toggleMute();
+       
+    }
 }
 
 function toggleSoundSetting() {
@@ -216,6 +231,8 @@ function handleExitButton(){
         renderMainMenu();
     } else{
         document.getElementById("overlay").style.display = "none";
+        continueGame();
+
     }
 }
 

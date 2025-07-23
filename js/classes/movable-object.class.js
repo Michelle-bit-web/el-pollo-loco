@@ -11,10 +11,12 @@ class MovableObject extends DrawableObject{
   levelEndX = 3800;
 
   moveRight() {
+    if (!controlEnabled) return;
     this.x += this.speed;
   }
 
   moveLeft() {
+    if (!controlEnabled) return;
     this.x -= this.speed;
   }
 
@@ -24,6 +26,7 @@ class MovableObject extends DrawableObject{
   }
   
   playAnimation(images) {
+    if (!controlEnabled) return;
     let i = this.currentImage % images.length;
     let path = images[i];
     this.img = this.imageCache[path];
@@ -54,6 +57,7 @@ class MovableObject extends DrawableObject{
   }
 
   jump(higherJump) {
+    if (!controlEnabled) return;
     if(higherJump == undefined){
      this.speedY = 30;
     } else{
@@ -112,6 +116,7 @@ class MovableObject extends DrawableObject{
   }
 
   takeDamage(damage) {
+    if (!controlEnabled) return;
     if(this.isHurt()){
       return;
     }

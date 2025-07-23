@@ -60,6 +60,7 @@ function renderControls(initializer){
     controls.style.backgroundColor = "rgba(0, 0, 0, 0.797)";
     controls.style.color = "white";
     controls.innerHTML = controlsHtmlTemplate();
+    pauseGame();
 }
 
 function renderMainMenu(){
