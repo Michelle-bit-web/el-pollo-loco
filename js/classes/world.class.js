@@ -319,7 +319,7 @@ class World {
     this.returnCameraToCharacter();
     overlay.style.display = "none";
     this.controlEnabled = true;
-    this.resetOverlay();
+    resetOverlay();
   }
 
   /**
@@ -442,7 +442,7 @@ class World {
       this.stopIntervals();
       this.prepareEndSequence(this.getEndScreenImage());
       this.resetCharacterState();
-      this.scheduleAudioReset();
+      scheduleAudioReset();
     }, 1500);
   }
 
@@ -491,20 +491,10 @@ class World {
    */
   handleEndAudio() {
     if (this.character.isDead()) {
-      this.playAudioWithStop(audioList.gameOver);
+      playAudioWithStop(audioList.gameOver);
     } else if (this.level.endboss.isDead()) {
-      this.playAudioWithStop(audioList.gameWin);
+      playAudioWithStop(audioList.gameWin);
     }
-  }
-
-  /**
-   * Plays the given audio and flags it as not repeatable.
-   *
-   * @param {Audio} audio - Audio object to play.
-   */
-  playAudioWithStop(audio) {
-    audio.play();
-    audio.shouldPlay = false;
   }
 
   /**
@@ -514,29 +504,6 @@ class World {
     this.character.bottles = 0;
     this.character.coins = 0;
     this.throwableObjects = [];
-  }
-
-  /**
-   * Resets audio flags and prepares for returning to the main menu.
-   */
-  scheduleAudioReset() {
-    setTimeout(() => {
-      audioList.gameWin.stop();
-      audioList.gameOver.stop();
-      AudioManager.sounds.forEach((audio) => {
-        audio.shouldPlay = false;
-        audio.stop();
-      });
-      audioList.mainTheme.shouldPlay = true;
-      audioList.mainTheme.play();
-    }, 3500);
-  }
-
-  /**
-   * Resets the HTML overlay content.
-   */
-  resetOverlay() {
-    document.getElementById("overlay").innerHTML = originalOverlay;
   }
 
   /**

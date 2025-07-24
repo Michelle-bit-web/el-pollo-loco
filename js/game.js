@@ -49,14 +49,6 @@ function init() {
 }
 
 /**
- * Checks if the current device supports touch input.
- * @returns {boolean} True if touch is supported, false otherwise.
- */
-function isTouchDevice() {
-  return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
-}
-
-/**
  * Starts the game: activates sounds, loads the level, and displays UI overlays.
  */
 function startGame() {
@@ -220,42 +212,6 @@ function rotateMobileIcon(promptImagePortrait, promptImageLandscape, alpha) {
     showPrompt(promptImagePortrait);
     hidePrompt(promptImageLandscape);
     switchedPromptImage = false;
-  }
-}
-
-/**
- * Handles fading effect for prompt and returns the current alpha value.
- * @returns {number} Updated alpha value.
- */
-function fadeOutPrompt() {
-  if (fadingOut) {
-    reduceTransparence();
-    return alpha;
-  } else {
-    increaseTransparence();
-    return alpha;
-  }
-}
-
-/**
- * Decreases prompt opacity and toggles direction if minimum reached.
- */
-function reduceTransparence() {
-  alpha -= 0.02;
-  if (alpha <= 0) {
-    alpha = 0;
-    fadingOut = false;
-  }
-}
-
-/**
- * Increases prompt opacity and toggles direction if maximum reached.
- */
-function increaseTransparence() {
-  alpha += 0.02;
-  if (alpha >= 1) {
-    alpha = 1;
-    fadingOut = true;
   }
 }
 
