@@ -96,6 +96,7 @@ function getGameplayOverlay() {
 function loadLevel() {
   AudioManager.sounds.forEach((audio) => (audio.shouldPlay = true));
   audioList.mainTheme.shouldPlay = false;
+  audioList.fightScene.shouldPlay = false;
   canvas = document.getElementById("canvas");
   gameIsRunning = true;
   world = new World(canvas, keyboard, level1, controlEnabled);

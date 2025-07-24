@@ -157,6 +157,7 @@ class World {
     if(audioList.fightScene.loop == false) {
       audioList.fightScene.loop = true;
     }
+    audioList.fightScene.shouldPlay = true;
     audioList.fightScene.play();
     const endbossX = this.level.endboss.x - 400;
     this.level.endboss.x = 2900;
@@ -287,6 +288,8 @@ class World {
     if (!playerIsDead && !endbossIsDead) return;
     audioList.fightScene.loop = false;
     audioList.fightScene.stop();
+    audioList.gamePlay.stop();
+    audioList.gamePlay.shouldPlay = false;
     const endScreenImage = this.getEndScreenImage();
     const delay = endbossIsDead ? 1600 : 0; 
     this.character.stopIdleSoundLogic();
@@ -327,6 +330,7 @@ class World {
 
   playAudioWithStop(audio) {
     audio.play();
+    audio.shouldPlay = false;
   }
 
   resetCharacterState() {
