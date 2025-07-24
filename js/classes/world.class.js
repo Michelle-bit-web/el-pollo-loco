@@ -207,22 +207,8 @@ class World {
     overlay.innerHTML = "Let´s salsa it!";
   }
 
-  // showFightPrompt(interval, overlay) {
-  //   clearInterval(interval);
-  //   Object.assign(overlay.style, {
-  //     display: "flex",
-  //     fontSize: "5.5vw",
-  //     textAlign: "center",
-  //     backgroundColor: "rgba(60, 24, 2, 0.43)",
-  //   });
-  //   document.getElementById("menu-overlay").style.display = "none";
-  //   document.getElementById("fight-message").style.display = "flex";
-  // }
-
   resumeGameFromPrompt(overlay) {
     this.returnCameraToCharacter();
-    // document.getElementById("fight-message").style.display = "none";
-    // document.getElementById("menu-overlay").style.display = "flex";
     overlay.style.display = "none";
     this.controlEnabled = true;
     this.resetOverlay();
@@ -300,16 +286,18 @@ class World {
   }
 
   checkGameEnd() {
-    if (this.intervalsStoped) {
-      this.intervalsStoped = true;
-      this.stopIntervals();
-    }
-    if (!this.character.isDead() && !this.level.endboss.isDead()) return;
+    const endbossIsDead = this.level.endboss.isDead();
+    const playerIsDead = this.character.isDead();
+    if (!playerIsDead && !endbossIsDead) return;
     const endScreenImage = this.getEndScreenImage();
-    this.prepareEndSequence(endScreenImage);
-    this.resetCharacterState();
-    this.scheduleAudioReset();
-    this.resetOverlay();
+    const delay = endbossIsDead ? 1600 : 0; 
+    this.character.stopIdleSoundLogic();
+  
+    setTimeout(() => {
+      this.prepareEndSequence(endScreenImage);
+      this.resetCharacterState();
+      this.scheduleAudioReset();
+    }, delay);
   }
 
   getEndScreenImage() {
@@ -342,7 +330,6 @@ class World {
   playAudioWithStop(audio) {
     audio.shouldPlay = true;
     audio.play();
-    setTimeout(() => this.stopIntervals(), 1000);
   }
 
   resetCharacterState() {
@@ -357,12 +344,12 @@ class World {
       audioList.gameOver.stop();
       audioList.mainTheme.shouldPlay = true;
       audioList.mainTheme.play();
+      this.stopIntervals()
     }, 5500);
   }
 
   resetOverlay() {
     document.getElementById("overlay").innerHTML = originalOverlay;
-    console.log(originalOverlay)
   }
 
   stopIntervals() {

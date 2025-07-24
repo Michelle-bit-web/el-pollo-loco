@@ -34,8 +34,8 @@ let srcUnmuted;
 /** @type {string} Path to the currently active sound icon. */
 let currentSrc;
 
+/** @type {string} Storage for overlay html content to reset the overlay at the end. */
 let originalOverlay = "";
-let originalMenuOverlay = "";
 
 /**
  * Initializes the game: loads mute status, sets sound icon, plays theme, and starts start prompt.
@@ -65,9 +65,6 @@ function startGame() {
   audioList.mainTheme.shouldPlay = false;
   audioList.gamePlay.play();
   originalOverlay = document.getElementById("overlay").innerHTML;
-  originalMenuOverlay = document.getElementById("menu-overlay").innerHTML;
-   console.log(originalOverlay)
-  console.log(originalMenuOverlay)
   removeOverlay("overlay");
   getGameplayOverlay();
   loadLevel();
@@ -121,6 +118,9 @@ function startPrompt() {
   let prompts = [promptText, touchPrompt, mobilePromptText, mobilePortraitIcon, mobileLandscapeIcon];
   if (isTouchDevice()) {
     setTouchSetting(touchPrompt);
+    if(!AudioManager.isMuted) {
+      toggleSoundSetting();
+    }
   } else {
     setKeySetting(promptText);
   }
@@ -371,9 +371,10 @@ function backToMenu() {
 }
 
 /**
- * Fully resets the game state, sounds, and world.
+ * Fully resets the game state, sounds, overlays and world.
  */
 function resetGame() {
+  resetOverlay();
   resetAudio();
   clearAllIntervals();
   destroyWorld();
@@ -387,11 +388,15 @@ function resetGame() {
  * Resets and stops all audio files.
  */
 function resetAudio() {
-  Object.values(audioList).forEach((audio) => {
-    audio.pause();
-    audio.currentTime = 0;
-    audio.shouldPlay = false;
-  });
+  // Audiomanager.sounds = [];
+  // Object.values(audioList).forEach((audio) => {
+  //   audio.pause();
+  //   audio.currentTime = 0;
+  //   audio.shouldPlay = false;
+  // });
+  createNewAudioList();
+  audioList.mainTheme.stop();
+  audioList.mainTheme.shouldPlay = false;
 }
 
 /**
@@ -429,8 +434,17 @@ function restartLevel() {
  * Finalizes reset after short delay: hides overlay, loads mute status and sound icon.
  */
 function finalizeReset() {
-  document.getElementById("overlay").style.display = "none";
+  // document.getElementById("overlay").style.display = "none";
   AudioManager.loadMuteStatus();
   setSoundImage();
-  audioList.mainTheme.shouldPlay = false;
+}
+
+/**
+ * Overwrite the overlays with the original html content.
+ */
+function resetOverlay() {
+  document.getElementById("overlay").innerHTML = originalOverlay;
+  if (isTouchDevice()) {
+    document.getElementById("panel").style.display = "flex";
+  }
 }

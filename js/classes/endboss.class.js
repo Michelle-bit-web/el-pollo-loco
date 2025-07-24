@@ -192,6 +192,8 @@ class Endboss extends MovableObject{
 
     setDeadInterval() {
         let frameCount = 0;
+       
+        audioList.chickenDead.play();
         const deadInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_DEAD);
             frameCount++;
