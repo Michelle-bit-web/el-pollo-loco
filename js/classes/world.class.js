@@ -286,19 +286,21 @@ class World {
     const endbossIsDead = this.level.endboss.isDead();
     const playerIsDead = this.character.isDead();
     if (!playerIsDead && !endbossIsDead) return;
+    this.stopSounds();
+    setTimeout(() => {
+      this.stopIntervals();
+      this.prepareEndSequence(this.getEndScreenImage());
+      this.resetCharacterState();
+      this.scheduleAudioReset();
+    }, 1500);
+  }
+
+  stopSounds() {
     audioList.fightScene.loop = false;
     audioList.fightScene.stop();
     audioList.gamePlay.stop();
     audioList.gamePlay.shouldPlay = false;
-    const endScreenImage = this.getEndScreenImage();
-    const delay = endbossIsDead ? 1600 : 0; 
     this.character.stopIdleSoundLogic();
-  
-    setTimeout(() => {
-      this.prepareEndSequence(endScreenImage);
-      this.resetCharacterState();
-      this.scheduleAudioReset();
-    }, delay);
   }
 
   getEndScreenImage() {
@@ -317,7 +319,7 @@ class World {
         this.handleEndAudio();
         overlay.innerHTML = getEndScreenTemplate(endScreenImage);
         overlay.style.display = "flex";
-    }, 2500);
+    }, 1500);
   }
 
   handleEndAudio() {
@@ -349,8 +351,7 @@ class World {
       });
       audioList.mainTheme.shouldPlay = true;
       audioList.mainTheme.play();
-      this.stopIntervals()
-    }, 5500);
+    }, 3500);
   }
 
   resetOverlay() {

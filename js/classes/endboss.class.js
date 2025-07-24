@@ -143,7 +143,7 @@ class Endboss extends MovableObject{
     setDizyInterval() {
         let frameCount = 0;
         const dizyInterval = setInterval(() => {
-            audioList.endbossHurt.play(); //Vogelzwitschern einbauen
+            audioList.endbossHurt.play();
             this.playAnimation(this.IMAGES_DIZY);
             frameCount++;
             if (frameCount >= 3 ) { 
