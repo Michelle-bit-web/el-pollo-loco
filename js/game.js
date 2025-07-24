@@ -34,6 +34,9 @@ let srcUnmuted;
 /** @type {string} Path to the currently active sound icon. */
 let currentSrc;
 
+let originalOverlay = "";
+let originalMenuOverlay = "";
+
 /**
  * Initializes the game: loads mute status, sets sound icon, plays theme, and starts start prompt.
  */
@@ -61,6 +64,10 @@ function startGame() {
   audioList.mainTheme.stop();
   audioList.mainTheme.shouldPlay = false;
   audioList.gamePlay.play();
+  originalOverlay = document.getElementById("overlay").innerHTML;
+  originalMenuOverlay = document.getElementById("menu-overlay").innerHTML;
+   console.log(originalOverlay)
+  console.log(originalMenuOverlay)
   removeOverlay("overlay");
   getGameplayOverlay();
   loadLevel();

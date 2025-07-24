@@ -62,7 +62,7 @@ class ThrowableObject extends MovableObject{
             if (this.isSplashing) return;
             this.playAnimation(this.IMAGES_ROTATION);
             this.rotationIndex = (this.rotationIndex + 1) % this.IMAGES_ROTATION.length;
-        }, 50); 
+        }, 100); 
     }
 
     splash(){

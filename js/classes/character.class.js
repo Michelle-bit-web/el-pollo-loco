@@ -192,7 +192,7 @@ class Character extends MovableObject {
         this.img = this.imageCache[dyingImages[i]];
         i++;
       } else {
-        this-prepareForRipAnimation();
+        this.prepareForRipAnimation();
       }
     }, 100);
   }

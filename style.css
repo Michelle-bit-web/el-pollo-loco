@@ -329,6 +329,7 @@ h1 {
   justify-content: center;
   font-size: 2rem;
   border: unset;
+  z-index: 1;
   border-radius: 100%;
 }
 

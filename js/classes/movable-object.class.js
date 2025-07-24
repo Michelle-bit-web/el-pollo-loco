@@ -79,14 +79,16 @@ class MovableObject extends DrawableObject{
   }
 
   handleThrowable() {
-    this.y = 350;
-    this.splash();
+    if (this.y >= 350) {
+      this.y = 350;
+      this.splash();
+    }
   }
 
   limitEndbossHeight() {
     if (this.y > 120) {
       this.y = 120;
-      this.speedY = 0;
+      this.speedY = 0; 
       this.onLand();
     }
   }
