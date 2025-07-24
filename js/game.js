@@ -60,10 +60,8 @@ function isTouchDevice() {
  * Starts the game: activates sounds, loads the level, and displays UI overlays.
  */
 function startGame() {
-  AudioManager.sounds.forEach((audio) => (audio.shouldPlay = true));
   audioList.mainTheme.stop();
   audioList.mainTheme.shouldPlay = false;
-  audioList.gamePlay.play();
   originalOverlay = document.getElementById("overlay").innerHTML;
   removeOverlay("overlay");
   getGameplayOverlay();
@@ -96,6 +94,8 @@ function getGameplayOverlay() {
  * Initializes the game world and sets up input handling based on device type.
  */
 function loadLevel() {
+  AudioManager.sounds.forEach((audio) => (audio.shouldPlay = true));
+  audioList.mainTheme.shouldPlay = false;
   canvas = document.getElementById("canvas");
   gameIsRunning = true;
   world = new World(canvas, keyboard, level1, controlEnabled);
@@ -388,15 +388,13 @@ function resetGame() {
  * Resets and stops all audio files.
  */
 function resetAudio() {
-  // Audiomanager.sounds = [];
-  // Object.values(audioList).forEach((audio) => {
-  //   audio.pause();
-  //   audio.currentTime = 0;
-  //   audio.shouldPlay = false;
-  // });
-  createNewAudioList();
-  audioList.mainTheme.stop();
-  audioList.mainTheme.shouldPlay = false;
+  Object.values(audioList).forEach((audio) => {
+    audio.pause();
+    audio.currentTime = 0;
+    audio.shouldPlay = false;
+  });
+  audioList.mainTheme.loop = false;
+  audioList.fightScene.loop = false;
 }
 
 /**

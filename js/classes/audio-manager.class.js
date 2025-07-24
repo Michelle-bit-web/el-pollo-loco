@@ -34,7 +34,6 @@ class AudioManager {
    */
   play() {
     if (this.audio.readyState === 4 && !AudioManager.isMuted && this.shouldPlay) {
-      this.shouldPlay = true;
       this.audio.play();
     }
   }

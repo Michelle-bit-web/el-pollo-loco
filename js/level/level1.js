@@ -66,7 +66,7 @@ function setCollactablesPosition(distanceX, collectableObjects) {
     new CollectableObject("coin", distanceX + 260, 100),
     new CollectableObject("coin", distanceX + 320, 150),
     new CollectableObject("bottle", distanceX + 260, 200),
-    new CollectableObject("bottleGround", distanceX + 240, 350)
+    new CollectableObject("bottleGround", distanceX + 200, 350)
   );
 }
 

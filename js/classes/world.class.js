@@ -145,12 +145,6 @@ class World {
   }
 
   checkCharacterDistance() {
-    // const treshold = [0, 800, 1600, 2800, this.level.endArrowPosition];
-    // treshold.forEach((treshold, index) => {
-    //   if (this.character.x > treshold && !this[`collectableObjectsGenerated${index}`]) {
-    //     this[`collectableObjectsGenerated${index}`] = true;
-    //   }
-    // });
     if (
       this.character.x  > this.level.endArrowPosition + 100 &&
       !this.fightScene &&
@@ -160,7 +154,9 @@ class World {
 
   startFightScene() {
     audioList.gamePlay.stop();
-    audioList.fightScene.shouldPlay = true;
+    if(audioList.fightScene.loop == false) {
+      audioList.fightScene.loop = true;
+    }
     audioList.fightScene.play();
     const endbossX = this.level.endboss.x - 400;
     this.level.endboss.x = 2900;
@@ -289,6 +285,8 @@ class World {
     const endbossIsDead = this.level.endboss.isDead();
     const playerIsDead = this.character.isDead();
     if (!playerIsDead && !endbossIsDead) return;
+    audioList.fightScene.loop = false;
+    audioList.fightScene.stop();
     const endScreenImage = this.getEndScreenImage();
     const delay = endbossIsDead ? 1600 : 0; 
     this.character.stopIdleSoundLogic();
@@ -328,7 +326,6 @@ class World {
   }
 
   playAudioWithStop(audio) {
-    audio.shouldPlay = true;
     audio.play();
   }
 
@@ -342,6 +339,10 @@ class World {
     setTimeout(() => {
       audioList.gameWin.stop();
       audioList.gameOver.stop();
+      AudioManager.sounds.forEach((audio) => {
+        audio.shouldPlay = false;
+        audio.stop();
+      });
       audioList.mainTheme.shouldPlay = true;
       audioList.mainTheme.play();
       this.stopIntervals()
@@ -354,7 +355,6 @@ class World {
 
   stopIntervals() {
     intervals.forEach((interval) => clearInterval(interval));
-    AudioManager.sounds.forEach((sound) => sound.stop());
     this.character.stopAllAnimations();
     this.level.enemies.forEach(enemy => enemy.stopAllAnimations);
     this.level.endboss.stopAllAnimations();
