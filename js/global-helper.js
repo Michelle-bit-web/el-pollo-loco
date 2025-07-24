@@ -65,12 +65,12 @@ function scheduleAudioReset() {
   }, 3500);
 }
 
-  /**
-   * Plays the given audio and flags it as not repeatable.
-   *
-   * @param {Audio} audio - Audio object to play.
-   */
+/**
+ * Plays the given audio and flags it as not repeatable.
+ *
+ * @param {Audio} audio - Audio object to play.
+ */
 function playAudioWithStop(audio) {
-    audio.play();
-    audio.shouldPlay = false;
-  }
+  audio.play();
+  audio.shouldPlay = false;
+}

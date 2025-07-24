@@ -389,7 +389,6 @@ function restartLevel() {
  * Finalizes reset after short delay: hides overlay, loads mute status and sound icon.
  */
 function finalizeReset() {
-  // document.getElementById("overlay").style.display = "none";
   AudioManager.loadMuteStatus();
   setSoundImage();
 }

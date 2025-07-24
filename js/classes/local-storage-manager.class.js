@@ -23,8 +23,8 @@ class StorageManager {
    * @param {string} key - The key of the stored item.
    * @returns {*} The parsed value, or `null` if the key does not exist.
    */
-   static load(key) {
-      const value = localStorage.getItem(key);
-      return value ? JSON.parse(value) : null;
-    }
+  static load(key) {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : null;
+  }
 }
