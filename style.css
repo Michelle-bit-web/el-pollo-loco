@@ -238,7 +238,6 @@ h1 {
   justify-content: space-evenly;
 }
 
-/*controls menu*/
 .controls-overlay {
   padding: 3vw;
   height: 50vw;
@@ -286,7 +285,6 @@ h1 {
   width: 150px;
 }
 
-/*game play html template*/
 .overlay-gameplay {
   display: none;
   position: absolute;
@@ -352,7 +350,6 @@ h1 {
   max-height: 50px;
 }
 
-/*end screen template*/
 .end-screen-div {
   padding: 5%;
   gap: 5%;
@@ -370,75 +367,6 @@ h1 {
 
 .endscreen {
   padding: 0;
-}
-
-/*Imprint ----*/
-.content-impressum {
-  color: var(--text-color);
-  background-color: rgba(255, 255, 255, 0.371);
-  padding: 5%;
-}
-
-.content-impressum p,
-.content-impressum a,
-.content-impressum li,
-.content-impressum b,
-.content-impressum span,
-footer a {
-  font-size: clamp(1rem, 2vw, 2rem);
-  text-align: start;
-  display: flex;
-}
-
-.content-impressum i {
-  display: flex;
-  gap: 2vw;
-}
-
-.content-impressum a:hover,
-footer a:hover {
-  color: white;
-}
-
-h2 {
-  margin: 2% 0;
-  font-size: clamp(1.5rem, 3vw, 3rem);
-}
-
-.imprint-btn {
-  font-size: clamp(1rem, 2vw, 2rem);
-  height: 5vw;
-  width: 32vw;
-  max-height: 40px;
-  max-width: 250px;
-  border-radius: 20px;
-}
-
-.imprint-btn:hover {
-  background-color: rgb(72, 29, 2);
-}
-
-.credits-container {
-  background-color: rgba(0, 0, 0, 0.313);
-  border-radius: 20px;
-  padding: 2vw;
-  display: flex;
-  flex-direction: column;
-}
-
-.credtis-catergory {
-  margin-top: 2vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-footer {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }
 
 /* Smartphone */
