@@ -3,10 +3,11 @@
  * Inherits from `MovableObject` and can optionally be assigned a custom size and position.
  */
 class BackgroundObject extends MovableObject {
-  /** @type {number} Default height of the background object */
+  /**
+   * @property {number} height - Height of the background object
+   * @property {number} width - Default width of the background object 
+   */
   height = 480;
-
-  /** @type {number} Default width of the background object */
   width = 720;
 
   /**
