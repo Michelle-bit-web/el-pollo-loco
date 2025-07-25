@@ -77,7 +77,7 @@ This project is for educational purposes and not intended for commercial use. As
 ## 🤓 Author
 
 Created by Michelle Puschkarow. <br>
-Sounds are inspired by various open game assets and retro platformers.
+Sounds are inspired by various open game assets and retro platformers.<br>
 Graphics © Developer Akademie – used with permission for educational purposes.<br>
 If you like this project, feel free to give it a ⭐️ or contribute!
 
