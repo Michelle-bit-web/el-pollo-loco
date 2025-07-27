@@ -41,7 +41,7 @@ class World {
     this.setWorld();
     this.draw();
     this.run();
-    audioList.gamePlay.play();
+    AudioController.playGamePlay();
   }
 
   /**
@@ -130,10 +130,7 @@ class World {
       this.throwableObjects.forEach((bottle) => {
         if (bottle.isColliding(enemy, enemyIndex) && !enemy.isDead && !bottle.isSplashing) {
           this.handleBottleCollision(bottle, enemyIndex);
-          if (!AudioManager.isMuted) {
-            audioList.bottleBreaks.play();
-            audioList.bottleSplash.play();
-          }
+          AudioController.playBottleSounds();
         }
         this.removeDeadEnemy(enemy, enemyIndex);
       });
@@ -161,7 +158,7 @@ class World {
     setTimeout(() => {
       if (enemy.isDead) {
         this.level.enemies.splice(enemyIndex, 1);
-        audioList.ghost.play();
+        AudioController.playGhostSound();
       }
     }, 100);
   }
@@ -235,12 +232,8 @@ class World {
    * Begins the fight scene sequence with sound and camera transition.
    */
   startFightScene() {
-    audioList.gamePlay.stop();
-    if (audioList.fightScene.loop == false) {
-      audioList.fightScene.loop = true;
-    }
-    audioList.fightScene.shouldPlay = true;
-    audioList.fightScene.play();
+    AudioController.stopGamePlay();
+    AudioController.startFightScene();
     const endbossX = this.level.endboss.x - 400;
     this.level.endboss.x = 2900;
     this.focusCameraOnEndboss(endbossX);
@@ -289,37 +282,8 @@ class World {
    */
   lockCamera(interval, overlay, endbossX) {
     this.camera_x = -endbossX;
-    setTimeout(() => this.showFightPrompt(interval, overlay), 1000);
-    setTimeout(() => this.resumeGameFromPrompt(overlay), 4000);
-  }
-
-  /**
-   * Shows the fight message overlay.
-   *
-   * @param {number} interval - Camera movement interval ID.
-   * @param {HTMLElement} overlay - The DOM overlay element.
-   */
-  showFightPrompt(interval, overlay) {
-    clearInterval(interval);
-    Object.assign(overlay.style, {
-      display: "flex",
-      fontSize: "6vw",
-      textAlign: "center",
-      backgroundColor: "rgba(60, 24, 2, 0.43)",
-    });
-    overlay.innerHTML = "Let´s salsa it!";
-  }
-
-  /**
-   * Hides the overlay and resumes gameplay after the fight prompt.
-   *
-   * @param {HTMLElement} overlay - The DOM overlay element.
-   */
-  resumeGameFromPrompt(overlay) {
-    this.returnCameraToCharacter();
-    overlay.style.display = "none";
-    this.controlEnabled = true;
-    resetOverlay();
+    setTimeout(() => StartFightScreen.showFightPrompt(interval, overlay), 1000);
+    setTimeout(() => StartFightScreen.resumeGameFromPrompt(this, overlay), 4000);
   }
 
   /**
@@ -342,46 +306,10 @@ class World {
    */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.translate(this.camera_x, 0);
-    this.drawBackgrounds();
-    this.ctx.translate(-this.camera_x, 0);
-    this.drawFixedObj();
-    this.ctx.translate(this.camera_x, 0);
-    this.drawMovableObj();
-    this.ctx.translate(-this.camera_x, 0);
+    DrawHelpers.drawBackgrounds(this.ctx, this.level, this.camera_x, this.addObjectsToMap.bind(this));
+    DrawHelpers.drawFixedObjects(this.ctx, this.energyStatusbar, this.coinStatusbar, this.bottleStatusbar, this.level.endboss.statusbar, this.addToMap.bind(this));
+    DrawHelpers.drawMovableObjects(this.ctx, this.level, this.character, this.throwableObjects, this.addObjectsToMap.bind(this), this.addToMap.bind(this), this.camera_x);
     requestAnimationFrame(() => this.draw());
-  }
-
-  /**
-   * Draws background elements such as sky, mountains, clouds, etc.
-   */
-  drawBackgrounds() {
-    this.addObjectsToMap(this.level.backgroundObjects);
-    this.addObjectsToMap(this.level.clouds);
-  }
-
-  /**
-   * Draws fixed UI elements like status bars.
-   */
-  drawFixedObj() {
-    if (this.level.endboss.statusbar) {
-      this.addToMap(this.level.endboss.statusbar);
-    }
-    this.addToMap(this.energyStatusbar);
-    this.addToMap(this.coinStatusbar);
-    this.addToMap(this.bottleStatusbar);
-    
-  }
-
-  /**
-   * Draws movable game elements like enemies, projectiles, character, etc.
-   */
-  drawMovableObj() {
-    this.addToMap(this.level.endboss);
-    this.addObjectsToMap(this.level.enemies);
-    this.addObjectsToMap(this.throwableObjects);
-    this.addObjectsToMap(this.level.collectableObjects);
-    this.addToMap(this.character);
   }
 
   /**
@@ -399,13 +327,9 @@ class World {
    * @param {GameObject} mo - The game object to add.
    */
   addToMap(mo) {
-    if (mo.otherDirection) {
-      this.flipImage(mo);
-    }
+    if (mo.otherDirection) { this.flipImage(mo); }
     mo.draw(this.ctx);
-    if (mo.otherDirection) {
-      this.flipImageBack(mo);
-    }
+    if (mo.otherDirection) { this.flipImageBack(mo);}
   }
 
   /**
@@ -434,42 +358,16 @@ class World {
    * Checks if the game should end based on character or boss state.
    */
   checkGameEnd() {
-    const endbossIsDead = this.level.endboss.isDead();
-    const playerIsDead = this.character.isDead();
-    if (!playerIsDead && !endbossIsDead) return;
-    this.stopSounds();
-    setTimeout(() => {
-      this.stopIntervals();
-      this.prepareEndSequence(this.getEndScreenImage());
-      this.resetCharacterState();
-      scheduleAudioReset();
-    }, 1500);
+    EndgameController.checkGameEnd(this), this.character.isDead(), this.level.endboss.isDead();
   }
 
   /**
    * Stops all ongoing game sounds.
    */
   stopSounds() {
-    audioList.fightScene.loop = false;
-    audioList.fightScene.stop();
-    audioList.gamePlay.stop();
-    audioList.gamePlay.shouldPlay = false;
+    AudioController.stopFightScene();
+    AudioController.stopGamePlay();
     this.character.stopIdleSoundLogic();
-  }
-
-  /**
-   * Determines which image to use for the end screen.
-   *
-   * @returns {string} - Path to the end screen image.
-   */
-  getEndScreenImage() {
-    if (this.character.isDead()) {
-      return "assets/img/You won, you lost/Game Over.png";
-    }
-    if (this.level.endboss.isDead()) {
-      return "assets/img/You won, you lost/You Win A.png";
-    }
-    return "";
   }
 
   /**
@@ -490,11 +388,7 @@ class World {
    * Plays the appropriate end audio clip.
    */
   handleEndAudio() {
-    if (this.character.isDead()) {
-      playAudioWithStop(audioList.gameOver);
-    } else if (this.level.endboss.isDead()) {
-      playAudioWithStop(audioList.gameWin);
-    }
+    AudioController.handleEndAudio (this.character.isDead(), this.level.endboss.isDead())
   }
 
   /**
