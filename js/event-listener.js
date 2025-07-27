@@ -301,10 +301,12 @@ function onPortraitEnter() {
 function onPortraitExit() {
   isInPortrait = false;
   touchControlEnabled = true;
+  if (startPromptRemoved) {
   hidePrompt(document.getElementById("mobile-prompt-img-portrait"));
   hidePrompt(document.getElementById("div_prompt"));
   unblockTouchInput();
-  if (startPromptRemoved) continueGame();
+  continueGame();
+  }
 }
 
 /**
