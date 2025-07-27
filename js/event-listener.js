@@ -1,3 +1,12 @@
+/** @type {boolean} Indicates if the device is in portrait mode. */
+let isInPortrait = false;
+
+/** @type {boolean} Indicates if the start prompt was already removed. */
+let startPromptRemoved = false;
+
+/** @type {boolean} Indicates if the toch events are allowed. */
+let touchControlEnabled = true;
+
 /**
  * Maps keyboard key codes to control actions.
  * Used for mapping physical keyboard input to game actions.
@@ -59,15 +68,243 @@ function touchEvents() {
 function setButtonEvent(buttonId) {
   const button = document.getElementById(`${buttonId}`);
   button.addEventListener("touchstart", (event) => {
+    if (!touchControlEnabled) return;
     event.preventDefault();
     button.classList.add("active");
     keyboard[buttonId] = true;
   });
   button.addEventListener("touchend", (event) => {
+    if (!touchControlEnabled) return;
     event.preventDefault();
     button.classList.remove("active");
     keyboard[buttonId] = false;
   });
+}
+
+function blockTouchInput() {
+  touchControlEnabled = false;
+  const overlay = document.getElementById("prompt-mobile");
+  if (!overlay) {
+    console.warn("Element with ID 'block-touch-overlay' not found.");
+    return;
+  }
+  overlay.style.display = "block";
+}
+
+function unblockTouchInput() {
+  touchControlEnabled = true;
+  document.getElementById("prompt-mobile").style.pointerEvents = "auto";
+}
+
+/**
+ * Displays the prompt overlay and sets fading behavior based on device type.
+ */
+function startPrompt() {
+  const promptText = document.getElementById("prompt-overlay");
+  const touchPrompt = document.getElementById("prompt-touch");
+  const mobilePromptText = document.getElementById("prompt-mobile");
+  const mobilePortraitIcon = document.getElementById("mobile-prompt-img-portrait");
+  const mobileLandscapeIcon = document.getElementById("mobile-prompt-img-landscape");
+  let prompts = [promptText, touchPrompt, mobilePromptText, mobilePortraitIcon, mobileLandscapeIcon];
+  if (isTouchDevice()) {
+    setTouchSetting(touchPrompt);
+    if (!AudioManager.isMuted) {
+      toggleSoundSetting();
+    }
+  } else {
+    setKeySetting(promptText);
+  }
+  prompts.forEach((prompt) => setPromptFadingInterval(prompt, mobilePortraitIcon, mobileLandscapeIcon));
+  monitorOrientationDuringGame();
+}
+
+/**
+ * Configures the prompt text and interaction for touch devices.
+ * @param {HTMLElement} touchPrompt - The touch prompt element.
+ */
+function setTouchSetting(touchPrompt) {
+  setPrompt("Touch screen", touchPrompt);
+  checkTouchResponse(touchPrompt);
+}
+
+/**
+ * Configures the prompt text and interaction for keyboard users.
+ * @param {HTMLElement} promptText - The key prompt element.
+ */
+function setKeySetting(promptText) {
+  setPrompt("Press Any Key", promptText);
+  checkKeyResponse(promptText);
+}
+
+/**
+ * Sets the prompt text and text alignment.
+ * @param {string} text - The prompt message.
+ * @param {HTMLElement} overlay - The prompt element to update.
+ */
+function setPrompt(text, overlay) {
+  return (overlay.innerText = `${text}`), (overlay.style.textAlign = "center");
+}
+
+/**
+ * Hides a prompt element.
+ * @param {HTMLElement} prompt - The element to hide.
+ */
+function hidePrompt(prompt) {
+  prompt.style.display = "none";
+}
+
+/**
+ * Shows a prompt element.
+ * @param {HTMLElement} prompt - The element to show.
+ */
+function showPrompt(prompt) {
+  prompt.style.display = "flex";
+}
+
+/**
+ * Removes the prompt, stops intervals, and resumes theme audio.
+ * @param {HTMLElement} prompt - The prompt element to remove.
+ * @param {HTMLElement} promptContainer - The container element.
+ */
+function removePrompt(prompt, promptContainer) {
+  if (prompt) {
+    hidePrompt(prompt);
+  }
+  if (promptContainer) {
+    hidePrompt(promptContainer);
+  }
+  stopAllIntervals();
+  audioList.mainTheme.play();
+  AudioManager.loadMuteStatus();
+  startPromptRemoved = true;
+}
+
+/**
+ * Fades a prompt element in/out over time and rotates orientation icon if on mobile.
+ * @param {HTMLElement} prompt - The prompt element.
+ * @param {HTMLElement} mobilePortraitIcon - Icon for portrait mode.
+ * @param {HTMLElement} mobileLandscapeIcon - Icon for landscape mode.
+ */
+function setPromptFadingInterval(prompt, mobilePortraitIcon, mobileLandscapeIcon) {
+  let showPromptInterval = setInterval(() => {
+    alpha = fadeOutPrompt();
+    prompt.style.opacity = alpha;
+    if (window.screen.orientation.type.startsWith("portrait")) {
+      rotateMobileIcon(mobilePortraitIcon, mobileLandscapeIcon, alpha);
+    }
+  }, 120);
+  intervals.push(showPromptInterval);
+}
+
+/**
+ * Switches between portrait and landscape prompt icons based on alpha value.
+ * @param {HTMLElement} promptImagePortrait
+ * @param {HTMLElement} promptImageLandscape
+ * @param {number} alpha - Current opacity value.
+ */
+function rotateMobileIcon(promptImagePortrait, promptImageLandscape, alpha) {
+  if (!switchedPromptImage && alpha <= 0.1) {
+    hidePrompt(promptImagePortrait);
+    showPrompt(promptImageLandscape);
+    switchedPromptImage = true;
+  } else if (switchedPromptImage && alpha >= 0.9) {
+    showPrompt(promptImagePortrait);
+    hidePrompt(promptImageLandscape);
+    switchedPromptImage = false;
+  }
+}
+
+/**
+ * Waits for a key press and removes the start prompt.
+ * @param {HTMLElement} prompt - The prompt element.
+ */
+function checkKeyResponse(prompt) {
+  const promptContainer = document.getElementById("div_prompt");
+  document.addEventListener(
+    "keydown",
+    () => {
+      removePrompt(prompt, promptContainer);
+    },
+    { once: true }
+  );
+}
+
+/**
+ * Waits for a touch input and removes the start prompt.
+ * @param {HTMLElement} prompt - The prompt element.
+ */
+function checkTouchResponse(prompt) {
+  if (!touchControlEnabled) return;
+  const promptContainer = document.getElementById("div_prompt");
+  document.addEventListener(
+    "touchstart",
+    () => {
+      if (touchControlEnabled) removePrompt(prompt, promptContainer);
+    },
+    { once: true }
+  );
+}
+
+/**
+ * Starts monitoring the device orientation and handles prompt visibility and game state accordingly.
+ * Especially relevant for touch devices.
+ */
+function monitorOrientationDuringGame() {
+  setInterval(() => {
+    const currentlyPortrait = isPortraitMode();
+    if (isTouchDevice()) {
+      handleOrientationChange(currentlyPortrait);
+      checkTouchResponse();
+    }
+  }, 300);
+}
+
+/**
+ * Checks if the device is currently in portrait mode.
+ *
+ * @returns {boolean} True if portrait mode is active, otherwise false.
+ */
+function isPortraitMode() {
+  return window.matchMedia("(orientation: portrait)").matches;
+}
+
+/**
+ * Handles game and UI behavior based on orientation changes.
+ *
+ * @param {boolean} currentlyPortrait - Indicates whether the device is currently in portrait mode.
+ */
+function handleOrientationChange(currentlyPortrait) {
+  if (currentlyPortrait && !isInPortrait) {
+    onPortraitEnter();
+  } else if (!currentlyPortrait && isInPortrait) {
+    onPortraitExit();
+  }
+}
+
+/**
+ * Executes behavior when the device switches into portrait mode.
+ * Pauses the game and shows the orientation prompt.
+ */
+function onPortraitEnter() {
+  isInPortrait = true;
+  touchControlEnabled = false;
+  pauseGame();
+  showPrompt(document.getElementById("mobile-prompt-img-portrait"));
+  showPrompt(document.getElementById("div_prompt"));
+  blockTouchInput();
+}
+
+/**
+ * Executes behavior when the device switches from portrait to landscape mode.
+ * Resumes the game if the start prompt has already been removed.
+ */
+function onPortraitExit() {
+  isInPortrait = false;
+  touchControlEnabled = true;
+  hidePrompt(document.getElementById("mobile-prompt-img-portrait"));
+  hidePrompt(document.getElementById("div_prompt"));
+  unblockTouchInput();
+  if (startPromptRemoved) continueGame();
 }
 
 /**

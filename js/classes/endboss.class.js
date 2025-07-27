@@ -29,6 +29,9 @@ class Endboss extends MovableObject {
   /** @property {boolean} isBeingHit - Whether the boss is currently being hit. */
   isBeingHit = false;
 
+    /** @property {boolean} dead - Whether the boss is dead. */
+  dead = false;
+
   /** @property {boolean} firstContactCharacter - Whether the boss has made first contact with the character. */
   firstContactCharacter = false;
 
@@ -136,6 +139,7 @@ class Endboss extends MovableObject {
    * Decides which animation to play based on the boss's state.
    */
   chooseRightAnimation() {
+    if (this.dead) return;
     if (this.isBeingHit) {
       this.hurtAnimation();
     } else if (this.firstContactCharacter && this.totalContacts > 30) {
@@ -281,9 +285,9 @@ class Endboss extends MovableObject {
    * Handles the death animation and stops the boss's behavior.
    */
   deadAnimation() {
-    clearInterval(this.endbossInterval);
-    this.stopAllAnimations();
+    clearInterval(this.animationIntervals.endbossInterval);
     this.setDeadInterval();
+    this.stopAllAnimations();
   }
 
   /**
@@ -292,15 +296,21 @@ class Endboss extends MovableObject {
   setDeadInterval() {
     let frameCount = 0;
     audioList.chickenDead.play();
-    const deadInterval = setInterval(() => {
-      this.playAnimation(this.IMAGES_DEAD);
-      frameCount++;
-      if (frameCount >= 4) {
-        clearInterval(deadInterval);
-        this.loadImage("assets/img/4_enemie_boss_chicken/5_dead/G26.png");
-        this.world.fightScene = false;
-      }
-    }, 500);
+    // const deadInterval = setInterval(() => {
+    //   this.playAnimation(this.IMAGES_DEAD);
+    //   frameCount++;
+    //   if (frameCount >= 8) {
+    //     clearInterval(deadInterval);
+    //     this.loadImage("assets/img/4_enemie_boss_chicken/5_dead/G26.png");
+    //     this.world.fightScene = false;
+    //   }
+    // }, 300);
+    this.playAnimation(this.IMAGES_DEAD);
+    this.world.fightScene = false;
+  //   setTimeout(() => {
+  //   this.loadImage("assets/img/4_enemie_boss_chicken/5_dead/G26.png");
+  //   this.world.fightScene = false;
+  // }, 200);
   }
 
   /**
@@ -311,6 +321,7 @@ class Endboss extends MovableObject {
   takeDamage(amount) {
     this.energy -= amount;
     if (this.energy <= 0) {
+      this.dead = true;
       this.deadAnimation();
     }
     if (this.statusbar) {
