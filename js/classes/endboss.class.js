@@ -29,7 +29,7 @@ class Endboss extends MovableObject {
   /** @property {boolean} isBeingHit - Whether the boss is currently being hit. */
   isBeingHit = false;
 
-    /** @property {boolean} dead - Whether the boss is dead. */
+  /** @property {boolean} dead - Whether the boss is dead. */
   dead = false;
 
   /** @property {boolean} firstContactCharacter - Whether the boss has made first contact with the character. */
@@ -91,6 +91,9 @@ class Endboss extends MovableObject {
 
   /** @property {string[]} IMAGES_DEAD - Image paths for the death animation. */
   IMAGES_DEAD = [
+    "assets/img/4_enemie_boss_chicken/4_hurt/G21.png",
+    "assets/img/4_enemie_boss_chicken/4_hurt/G22.png",
+    "assets/img/4_enemie_boss_chicken/4_hurt/G23.png",
     "assets/img/4_enemie_boss_chicken/5_dead/G24.png",
     "assets/img/4_enemie_boss_chicken/5_dead/G25.png",
     "assets/img/4_enemie_boss_chicken/5_dead/G26.png",
@@ -131,6 +134,7 @@ class Endboss extends MovableObject {
    */
   animate() {
     this.animationIntervals.endbossInterval = setInterval(() => {
+      if (this.energy <= 0) return;
       this.chooseRightAnimation();
     }, 100);
   }
@@ -139,7 +143,7 @@ class Endboss extends MovableObject {
    * Decides which animation to play based on the boss's state.
    */
   chooseRightAnimation() {
-    if (this.dead) return;
+    if (this.energy <= 0) return;
     if (this.isBeingHit) {
       this.hurtAnimation();
     } else if (this.firstContactCharacter && this.totalContacts > 30) {
@@ -233,10 +237,10 @@ class Endboss extends MovableObject {
     const dizyInterval = setInterval(() => {
       audioList.endbossHurt.play();
       this.playAnimation(this.IMAGES_DIZY);
-      frameCount++;
-      if (frameCount >= 3) {
+      // frameCount++;
+      // if (frameCount >= 5) {
         clearInterval(dizyInterval);
-      }
+      // }
     }, 500);
   }
 
@@ -282,35 +286,20 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Handles the death animation and stops the boss's behavior.
-   */
-  deadAnimation() {
-    clearInterval(this.animationIntervals.endbossInterval);
-    this.setDeadInterval();
-    this.stopAllAnimations();
-  }
-
-  /**
    * Plays the death animation in a timed interval and stops the fight scene when finished.
    */
   setDeadInterval() {
     let frameCount = 0;
     audioList.chickenDead.play();
-    // const deadInterval = setInterval(() => {
-    //   this.playAnimation(this.IMAGES_DEAD);
-    //   frameCount++;
-    //   if (frameCount >= 8) {
-    //     clearInterval(deadInterval);
-    //     this.loadImage("assets/img/4_enemie_boss_chicken/5_dead/G26.png");
-    //     this.world.fightScene = false;
-    //   }
-    // }, 300);
-    this.playAnimation(this.IMAGES_DEAD);
-    this.world.fightScene = false;
-  //   setTimeout(() => {
-  //   this.loadImage("assets/img/4_enemie_boss_chicken/5_dead/G26.png");
-  //   this.world.fightScene = false;
-  // }, 200);
+    const deadInterval = setInterval(() => {
+      this.playAnimation(this.IMAGES_DEAD);
+      frameCount++;
+      if (frameCount >= 3  ) {
+        clearInterval(deadInterval);
+        this.loadImage("assets/img/4_enemie_boss_chicken/5_dead/G26.png");
+        this.world.fightScene = false;
+      }
+    }, 200);
   }
 
   /**
@@ -322,7 +311,8 @@ class Endboss extends MovableObject {
     this.energy -= amount;
     if (this.energy <= 0) {
       this.dead = true;
-      this.deadAnimation();
+      clearInterval(this.animationIntervals.endbossInterval);
+      this.setDeadInterval();
     }
     if (this.statusbar) {
       const percentage = (this.energy / 100) * 100;
@@ -363,7 +353,7 @@ class Endboss extends MovableObject {
    */
   setDelayOnMovingLeft() {
     setTimeout(() => {
-      this.moveLeft();
+      this.moveLeft()
       this.otherDirection = false;
     }, 1000);
   }
