@@ -215,7 +215,7 @@ window.EndgameController = {
     }, 1500);
   },
 
-    /**
+  /**
    * Resets character stats and removes thrown objects after game end.
    */
   resetCharacterState(world) {
