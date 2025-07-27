@@ -210,9 +210,18 @@ window.EndgameController = {
       world.stopIntervals();
       const img = this.getEndScreenImage(world);
       world.prepareEndSequence(img);
-      world.resetCharacterState();
+      this.resetCharacterState(world);
       scheduleAudioReset();
     }, 1500);
+  },
+
+    /**
+   * Resets character stats and removes thrown objects after game end.
+   */
+  resetCharacterState(world) {
+    world.character.bottles = 0;
+    world.character.coins = 0;
+    world.throwableObjects = [];
   },
 
   /**

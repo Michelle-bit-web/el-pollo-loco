@@ -1,7 +1,6 @@
 /**
  * Represents the main game world.
- * Handles rendering, game logic, collisions, object interactions, animations,
- * camera movement, audio control, and game state transitions.
+ * Handles rendering, game logic, collisions, object interactions, animations, camera movement, audio control, and game state transitions.
  */
 class World {
   /**
@@ -301,8 +300,7 @@ class World {
   }
 
   /**
-   * Main draw loop for the canvas.
-   * Handles rendering of backgrounds, status bars, objects and character.
+   * Main draw loop for the canvas that handles rendering of backgrounds, status bars, objects and character.
    */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -389,15 +387,6 @@ class World {
    */
   handleEndAudio() {
     AudioController.handleEndAudio (this.character.isDead(), this.level.endboss.isDead())
-  }
-
-  /**
-   * Resets character stats and removes thrown objects after game end.
-   */
-  resetCharacterState() {
-    this.character.bottles = 0;
-    this.character.coins = 0;
-    this.throwableObjects = [];
   }
 
   /**
