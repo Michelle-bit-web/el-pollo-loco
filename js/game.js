@@ -121,6 +121,7 @@ function stopAllIntervals() {
 function pauseGame() {
   if (gameIsRunning) {
     controlEnabled = false;
+    if (world) world.controlEnabled = false;
     if (!AudioManager.isMuted) {
       AudioManager.toggleMute();
     }
@@ -133,6 +134,7 @@ function pauseGame() {
 function continueGame() {
   if (gameIsRunning) {
     controlEnabled = true;
+    if (world) world.controlEnabled = true;
     if (AudioManager.isMuted && currentSrc == srcMuted) {
       return;
     } else {

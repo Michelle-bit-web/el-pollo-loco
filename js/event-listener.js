@@ -5,7 +5,7 @@ let isInPortrait = false;
 let startPromptRemoved = false;
 
 /** @type {boolean} Indicates if the toch events are allowed. */
-let touchControlEnabled = true;
+let touchControlEnabled = false;
 
 /**
  * Maps keyboard key codes to control actions.

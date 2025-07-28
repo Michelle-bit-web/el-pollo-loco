@@ -339,13 +339,16 @@ h1 {
 
 .panel-wrapper {
   display: flex;
-  gap: 4.5vw;
+  justify-content: center;
+  width: 100vw;
+  gap: 3.5vw;
   padding: 8px 16px;
 }
 
 .panel-wrapper button {
-  width: 12vw;
+  width: 10vw;
   height: 8vw;
+  min-width: 80px;
   max-width: 100px;
   max-height: 50px;
 }
