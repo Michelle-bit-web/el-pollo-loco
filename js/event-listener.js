@@ -5,7 +5,7 @@ let isInPortrait = false;
 let startPromptRemoved = false;
 
 /** @type {boolean} Indicates if the toch events are allowed. */
-let touchControlEnabled = false;
+let touchControlEnabled = true;
 
 /**
  * Maps keyboard key codes to control actions.
@@ -68,13 +68,11 @@ function touchEvents() {
 function setButtonEvent(buttonId) {
   const button = document.getElementById(`${buttonId}`);
   button.addEventListener("touchstart", (event) => {
-    if (!touchControlEnabled) return;
     event.preventDefault();
     button.classList.add("active");
     keyboard[buttonId] = true;
   });
   button.addEventListener("touchend", (event) => {
-    if (!touchControlEnabled) return;
     event.preventDefault();
     button.classList.remove("active");
     keyboard[buttonId] = false;
@@ -173,7 +171,6 @@ function removePrompt(prompt, promptContainer) {
   if (promptContainer) {
     hidePrompt(promptContainer);
   }
-  stopAllIntervals();
   audioList.mainTheme.play();
   AudioManager.loadMuteStatus();
   startPromptRemoved = true;
