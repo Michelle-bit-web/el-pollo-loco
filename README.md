@@ -39,10 +39,10 @@ All graphics were drawn directly onto the canvas using JavaScript's drawing func
 ## 📸 Screenshots
 
 `Mobile phone preview`<br><br>
-![App Board](assets/img/readme/pollo-loco-desktop.png)
+![App Board](assets/img/readme/pollo-loco-mobile.png)
 
 `Desktop preview`<br><br>
-![App Board](assets/img/readme/pollo-loco-mobile.png)
+![App Board](assets/img/readme/pollo-loco-desktop.png)
 
 ## ⚙️ Technologies Used
 
