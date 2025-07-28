@@ -233,14 +233,10 @@ class Endboss extends MovableObject {
    * Also plays hurt sound.
    */
   setDizyInterval() {
-    let frameCount = 0;
     const dizyInterval = setInterval(() => {
       audioList.endbossHurt.play();
       this.playAnimation(this.IMAGES_DIZY);
-      // frameCount++;
-      // if (frameCount >= 5) {
         clearInterval(dizyInterval);
-      // }
     }, 500);
   }
 
@@ -290,6 +286,7 @@ class Endboss extends MovableObject {
    */
   setDeadInterval() {
     let frameCount = 0;
+    this.setDizyInterval();
     audioList.chickenDead.play();
     const deadInterval = setInterval(() => {
       this.playAnimation(this.IMAGES_DEAD);
