@@ -50,6 +50,7 @@ class Endboss extends MovableObject {
   /** @property {boolean} walkTowardsCharacter - Flag to control delayed movement logic. */
   walkTowardsCharacter = false;
 
+  /** @property {boolean} isDashing - Flag to control dash attack of endboss. */
   isDashing = false;
 
   /** @property {string[]} IMAGES_WALKING - Image paths for the walking animation. */
