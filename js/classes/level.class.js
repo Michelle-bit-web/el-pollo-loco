@@ -57,7 +57,7 @@ class Level {
         }
         }
         this.collectedImages.push(
-        new BackgroundObject(`assets/img/5_background/level-end/level-end-zone.png`, 3000, 220, 120, 200)
+        new BackgroundObject(`assets/img/5_background/level-end/level-end-zone.png`, 2700, 220, 120, 200)
         );
         return this.collectedImages;
     }
