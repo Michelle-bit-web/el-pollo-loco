@@ -27,7 +27,7 @@
 }
 
 body {
-  font-family: "A Box For"; 
+  font-family: "A Box For";
   font-family: "Viva México cabrones";
 }
 
@@ -353,6 +353,13 @@ h1 {
   border: unset;
   z-index: 1;
   border-radius: 100%;
+  padding: 0;
+}
+
+.sound-btn-gameplay img {
+  width: 40vw;
+ min-width: 15px;
+  height: auto;
 }
 
 .panel {
