@@ -371,8 +371,8 @@ h1 {
 .panel-wrapper {
   display: flex;
   justify-content: center;
-  width: 100vw;
-  gap: 3.5vw;
+  width: 90vw;
+  gap: 3vw;
   padding: 8px 16px;
 }
 
