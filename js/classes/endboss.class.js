@@ -50,6 +50,8 @@ class Endboss extends MovableObject {
   /** @property {boolean} walkTowardsCharacter - Flag to control delayed movement logic. */
   walkTowardsCharacter = false;
 
+  isDashing = false;
+
   /** @property {string[]} IMAGES_WALKING - Image paths for the walking animation. */
   IMAGES_WALKING = [
     "assets/img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -236,7 +238,7 @@ class Endboss extends MovableObject {
     const dizyInterval = setInterval(() => {
       audioList.endbossHurt.play();
       this.playAnimation(this.IMAGES_DIZY);
-        clearInterval(dizyInterval);
+      clearInterval(dizyInterval);
     }, 500);
   }
 
@@ -291,7 +293,7 @@ class Endboss extends MovableObject {
     const deadInterval = setInterval(() => {
       this.playAnimation(this.IMAGES_DEAD);
       frameCount++;
-      if (frameCount >= 3  ) {
+      if (frameCount >= 3) {
         clearInterval(deadInterval);
         this.loadImage("assets/img/4_enemie_boss_chicken/5_dead/G26.png");
         this.world.fightScene = false;
@@ -300,17 +302,27 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Reduces the boss's energy by a specified amount and triggers hurt/death logic.
+   * Reduces the boss's energy by a specified amount and triggers attack/hurt/death logic.
    *
    * @param {number} amount - The amount of damage to apply.
    */
   takeDamage(amount) {
     this.energy -= amount;
+    if (!this.isDashing && this.energy < 50) {
+      this.setDashAttack();
+    }
     if (this.energy <= 0) {
       this.dead = true;
       clearInterval(this.animationIntervals.endbossInterval);
       this.setDeadInterval();
     }
+    this.updateEnergyBar();
+  }
+  /**
+   * Updates the boss's energy bar based on the current energy level.
+   * Also plays the hurt sound and triggers the hurt animation.
+   */
+  updateEnergyBar() {
     if (this.statusbar) {
       const percentage = (this.energy / 100) * 100;
       this.statusbar.setPercentage(percentage);
@@ -335,6 +347,45 @@ class Endboss extends MovableObject {
     }, 4000);
   }
 
+  setDashAttack() {
+    this.animationIntervals.dashAttackInterval = setInterval(() => {
+      if (!this.dead) {
+        this.performDashAttack();
+      }
+    }, 500);
+  }
+
+  /**
+   * Performs a short dash toward the player character,
+   * then returns to the original position after a brief delay.
+   * Prevents overlapping dashes using an `isDashing` flag.
+   */
+  performDashAttack() {
+    if (this.dead || this.isDashing) return;
+    this.isDashing = true;
+    let originalX = this.x;
+    const dashDistance = 200;
+    const direction = this.world.character.x >= this.x ? 1 : -1;
+    this.x += dashDistance * direction;
+    this.resetDashAttack(originalX);
+  }
+
+  /**
+   * Resets the boss's position after a dash and clears the dash interval.
+   * Also resets the `isDashing` flag to allow future dashes.
+   *
+   * @param {number} originalX - The boss's X position before the dash.
+   */
+  resetDashAttack(originalX) {
+    setTimeout(() => {
+      this.x = originalX;
+      this.isDashing = false;
+    }, 200);
+    setTimeout(() => {
+      clearInterval(this.animationIntervals.dashAttackInterval);
+    }, 200);
+  }
+
   /**
    * Delays movement to the right and flips the direction flag.
    */
@@ -350,7 +401,7 @@ class Endboss extends MovableObject {
    */
   setDelayOnMovingLeft() {
     setTimeout(() => {
-      this.moveLeft()
+      this.moveLeft();
       this.otherDirection = false;
     }, 1000);
   }
