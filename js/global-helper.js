@@ -226,10 +226,7 @@ window.EndgameController = {
     if (restartButton && toMenuButton) {
       restartButton.disabled = false;
       toMenuButton.disabled = false;
-    } else {
-      console.warn("Endscreen buttons not found. Retrying...");
-      setTimeout(() => this.enableButtons(), 200);
-    }
+    };
   },
 
   /**
