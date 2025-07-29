@@ -67,16 +67,35 @@ function touchEvents() {
  */
 function setButtonEvent(buttonId) {
   const button = document.getElementById(`${buttonId}`);
-  button.addEventListener("touchstart", (event) => {
-    event.preventDefault();
-    button.classList.add("active");
-    keyboard[buttonId] = true;
-  });
-  button.addEventListener("touchend", (event) => {
-    event.preventDefault();
-    button.classList.remove("active");
-    keyboard[buttonId] = false;
-  });
+  // button.addEventListener("touchstart", (event) => {
+  //   event.preventDefault();
+  //   button.classList.add("active");
+  //   keyboard[buttonId] = true;
+  // });
+  // button.addEventListener("touchend", (event) => {
+  //   event.preventDefault();
+  //   button.classList.remove("active");
+  //   keyboard[buttonId] = false;
+  // });
+  button.addEventListener(
+    "touchstart",
+    (event) => {
+      event.preventDefault();
+      button.classList.add("active");
+      keyboard[buttonId] = true;
+    },
+    { passive: false }
+  );
+
+  button.addEventListener(
+    "touchend",
+    (event) => {
+      event.preventDefault();
+      button.classList.remove("active");
+      keyboard[buttonId] = false;
+    },
+    { passive: false }
+  );
 }
 
 function blockTouchInput() {
@@ -299,10 +318,10 @@ function onPortraitExit() {
   isInPortrait = false;
   touchControlEnabled = true;
   if (startPromptRemoved) {
-  hidePrompt(document.getElementById("mobile-prompt-img-portrait"));
-  hidePrompt(document.getElementById("div_prompt"));
-  unblockTouchInput();
-  continueGame();
+    hidePrompt(document.getElementById("mobile-prompt-img-portrait"));
+    hidePrompt(document.getElementById("div_prompt"));
+    unblockTouchInput();
+    continueGame();
   }
 }
 

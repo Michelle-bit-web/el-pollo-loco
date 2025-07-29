@@ -164,7 +164,7 @@ class MovableObject extends DrawableObject {
   isAboveGround() {
     if (this instanceof ThrowableObject) return this.y < 350;
     if (this instanceof Endboss) return this.y < 120;
-    else return this.y < 150;
+    else return this.y < 155;
   }
 
   /**

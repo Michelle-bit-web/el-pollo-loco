@@ -126,8 +126,8 @@ function getEndScreenTemplate(endScreenImage) {
   return `
     <div id="end-screen-div" class="end-screen-div">
       <img id="end-screen-img" class="end-screen-img" src="${endScreenImage}" alt="mute-sound-option"/>
-      <button id="play-again-btn" class="menu-btn endscreen" onclick="resetGame()">Play again</button>
-      <button id="to-menu-btn" class="menu-btn endscreen" onclick="backToMenu()">To menu</button>
+      <button id="play-again-btn" class="menu-btn endscreen disabled_btn" onclick="resetGame()" disabled>Play again</button>
+      <button id="to-menu-btn" class="menu-btn endscreen disabled_btn" onclick="backToMenu()" disabled>To menu</button>
     </div>
   `;
 }

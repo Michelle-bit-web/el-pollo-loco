@@ -81,7 +81,7 @@ function createLevelOne() {
     difficulty: "easy",
     enemyResistance: 1,
     endboss: new Endboss(2900),
-    enemies: generateObject(SmallChicken, 5, 2000, 20, 370, 0.5, 0.1).concat(
+    enemies: generateObject(SmallChicken, 5, 2000, 20, 365 , 0.5, 0.1).concat(
       generateObject(Chicken, 5, 2000, 20, 350, 0.5, 0.1)
     ),
     clouds: generateObject(Cloud, 8, 3000, 110, -5, 0.5, 0.1),

@@ -89,6 +89,7 @@ function loadLevel() {
   AudioManager.sounds.forEach((audio) => (audio.shouldPlay = true));
   audioList.mainTheme.shouldPlay = false;
   audioList.fightScene.shouldPlay = false;
+  AudioController.playGamePlay();
   canvas = document.getElementById("canvas");
   gameIsRunning = true;
   world = new World(canvas, keyboard, level1, controlEnabled);
@@ -187,6 +188,7 @@ function backToMenu() {
  * Fully resets the game state, sounds, overlays and world.
  */
 function resetGame() {
+  EndgameController.disableButtons();
   resetOverlay();
   resetAudio();
   clearAllIntervals();
@@ -194,7 +196,8 @@ function resetGame() {
   resetControls();
   restartLevel();
   startGame();
-  setTimeout(() => finalizeReset(), 100);
+  setTimeout(() =>
+    finalizeReset(), 200);
 }
 
 /**
@@ -206,6 +209,7 @@ function resetAudio() {
     audio.currentTime = 0;
     audio.shouldPlay = false;
   });
+  audioList.gamePlay.shouldPlay = true;
   audioList.mainTheme.loop = false;
   audioList.fightScene.loop = false;
 }

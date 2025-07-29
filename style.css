@@ -21,6 +21,9 @@
   margin: 0;
   text-decoration: none;
   font-size: 10px;
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: contain;
 }
 
 body {
@@ -51,7 +54,22 @@ a {
   font-size: clamp(1rem, 3vw, 3rem);
 }
 
+button:disabled {
+  cursor: not-allowed;
+  border: 2px solid rgba(73, 67, 64, 0.672);
+  background-color: rgba(255, 255, 255, 0.686);
+  color: rgba(73, 67, 64, 0.672);
+  opacity: 0.5;
+}
+
+button:disabled:hover {
+  background-color: rgba(255, 255, 255, 0.686);
+  scale: 1;
+}
+
 button {
+  touch-action: none;
+  cursor: pointer;
   border-radius: 20px;
   border: 2px solid rgba(72, 29, 2, 0.672);
   width: 7vw;
@@ -64,10 +82,9 @@ button {
   font-family: "Viva México cabrones";
 }
 
-button:hover {
+button:enabled:hover {
   border: 2px solid var(--text-color);
   scale: 0.95;
-  cursor: pointer;
 }
 
 .canvas-container {
@@ -239,8 +256,9 @@ h1 {
 }
 
 .controls-overlay {
-  padding: 3vw;
-  height: 50vw;
+  padding: 5%;
+  height: 90%;
+  width: 90%;
   gap: 20%;
 }
 
@@ -264,10 +282,18 @@ h1 {
 }
 
 .key-controls {
-  gap: 5%;
+  gap: 10px;
   width: 100%;
+  max-width: 440px;
+  height: fit-content;
+  min-height: 200px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.key-controls div {
+  height: fit-content;
 }
 
 .key-controls p {
@@ -275,10 +301,8 @@ h1 {
 }
 
 .key-controls img {
-  height: 20vw;
-  width: 15vw;
-  max-height: 150px;
-  max-width: 100px;
+  height: 70%;
+  width: 100%;
 }
 
 .img-throw-bottle {
@@ -346,6 +370,7 @@ h1 {
 }
 
 .panel-wrapper button {
+  touch-action: none;
   width: 10vw;
   height: 8vw;
   min-width: 80px;
@@ -390,7 +415,7 @@ h1 {
 
 @media only screen and (max-height: 480px) {
   canvas {
-    height: 100dvh;
+    height: 99dvh;
   }
   h1 {
     display: none;

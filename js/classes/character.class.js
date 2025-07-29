@@ -10,7 +10,7 @@ class Character extends MovableObject {
   speed = 15;
 
   /** @type {number} Vertical position offset for start */
-  y = 150;
+  y = 155;
 
   /** @type {boolean} Indicates if dying animation is currently playing */
   isPlayingDyingAnimation = false;

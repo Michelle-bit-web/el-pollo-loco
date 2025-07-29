@@ -60,8 +60,6 @@ function scheduleAudioReset() {
       audio.shouldPlay = false;
       audio.stop();
     });
-    audioList.mainTheme.shouldPlay = true;
-    audioList.mainTheme.play();
   }, 3500);
 }
 
@@ -213,6 +211,35 @@ window.EndgameController = {
       this.resetCharacterState(world);
       scheduleAudioReset();
     }, 1500);
+    setTimeout(() => {
+      this.enableButtons();
+    }, 6000);
+  },
+
+  /**
+   * Enable endscreen buttons after short delay.
+   */
+
+  enableButtons() {
+    const restartButton = document.getElementById("play-again-btn");
+    const toMenuButton = document.getElementById("to-menu-btn");
+    if (restartButton && toMenuButton) {
+      restartButton.disabled = false;
+      toMenuButton.disabled = false;
+    } else {
+      console.warn("Endscreen buttons not found. Retrying...");
+      setTimeout(() => this.enableButtons(), 200);
+    }
+  },
+
+  /**
+   * Disable endscreen buttons.
+   */
+  disableButtons() {
+    let restartButton = document.getElementById("play-again-btn");
+    let toMenuButton = document.getElementById("to-menu-btn");
+    restartButton.disabled = true;
+    toMenuButton.disabled = true;
   },
 
   /**
@@ -254,7 +281,7 @@ window.StartFightScreen = {
     clearInterval(interval);
     Object.assign(overlay.style, {
       display: "flex",
-      fontSize: "6vw",
+      fontSize: "5.5vw",
       textAlign: "center",
       backgroundColor: "rgba(60, 24, 2, 0.43)",
     });
